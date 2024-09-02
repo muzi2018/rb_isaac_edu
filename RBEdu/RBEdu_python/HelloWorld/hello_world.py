@@ -12,20 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from omni.isaac.examples.base_sample import BaseSample
-import numpy as np
 
-# Note: checkout the required tutorials at https://docs.omniverse.nvidia.com/app_isaacsim/app_isaacsim/overview.html
+from omni.isaac.examples.base_sample import BaseSample
 from omni.isaac.core.objects import DynamicCuboid
+import numpy as np
 
 
 class HelloWorld(BaseSample):
+
     def __init__(self) -> None:
         super().__init__()
         return
 
     def setup_scene(self):
-
         world = self.get_world()
         world.scene.add_default_ground_plane()
         fancy_cube = world.scene.add(
