@@ -1,12 +1,25 @@
+# Copyright 2024 Road Balance Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 from omni.isaac.core.utils.stage import add_reference_to_stage, get_current_stage
 from omni.isaac.core.utils.nucleus import get_assets_root_path, get_url_root
 from omni.isaac.core.prims.geometry_prim import GeometryPrim
-from omni.physx.scripts import deformableUtils, physicsUtils  
+from omni.physx.scripts import physicsUtils  
 
 from omni.isaac.examples.base_sample import BaseSample
 from pxr import UsdGeom, Gf, UsdPhysics
 
-import numpy as np
 import omni
 import carb
 
