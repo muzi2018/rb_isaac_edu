@@ -18,7 +18,7 @@ class HelloWorld(BaseSample):
 
         default_asset_root = carb.settings.get_settings().get("/persistent/isaac/asset_root/default")
         self._server_root = get_url_root(default_asset_root)
-        self.HYDRANT_PATH = self._server_root + "/Projects/ICTEdu/Hydrant.usdz"
+        self.HYDRANT_PATH = self._server_root + "/Projects/RoadBalanceEdu/Hydrant.usdz"
         return
 
     def setup_scene(self):
