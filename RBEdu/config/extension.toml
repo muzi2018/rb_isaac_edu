@@ -28,13 +28,17 @@ name = "RBEdu_python"
 name = "RBEdu_python.HelloAsset"
 
 [[python.module]]
-name = "RBEdu_python.HelloMobileRobot"
+name = "RBEdu_python.HelloProperty"
 
 [[python.module]]
-name = "RBEdu_python.HelloProperty"
+name = "RBEdu_python.HelloDeformable"
+
+[[python.module]]
+name = "RBEdu_python.HelloRandomBox"
+
+[[python.module]]
+name = "RBEdu_python.HelloMobileRobot"
 
 [[python.module]]
 name = "RBEdu_python.HelloWorld"
 
-[[python.module]]
-name = "RBEdu_python.HelloDeformable"

@@ -1,10 +1,24 @@
+# Copyright 2024 Road Balance Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 from omni.isaac.examples.base_sample import BaseSample
 from omni.physx.scripts import physicsUtils
 from pxr import UsdGeom,Gf, UsdLux
 
-import numpy as np
 import omni.usd
 import random
+
 
 class HelloBox(BaseSample):
     def __init__(self) -> None:
@@ -36,7 +50,6 @@ class HelloBox(BaseSample):
         for i in range(5):
             for j in range(5):
                 path = f"/World/boxes/box_{i}_{j}"
-
                 # Add box of random size
                 size = (
                     random.uniform(0.2, 1.0),
@@ -48,11 +61,9 @@ class HelloBox(BaseSample):
                 cube_mesh = UsdGeom.Mesh.Get(self._stage, path)
                 physicsUtils.set_or_add_translate_op(cube_mesh, Gf.Vec3f(translate))
                 physicsUtils.set_or_add_scale_op(cube_mesh, Gf.Vec3f(size))
-
                 print(f"Adding box at {path} with size {size} and translate {translate}")
 
     def setup_scene(self):
-
         self._world = self.get_world()
         self._world.scene.add_default_ground_plane()
         self._stage = omni.usd.get_context().get_stage()
