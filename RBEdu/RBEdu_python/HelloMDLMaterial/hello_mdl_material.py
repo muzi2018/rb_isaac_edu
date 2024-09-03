@@ -1,19 +1,28 @@
-from omni.isaac.examples.base_sample import BaseSample
-from typing import Optional, Sequence, Tuple 
-import numpy as np
-import omni
-import random
+# Copyright 2024 Road Balance Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
-# Note: checkout the required tutorials at https://docs.omniverse.nvidia.com/app_isaacsim/app_isaacsim/overview.html
-from omni.isaac.core.utils.nucleus import get_assets_root_path, get_url_root
-from omni.isaac.core.objects import DynamicCuboid
-import omni.isaac.core.utils.prims as prims_utils
-from omni.isaac.core.utils.stage import add_reference_to_stage, get_stage_units
+from omni.physx.scripts import physicsUtils, particleUtils, deformableUtils
+from omni.isaac.core.utils.nucleus import get_assets_root_path
+from omni.isaac.core.utils.stage import add_reference_to_stage
+from omni.isaac.examples.base_sample import BaseSample
 
 from pxr import Usd, UsdGeom, UsdPhysics, UsdShade, Sdf, Gf, Tf, UsdLux
-from omni.physx.scripts import physicsUtils, particleUtils, deformableUtils
+import omni
+
 
 class HelloMDLMaterial(BaseSample):
+    
     def __init__(self) -> None:
         super().__init__()
 

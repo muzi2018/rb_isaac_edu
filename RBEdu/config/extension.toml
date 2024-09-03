@@ -49,6 +49,9 @@ name = "RBEdu_python.HelloLilLibrary"
 name = "RBEdu_python.HelloEnvRandomizer"
 
 [[python.module]]
+name = "RBEdu_python.HelloMDLMaterial"
+
+[[python.module]]
 name = "RBEdu_python.HelloMobileRobot"
 
 [[python.module]]
