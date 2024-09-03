@@ -1,45 +1,28 @@
-# Copyright (c) 2022-2023, NVIDIA CORPORATION. All rights reserved.
+# Copyright 2024 Road Balance Inc.
 #
-# NVIDIA CORPORATION and its licensors retain all intellectual property
-# and proprietary rights in and to this software, related documentation
-# and any modifications thereto. Any use, reproduction, disclosure or
-# distribution of this software and related documentation without an express
-# license agreement from NVIDIA CORPORATION is strictly prohibited.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
 #
+# [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 
 import os
 
 from omni.isaac.examples.base_sample import BaseSampleExtension
-from .hello_light_1 import HelloLight
-# from .hello_light_2 import HelloLight
-# from .hello_light_3 import HelloLight
-# from .hello_light_4 import HelloLight
-# from .assignment import HelloLight
-
-"""
-This file serves as a basic template for the standard boilerplate operations
-that make a UI-based extension appear on the toolbar.
-
-This implementation is meant to cover most use-cases without modification.
-Various callbacks are hooked up to a seperate class UIBuilder in .ui_builder.py
-Most users will be able to make their desired UI extension by interacting solely with
-UIBuilder.
-
-This class sets up standard useful callback functions in UIBuilder:
-    on_menu_callback: Called when extension is opened
-    on_timeline_event: Called when timeline is stopped, paused, or played
-    on_physics_step: Called on every physics step
-    on_stage_event: Called when stage is opened or closed
-    cleanup: Called when resources such as physics subscriptions should be cleaned up
-    build_ui: User function that creates the UI they want.
-"""
+from .hello_light import HelloLight
 
 class Extension(BaseSampleExtension):
     def on_startup(self, ext_id: str):
         super().on_startup(ext_id)
         super().start_extension(
-            menu_name="ICTEdu",
+            menu_name="RoadBalanceEdu",
             submenu_name="",
             name="HelloLight",
             title="HelloLight",

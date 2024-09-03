@@ -1,3 +1,17 @@
+# Copyright 2024 Road Balance Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 from pxr import Usd, UsdGeom, UsdPhysics, UsdShade, Sdf, Gf, Tf, UsdLux
 from omni.isaac.examples.base_sample import BaseSample
 from omni.isaac.core.objects import DynamicCuboid
@@ -33,8 +47,27 @@ class HelloLight(BaseSample):
         # Create a Sphere light
         sphereLight = UsdLux.SphereLight.Define(stage, Sdf.Path("/World/MySphereLight"))
         sphereLight.CreateRadiusAttr(0.5)
-        sphereLight.CreateIntensityAttr(500000.0)
-        sphereLight.AddTranslateOp().Set(Gf.Vec3f(0.0, 0.0, 5.0))
+        sphereLight.CreateIntensityAttr(50000.0)
+        sphereLight.AddTranslateOp().Set(Gf.Vec3f(5.0, 5.0, 5.0))
+
+        # Create a disk light
+        diskLight = UsdLux.DiskLight.Define(stage, Sdf.Path("/World/MyDiskLight"))
+        diskLight.CreateRadiusAttr(1.0)
+        diskLight.CreateIntensityAttr(50000.0)
+        diskLight.AddTranslateOp().Set(Gf.Vec3f(5.0, -5.0, 5.0))
+
+        # Create a distant light
+        distantLight = UsdLux.DistantLight.Define(stage, Sdf.Path("/World/MyDistantLight"))
+        distantLight.CreateIntensityAttr(1000)
+        distantLight.AddRotateXYZOp().Set((0, 45, 90))
+        distantLight.AddTranslateOp().Set(Gf.Vec3f(-5.0, 5.0, 5.0))
+
+        # Create a cylinder light
+        cylinderLight = UsdLux.CylinderLight.Define(stage, Sdf.Path("/World/MyCylinderLight"))
+        cylinderLight.CreateLengthAttr(2.0)
+        cylinderLight.CreateRadiusAttr(0.05)
+        cylinderLight.CreateIntensityAttr(50000.0)
+        cylinderLight.AddTranslateOp().Set(Gf.Vec3f(-5.0, -5.0, 5.0))
         return
 
     async def setup_post_load(self):
