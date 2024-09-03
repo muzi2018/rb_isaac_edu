@@ -52,6 +52,10 @@ name = "RBEdu_python.HelloEnvRandomizer"
 name = "RBEdu_python.HelloMDLMaterial"
 
 [[python.module]]
+name = "RBEdu_python.HelloOmniGlass"
+
+
+[[python.module]]
 name = "RBEdu_python.HelloMobileRobot"
 
 [[python.module]]

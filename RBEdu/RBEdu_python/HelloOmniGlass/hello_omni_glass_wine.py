@@ -1,14 +1,32 @@
+# Copyright 2024 Road Balance Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
 from omni.isaac.core.utils.nucleus import get_assets_root_path, get_url_root
 from pxr import Usd, UsdGeom, UsdPhysics, UsdShade, Sdf, Gf, Tf, UsdLux
 from omni.isaac.core.utils.stage import add_reference_to_stage
 from omni.isaac.examples.base_sample import BaseSample
 from omni.physx.scripts import physicsUtils
+
 import numpy as np
 import random
 import omni
 import carb
 
+
 class HelloOmniGlass(BaseSample):
+
     def __init__(self) -> None:
         super().__init__()
 
@@ -70,10 +88,10 @@ class HelloOmniGlass(BaseSample):
         return
 
     def setup_scene(self):
-
         self._world = self.get_world()
         self._world.scene.add_default_ground_plane()
         self._stage = omni.usd.get_context().get_stage()
+        UsdGeom.Scope.Define(omni.usd.get_context().get_stage(), "/Looks/OmniGlassScope")
 
         # add light
         self.add_light()
@@ -83,18 +101,14 @@ class HelloOmniGlass(BaseSample):
         y_range = np.linspace(-2.0, 2.0, 7)
         z = 0.05
         
-        translations = [
-            (x, y, z) for x in x_range for y in y_range
-        ]
+        translations = [ (x, y, z) for x in x_range for y in y_range ]
         self._num_glass = len(translations)
-
-        UsdGeom.Scope.Define(omni.usd.get_context().get_stage(), "/Looks/OmniGlassScope")
 
         for i, trans in enumerate(translations):
             self.add_wine_glass(i, trans)
             self.add_glass_material(i)
-
         return
+
 
     async def setup_post_load(self):
         self._world = self.get_world()
