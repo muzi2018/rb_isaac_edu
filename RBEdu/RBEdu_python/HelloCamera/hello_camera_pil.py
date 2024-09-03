@@ -5,9 +5,14 @@ from omni.isaac.sensor import Camera
 
 from PIL import Image
 import numpy as np
+import os
 
+# Get the current working directory
+current_file_path = os.path.realpath(__file__)
+current_dir = os.path.dirname(current_file_path)
 
 class HelloCamera(BaseSample):
+
     def __init__(self) -> None:
         super().__init__()
         self._save_count = 0
@@ -58,15 +63,14 @@ class HelloCamera(BaseSample):
     def physics_callback(self, step_size):
         self._camera.get_current_frame()
 
-        if self._save_count % 100 == 0:
+        if self._save_count % 10 == 0:
             rgb_img = self._camera.get_rgb()
-            # rgb_img = bgr_img[..., ::-1]
 
             # Convert the NumPy array to a PIL Image
             image = Image.fromarray(rgb_img)
 
             # Save the image as a PNG file
-            image.save(f"img_{self._save_count}.png")
+            image.save(f"{current_dir}/img_{self._save_count}.png")
             print("Data Collected")
 
         self._save_count += 1
