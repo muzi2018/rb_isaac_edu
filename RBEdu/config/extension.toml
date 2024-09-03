@@ -57,6 +57,9 @@ name = "RBEdu_python.HelloOmniGlass"
 [[python.module]]
 name = "RBEdu_python.HelloManipulator"
 
+[[python.module]]
+name = "RBEdu_python.ReplicatorBasic"
+
 
 [[python.module]]
 name = "RBEdu_python.HelloMobileRobot"
