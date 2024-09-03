@@ -40,6 +40,9 @@ name = "RBEdu_python.HelloRandomBox"
 name = "RBEdu_python.HelloLilLibrary" 
 
 [[python.module]]
+name = "RBEdu_python.HelloEnvRandomizer"
+
+[[python.module]]
 name = "RBEdu_python.HelloMobileRobot"
 
 [[python.module]]
