@@ -37,6 +37,9 @@ name = "RBEdu_python.HelloDeformable"
 name = "RBEdu_python.HelloRandomBox"
 
 [[python.module]]
+name = "RBEdu_python.HelloLilLibrary" 
+
+[[python.module]]
 name = "RBEdu_python.HelloMobileRobot"
 
 [[python.module]]
