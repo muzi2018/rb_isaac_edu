@@ -35,3 +35,6 @@ name = "RBEdu_python.HelloProperty"
 
 [[python.module]]
 name = "RBEdu_python.HelloWorld"
+
+[[python.module]]
+name = "RBEdu_python.HelloDeformable"
