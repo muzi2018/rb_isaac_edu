@@ -22,6 +22,9 @@ icon = "data/icon.png"
 "omni.isaac.core" = {}
 
 [[python.module]]
+name = "omni.isaac.etri_env"
+
+[[python.module]]
 name = "RBEdu_python"
 
 [[python.module]]
