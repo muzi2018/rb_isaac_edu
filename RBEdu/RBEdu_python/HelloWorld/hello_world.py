@@ -27,6 +27,7 @@ class HelloWorld(BaseSample):
     def setup_scene(self):
         world = self.get_world()
         world.scene.add_default_ground_plane()
+        
         fancy_cube = world.scene.add(
             DynamicCuboid(
                 prim_path="/World/random_cube", # The prim path of the cube in the USD stage
@@ -35,6 +36,7 @@ class HelloWorld(BaseSample):
                 scale=np.array([0.5015, 0.5015, 0.5015]), # most arguments accept mainly numpy arrays.
                 color=np.array([0, 0, 1.0]), # RGB channels, going from 0-1
             ))
+        
         return
 
     async def setup_post_load(self):

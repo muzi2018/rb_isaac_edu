@@ -24,7 +24,7 @@ class HelloCamera(BaseSample):
             prim_path="/World/camera",
             position=np.array([0.0, 0.0, 10.0]),
             frequency=30,
-            resolution=(640, 480),
+            resolution=(800, 800),
             orientation=rot_utils.euler_angles_to_quats(
                 np.array([0, 90, 0]
             ), degrees=True),

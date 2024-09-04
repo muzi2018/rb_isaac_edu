@@ -58,6 +58,7 @@ class HelloManip(BaseSample):
             gripper=self._franka.gripper,
             robot_articulation=self._franka,
         )
+
         self._franka.gripper.set_joint_positions(self._franka.gripper.joint_opened_positions)
         self._world.add_physics_callback("sim_step", callback_fn=self.physics_step)
         return

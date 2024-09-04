@@ -6,7 +6,6 @@ import os
 current_file_path = os.path.realpath(__file__)
 current_dir = os.path.dirname(current_file_path)
 
-
 class EnvExample(BaseSample):
 
     def __init__(self) -> None:

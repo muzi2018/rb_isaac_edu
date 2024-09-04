@@ -95,7 +95,7 @@ class HelloDeformable(BaseSample):
 
     def setup_scene(self):
         world = self.get_world()
-        self._setup_simulation()
+        # self._setup_simulation()
         self._stage = omni.usd.get_context().get_stage()
 
         world.scene.add_default_ground_plane()

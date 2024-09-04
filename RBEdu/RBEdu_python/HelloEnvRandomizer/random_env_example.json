@@ -187,7 +187,7 @@
             "min_trans": [3.2, 0.5, 0.85],
             "max_trans": [3.2, 0.5, 0.85],
             "min_rotation": [0.0, 0.0, 180.0],
-            "max_rotation": [0.0, 0.0, 180.0],
+            "max_rotation": [180.0, 0.0, 180.0],
             "min_scale": 1.0,
             "max_scale": 1.0,
             "mdl_material": null,
@@ -468,6 +468,11 @@
                 "collision_type": "meshSimplification",
                 "mass_modify": false,
                 "friction_modify": false
+            },
+            "material": {
+                "material_type": "mdl",
+                "category": "Wood",
+                "mtl_name": "Ash"
             }
         },
         {

@@ -32,7 +32,7 @@ class HelloWorld(BaseSample):
 
         default_asset_root = carb.settings.get_settings().get("/persistent/isaac/asset_root/default")
         self._server_root = get_url_root(default_asset_root)
-        self.HYDRANT_PATH = self._server_root + "/Projects/ICTEdu/Hydrant.usdz"
+        self.HYDRANT_PATH = self._server_root + "/Projects/RoadBalanceEdu/Hydrant.usdz"
 
         return
 
@@ -56,7 +56,7 @@ class HelloWorld(BaseSample):
         
         hydrant_rigid = UsdPhysics.RigidBodyAPI.Apply(get_current_stage().GetPrimAtPath("/World/Hydrant"))
         hydrant_geom = GeometryPrim(prim_path="/World/Hydrant", name="hydrant_ref_geom", collision=True)
-        hydrant_geom.set_collision_approximation("convexDecomposition")
+        hydrant_geom.set_collision_approximation("meshSimplication")
         return
 
     async def setup_post_load(self):
