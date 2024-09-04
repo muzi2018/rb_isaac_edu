@@ -88,3 +88,7 @@ name = "RBEdu_python.HelloCloth"
 
 [[python.module]]
 name = "RBEdu_python.PickandPlaceCloth"
+
+
+[[python.module]]
+name = "RBEdu_python.DataCollectionGlassPP"

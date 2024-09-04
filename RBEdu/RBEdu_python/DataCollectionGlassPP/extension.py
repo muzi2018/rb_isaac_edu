@@ -1,7 +1,7 @@
 import os
 
 from omni.isaac.examples.base_sample import BaseSampleExtension
-from .etri_glass_pp_env import GlassPPEnv
+from .etri_glass_pp_env import DataCollectionGlassPP
 
 """
 This file serves as a basic template for the standard boilerplate operations
@@ -27,11 +27,11 @@ class Extension(BaseSampleExtension):
         super().start_extension(
             menu_name="ETRI",
             submenu_name="",
-            name="GlassPPEnv",
-            title="GlassPPEnv",
+            name="DataCollectionGlassPP",
+            title="DataCollectionGlassPP",
             doc_link="https://docs.omniverse.nvidia.com/isaacsim/latest/core_api_tutorials/tutorial_core_hello_world.html",
             overview="This Example introduces the user on how to do cool stuff with Isaac Sim through scripting in asynchronous mode.",
             file_path=os.path.abspath(__file__),
-            sample=GlassPPEnv(),
+            sample=DataCollectionGlassPP(),
         )
         return
