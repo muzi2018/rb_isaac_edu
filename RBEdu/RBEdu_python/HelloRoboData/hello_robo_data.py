@@ -31,6 +31,7 @@ current_dir = os.path.dirname(current_file_path)
 
 
 class HelloRoboData(BaseSample):
+    
     def __init__(self) -> None:
         super().__init__()
         self._sim_count = 0

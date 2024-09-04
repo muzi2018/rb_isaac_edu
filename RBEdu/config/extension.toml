@@ -27,6 +27,10 @@ name = "omni.isaac.etri_env"
 [[python.module]]
 name = "RBEdu_python"
 
+
+[[python.module]]
+name = "RBEdu_python.HelloWorld"
+
 [[python.module]]
 name = "RBEdu_python.HelloAsset"
 
@@ -67,12 +71,20 @@ name = "RBEdu_python.HelloCustomGripper"
 name = "RBEdu_python.HelloRoboData"
 
 [[python.module]]
+name = "RBEdu_python.HelloCustomManip"
+
+[[python.module]]
 name = "RBEdu_python.ReplicatorBasic"
 
 
 [[python.module]]
-name = "RBEdu_python.HelloMobileRobot"
+name = "RBEdu_python.HelloDeformableTire"
 
 [[python.module]]
-name = "RBEdu_python.HelloWorld"
+name = "RBEdu_python.PickandPlaceTire"
 
+[[python.module]]
+name = "RBEdu_python.HelloCloth"
+
+[[python.module]]
+name = "RBEdu_python.PickandPlaceCloth"
