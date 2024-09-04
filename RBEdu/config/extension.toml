@@ -64,6 +64,9 @@ name = "RBEdu_python.HelloManipulator"
 name = "RBEdu_python.HelloCustomGripper"
 
 [[python.module]]
+name = "RBEdu_python.HelloRoboData"
+
+[[python.module]]
 name = "RBEdu_python.ReplicatorBasic"
 
 
