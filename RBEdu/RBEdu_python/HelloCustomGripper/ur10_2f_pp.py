@@ -24,7 +24,7 @@ import carb
 from omni.isaac.custom_ur10 import UR102F, PickPlaceController
 
 
-class HelloCustomGripper(BaseSample):
+class UR10CustomGripper(BaseSample):
     def __init__(self) -> None:
         super().__init__()
 
@@ -103,7 +103,9 @@ class HelloCustomGripper(BaseSample):
             current_joint_positions=joints_state.positions,
             end_effector_offset=np.array([0.0, 0.0, 0.15]),
             end_effector_orientation=np.array([
-                0.7071068, 0, 0.7071068, 0, 
+                # 0.7071068, 0, 0.7071068, 0, 
+                # 0.7071068, 0.7071068, 0, 0, 
+                1, 0, 0, 0,
             ]),
         )
         if self._pap_controller.is_done():

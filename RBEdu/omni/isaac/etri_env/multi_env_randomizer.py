@@ -877,9 +877,10 @@ class MultiEnvRandomizer():
             bounding_box_3d = data_type["bounding_box_3d"]
             distance_to_camera = data_type["distance_to_camera"]
             pointcloud = data_type["pointcloud"]
-            colorize_semantic_segmentation = data_type["colorize_semantic_segmentation"]
-            colorize_instance_id_segmentation = data_type["colorize_instance_id_segmentation"]
-            colorize_instance_segmentation = data_type["colorize_instance_segmentation"]
+            if "colorize_semantic_segmentation" in data_type:
+                colorize_semantic_segmentation = data_type["colorize_semantic_segmentation"]
+                colorize_instance_id_segmentation = data_type["colorize_instance_id_segmentation"]
+                colorize_instance_segmentation = data_type["colorize_instance_segmentation"]
         except Exception as e:
             logging.error(f"Error occured during Adding Env {i} Vision Data : {e}")
             logging.error(f"Please complete all parts in json!")

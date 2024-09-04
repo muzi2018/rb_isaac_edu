@@ -1,7 +1,7 @@
 {
     "name": "Lab Table Env",
     "is_background": true,
-    "collect_robo_data": false,
+    "collect_robo_data": true,
     "collect_vision_data": true,
     "enable_gpu_dynamics": true,
     "invert_collision_group_filter": false,

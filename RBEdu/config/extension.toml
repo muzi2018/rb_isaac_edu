@@ -27,6 +27,8 @@ name = "omni.isaac.etri_env"
 [[python.module]]
 name = "RBEdu_python"
 
+[[python.module]]
+name = "omni.isaac.etri_bridge"
 
 [[python.module]]
 name = "RBEdu_python.HelloWorld"
@@ -65,16 +67,16 @@ name = "RBEdu_python.HelloOmniGlass"
 name = "RBEdu_python.HelloManipulator"
 
 [[python.module]]
-name = "RBEdu_python.HelloCustomGripper"
-
-[[python.module]]
-name = "RBEdu_python.HelloRoboData"
+name = "RBEdu_python.ReplicatorBasic"
 
 [[python.module]]
 name = "RBEdu_python.HelloCustomManip"
 
 [[python.module]]
-name = "RBEdu_python.ReplicatorBasic"
+name = "RBEdu_python.HelloCustomGripper"
+
+[[python.module]]
+name = "RBEdu_python.HelloRoboData"
 
 
 [[python.module]]

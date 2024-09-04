@@ -25,7 +25,7 @@ class Extension(BaseSampleExtension):
     def on_startup(self, ext_id: str):
         super().on_startup(ext_id)
         super().start_extension(
-            menu_name="ETRI",
+            menu_name="RoadBalanceEdu",
             submenu_name="",
             name="DataCollectionGlassPP",
             title="DataCollectionGlassPP",
