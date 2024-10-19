@@ -9,11 +9,13 @@ from .multi_env_utils import (
     add_random_object_port_physics,
     add_cloth_particle_physics,
     add_gripper_friction,
+    create_defects,
     create_random_omnipbr_material,
     create_random_mdl_materaial,
     create_random_omniglass_material,
     attach_material_to_prim,
 )
+from .robo_config import ROBO_USD_DICT
 
 from pxr import Usd, UsdGeom, UsdPhysics, UsdShade, Sdf, Gf, Tf, UsdLux, PhysxSchema
 
@@ -41,64 +43,6 @@ import json
 import carb
 import time
 
-FRANKA_NORMAL_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/Franka/franka_normal.usd"
-FRANKA_NORMAL_D455_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/Franka/franka_normal_d455.usd"
-FRANKA_NORMAL_L515_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/Franka/franka_normal_l515.usd"
-
-FRANKA_2F_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/Franka/franka_2f85.usd"
-FRANKA_2F_D455_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/Franka/franka_2f85_d455.usd"
-FRANKA_2F_L515_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/Franka/franka_2f85_l515.usd"
-
-FRANKA_3F_PICKING_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/Franka/franka_3f_picking.usd"
-FRANKA_3F_PICKING_D455_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/Franka/franka_3f_picking_d455.usd"
-FRANKA_3F_PICKING_L515_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/Franka/franka_3f_picking_l515.usd"
-
-FRANKA_3F_GRASPING_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/Franka/franka_3f_grasping.usd"
-FRANKA_3F_GRASPING_D455_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/Franka/franka_3f_grasping_d455.usd"
-FRANKA_3F_GRASPING_L515_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/Franka/franka_3f_grasping_l515.usd"
-
-FRANKA_2F_SCREW_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/Franka/franka_2f85_screw.usd"
-FRANKA_3F_SCREW_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/Franka/franka_3f_screw.usd"
-
-UR5_2F_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/UR5/ur5_2f85.usd"
-UR5_2F_D455_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/UR5/ur5_2f85_d455.usd"
-UR5_2F_D455_UPPER_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/UR5/ur5_2f85_d455_upper.usd"
-UR5_2F_L515_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/UR5/ur5_2f85_l515.usd"
-UR5_2F_L515_UPPER_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/UR5/ur5_2f85_l515_upper.usd"
-
-UR5_3F_PICKING_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/UR5/ur5_3f_picking.usd"
-UR5_3F_PICKING_D455_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/UR5/ur5_3f_picking_d455.usd"
-UR5_3F_PICKING_L515_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/UR5/ur5_3f_picking_l515.usd"
-
-UR5_3F_GRASPING_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/UR5/ur5_3f_grasping.usd"
-UR5_3F_GRASPING_D455_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/UR5/ur5_3f_grasping_d455.usd"
-UR5_3F_GRASPING_L515_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/UR5/ur5_3f_grasping_l515.usd"
-
-UR10_2F_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/UR10/ur10_2f85.usd"
-UR10_2F_D455_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/UR10/ur10_2f85_d455.usd"
-UR10_2F_D455_UPPER_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/UR10/ur10_2f85_d455_upper.usd"
-UR10_2F_L515_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/UR10/ur10_2f85_l515.usd"
-UR10_2F_L515_UPPER_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/UR10/ur10_2f85_l515_upper.usd"
-
-UR10_3F_PICKING_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/UR10/ur10_3f_picking.usd"
-UR10_3F_PICKING_D455_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/UR10/ur10_3f_picking_d455.usd"
-UR10_3F_PICKING_L515_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/UR10/ur10_3f_picking_l515.usd"
-
-UR10_3F_GRASPING_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/UR10/ur10_3f_grasping.usd"
-UR10_3F_GRASPING_D455_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/UR10/ur10_3f_grasping_d455.usd"
-UR10_3F_GRASPING_L515_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/UR10/ur10_3f_grasping_l515.usd"
-
-ZEUS_2F_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/Zeus/zeus_2f85.usd"
-ZEUS_2F_D455_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/Zeus/zeus_2f85_d455.usd"
-ZEUS_2F_L515_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/Zeus/zeus_2f85_l515.usd"
-
-ZEUS_3F_PICKING_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/Zeus/zeus_3f_picking.usd"
-ZEUS_3F_PICKING_D455_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/Zeus/zeus_3f_picking_d455.usd"
-ZEUS_3F_PICKING_L515_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/Zeus/zeus_3f_picking_l515.usd"
-
-ZEUS_3F_GRASPING_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/Zeus/zeus_3f_grasping.usd"
-ZEUS_3F_GRASPING_D455_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/Zeus/zeus_3f_grasping_d455.usd"
-ZEUS_3F_GRASPING_L515_USD_PATH = "omniverse://localhost/Projects/ETRI/Manipulator/Zeus/zeus_3f_grasping_l515.usd"
 
 ENV_BASE_PATH = "omniverse://localhost/Projects/ETRI/Env"
 
@@ -144,10 +88,12 @@ class MultiEnvRandomizer():
 
         self._save_count = 0
         self._capture_count = 0
+        self._multi_robot_config = None
         
         self._robots = []
-        self._rep_cams = []
-        self._controllers = []
+        self._rep_cams = [] # replicator cameras
+        self._abn_objects = [] # abnormal objects
+        self._controllers = [] # robot controllers
         self._picking_events = []
         self._robo_data_collectors = []
         self._interactive_object_config = []
@@ -156,7 +102,6 @@ class MultiEnvRandomizer():
         self._mdl_material_objects = []
         self._omniglass_material_objects = []
         self._parse_json_config()
-
         return
 
 
@@ -172,6 +117,11 @@ class MultiEnvRandomizer():
             self._lights_config = self._env_config.get("lights", [])
             self._bg_objects_config = self._env_config.get("background_objects", [])
             self._interactive_objects_config = self._env_config.get("interactive_objects", [])
+            
+            # multi robot special case
+            if "robots" in self._env_config:
+                self._multi_robot_config = self._env_config.get("robots", {})
+            
             self._robot_config = self._env_config.get("robot", {})
             self._cameras_config = self._env_config.get("cameras", {})
             self._task_config = self._env_config.get("task", {})
@@ -212,7 +162,8 @@ class MultiEnvRandomizer():
         )
     
 
-    async def add_random_lights(self, env_offset):
+    # async def add_random_lights(self, env_offset):
+    def add_random_lights(self, env_offset):
 
         for light_config in self._lights_config:
 
@@ -234,7 +185,7 @@ class MultiEnvRandomizer():
                 min_temperature=light_config["min_temperature"], 
                 max_temperature=light_config["max_temperature"],
             )
-        await self._world.reset_async()
+        # await self._world.reset_async()
 
 
     def port_physics_helper(
@@ -389,6 +340,18 @@ class MultiEnvRandomizer():
             self._omniglass_material_objects.append(prim_path)
 
 
+    def object_abnormal_helper(self, prim_path, object_config):
+        try:
+            abn_obj_dict = {
+                prim_path: object_config
+            }
+            self._abn_objects.append(abn_obj_dict)
+        except Exception as e:
+            logging.error(f"Error occured during Adding Object Abnormal : {e}")
+            logging.error(f"Please complete all parts in json!")
+            return
+
+
     def add_random_bg_objects(self, index, env_offset):
         for object_config in self._bg_objects_config:
             object_name = object_config["name"]
@@ -482,13 +445,29 @@ class MultiEnvRandomizer():
                         prim_path, 
                         material_config=object_config["material"]
                     )
+
+                if "object_abnormal" in object_config:
+                    self.object_abnormal_helper(
+                        prim_path,
+                        object_config=object_config["object_abnormal"]
+                    )
+
             except Exception as e:
                 logging.error(f"Error occured during Adding Interactive Objects : {e}")
                 logging.error(f"Please complete all parts in json!")
                 return
     
+    def add_multi_robots(self, index, env_offset):
+        if self._multi_robot_config is None:
+            logging.error(f"Multi Robot Config is None")
+            return
 
-    def add_robot(self, index, env_offset):
+        for robot_config in self._multi_robot_config:
+            self._robot_config = robot_config
+            self.add_robot(index, env_offset, robot_name=robot_config["robot_name"])
+        return
+
+    def add_robot(self, index, env_offset, robot_name=None):
         
         try:
             self._robot_type = self._robot_config["robot_type"]
@@ -518,256 +497,57 @@ class MultiEnvRandomizer():
         self._robot_rotation_quat = euler_angles_to_quat(self._robot_rotation_euler)
 
         self._robot_position = [x + y for x, y in zip(self._robot_position, env_offset)]
-        
+    
         usd_path = None
-
-        if self._robot_type == "franka":
-            if self._gripper_type == "normal":
-                if self._sensor_type == "none":
-                    usd_path = FRANKA_NORMAL_USD_PATH
-                elif self._sensor_type == "d455":
-                    usd_path = FRANKA_NORMAL_D455_USD_PATH
-                elif self._sensor_type == "l515":
-                    usd_path = FRANKA_NORMAL_L515_USD_PATH
-                robot = self._world.scene.add(
-                    Franka(
-                        usd_path=usd_path,
-                        prim_path=f"/World/Env_{index}/robot",
-                        name=f"robot_{index}",
-                        position=self._robot_position,
-                        orientation=self._robot_rotation_quat,
-                    )
-                )
-            elif self._gripper_type == "2f85":
-                if self._sensor_type == "none":
-                    usd_path = FRANKA_2F_USD_PATH
-                elif self._sensor_type == "d455":
-                    usd_path = FRANKA_2F_D455_USD_PATH
-                elif self._sensor_type == "l515":
-                    usd_path = FRANKA_2F_L515_USD_PATH
-                # # TODO: Screw check
-                # if self._task_config["task_type"] == "screw":
-                #     usd_path = FRANKA_2F_SCREW_USD_PATH
-                robot = self._world.scene.add(
-                    Franka2F(
-                        usd_path=usd_path,
-                        prim_path=f"/World/Env_{index}/robot",
-                        name=f"robot_{index}",
-                        position=self._robot_position,
-                        orientation=self._robot_rotation_quat,
-                        attach_gripper=True,
-                    )
-                )
-            elif self._gripper_type == "3f_picking":
-                if self._sensor_type == "none":
-                    usd_path = FRANKA_3F_PICKING_USD_PATH
-                elif self._sensor_type == "d455":
-                    usd_path = FRANKA_3F_PICKING_D455_USD_PATH
-                elif self._sensor_type == "l515":
-                    usd_path = FRANKA_3F_PICKING_L515_USD_PATH
-                robot = self._world.scene.add(
-                    Franka3F(
-                        usd_path=usd_path,
-                        prim_path=f"/World/Env_{index}/robot",
-                        name=f"robot_{index}",
-                        position=self._robot_position,
-                        orientation=self._robot_rotation_quat,
-                        attach_gripper=True,
-                        gripper_mode=self._gripper_mode
-                    )
-                )
-            elif self._gripper_type == "3f_grasping":
-                if self._sensor_type == "none":
-                    usd_path = FRANKA_3F_GRASPING_USD_PATH
-                elif self._sensor_type == "d455":
-                    usd_path = FRANKA_3F_GRASPING_D455_USD_PATH
-                elif self._sensor_type == "l515":
-                    usd_path = FRANKA_3F_GRASPING_L515_USD_PATH
-                robot = self._world.scene.add(
-                    Franka3F(
-                        usd_path=usd_path,
-                        prim_path=f"/World/Env_{index}/robot",
-                        name=f"robot_{index}",
-                        position=self._robot_position,
-                        orientation=self._robot_rotation_quat,
-                        attach_gripper=True,
-                        gripper_mode=self._gripper_mode
-                    )
-                )
-        elif self._robot_type == "ur5":
-            if self._gripper_type == "2f85":
-                if self._sensor_type == "none":
-                    usd_path = UR5_2F_USD_PATH
-                elif self._sensor_type == "d455":
-                    usd_path = UR5_2F_D455_USD_PATH
-                elif self._sensor_type == "d455_upper":
-                    usd_path = UR5_2F_D455_UPPER_USD_PATH
-                elif self._sensor_type == "l515":
-                    usd_path = UR5_2F_L515_USD_PATH
-                elif self._sensor_type == "l515_upper":
-                    usd_path = UR5_2F_L515_UPPER_USD_PATH
-                robot = self._world.scene.add(
-                    UR52F(
-                        usd_path=usd_path,
-                        prim_path=f"/World/Env_{index}/robot",
-                        name=f"robot_{index}",
-                        position=self._robot_position,
-                        orientation=self._robot_rotation_quat,
-                        attach_gripper=True
-                    )
-                )
-            elif self._gripper_type == "3f_picking":
-                if self._sensor_type == "none":
-                    usd_path = UR5_3F_PICKING_USD_PATH
-                elif self._sensor_type == "d455":
-                    usd_path = UR5_3F_PICKING_D455_USD_PATH
-                elif self._sensor_type == "l515":
-                    usd_path = UR5_3F_PICKING_L515_USD_PATH
-                robot = self._world.scene.add(
-                    UR53F(
-                        usd_path=usd_path,
-                        prim_path=f"/World/Env_{index}/robot",
-                        name=f"robot_{index}",
-                        position=self._robot_position,
-                        orientation=self._robot_rotation_quat,
-                        attach_gripper=True,
-                        gripper_mode=self._gripper_mode
-                    )
-                )
-            elif self._gripper_type == "3f_grasping":
-                if self._sensor_type == "none":
-                    usd_path = UR5_3F_GRASPING_USD_PATH
-                elif self._sensor_type == "d455":
-                    usd_path = UR5_3F_GRASPING_D455_USD_PATH
-                elif self._sensor_type == "l515":
-                    usd_path = UR5_3F_GRASPING_L515_USD_PATH
-                robot = self._world.scene.add(
-                    UR53F(
-                        usd_path=usd_path,
-                        prim_path=f"/World/Env_{index}/robot",
-                        name=f"robot_{index}",
-                        position=self._robot_position,
-                        orientation=self._robot_rotation_quat,
-                        attach_gripper=True,
-                        gripper_mode=self._gripper_mode
-                    )
-                )
-        elif self._robot_type == "ur10":
-            if self._gripper_type == "2f85":
-                if self._sensor_type == "none":
-                    usd_path = UR10_2F_USD_PATH
-                elif self._sensor_type == "d455":
-                    usd_path = UR10_2F_D455_USD_PATH
-                elif self._sensor_type == "d455_upper":
-                    usd_path = UR10_2F_D455_UPPER_USD_PATH
-                elif self._sensor_type == "l515":
-                    usd_path = UR10_2F_L515_USD_PATH
-                elif self._sensor_type == "l515_upper":
-                    usd_path = UR10_2F_L515_UPPER_USD_PATH
-                robot = self._world.scene.add(
-                    UR102F(
-                        usd_path=usd_path,
-                        prim_path=f"/World/Env_{index}/robot",
-                        name=f"robot_{index}",
-                        position=self._robot_position,
-                        orientation=self._robot_rotation_quat,
-                        attach_gripper=True
-                    )
-                )
-            elif self._gripper_type == "3f_picking":
-                if self._sensor_type == "none":
-                    usd_path = UR10_3F_PICKING_USD_PATH
-                elif self._sensor_type == "d455":
-                    usd_path = UR10_3F_PICKING_D455_USD_PATH
-                elif self._sensor_type == "l515":
-                    usd_path = UR10_3F_PICKING_L515_USD_PATH
-                robot = self._world.scene.add(
-                    UR103F(
-                        usd_path=usd_path,
-                        prim_path=f"/World/Env_{index}/robot",
-                        name=f"robot_{index}",
-                        position=self._robot_position,
-                        orientation=self._robot_rotation_quat,
-                        attach_gripper=True,
-                        gripper_mode=self._gripper_mode
-                    )
-                )
-            elif self._gripper_type == "3f_grasping":
-                if self._sensor_type == "none":
-                    usd_path = UR10_3F_GRASPING_USD_PATH
-                elif self._sensor_type == "d455":
-                    usd_path = UR10_3F_GRASPING_D455_USD_PATH
-                elif self._sensor_type == "l515":
-                    usd_path = UR10_3F_GRASPING_L515_USD_PATH
-                robot = self._world.scene.add(
-                    UR103F(
-                        usd_path=usd_path,
-                        prim_path=f"/World/Env_{index}/robot",
-                        name=f"robot_{index}",
-                        position=self._robot_position,
-                        orientation=self._robot_rotation_quat,
-                        attach_gripper=True,
-                        gripper_mode=self._gripper_mode
-                    )
-                )
-        elif self._robot_type == "zeus":
-            if self._gripper_type == "2f85":
-                if self._sensor_type == "none":
-                    usd_path = ZEUS_2F_USD_PATH
-                elif self._sensor_type == "d455":
-                    usd_path = ZEUS_2F_D455_USD_PATH
-                elif self._sensor_type == "l515":
-                    usd_path = ZEUS_2F_L515_USD_PATH
-                robot = self._world.scene.add(
-                    Zeus2F(
-                        usd_path=usd_path,
-                        prim_path=f"/World/Env_{index}/robot",
-                        name=f"robot_{index}",
-                        position=self._robot_position,
-                        orientation=self._robot_rotation_quat,
-                        attach_gripper=True
-                    )
-                )
-            elif self._gripper_type == "3f_picking":
-                if self._sensor_type == "none":
-                    usd_path = ZEUS_3F_PICKING_USD_PATH
-                elif self._sensor_type == "d455":
-                    usd_path = ZEUS_3F_PICKING_D455_USD_PATH
-                elif self._sensor_type == "l515":
-                    usd_path = ZEUS_3F_PICKING_L515_USD_PATH
-                robot = self._world.scene.add(
-                    Zeus3F(
-                        usd_path=usd_path,
-                        prim_path=f"/World/Env_{index}/robot",
-                        name=f"robot_{index}",
-                        position=self._robot_position,
-                        orientation=self._robot_rotation_quat,
-                        attach_gripper=True,
-                        gripper_mode=self._gripper_mode
-                    )
-                )
-            elif self._gripper_type == "3f_grasping":
-                if self._sensor_type == "none":
-                    usd_path = ZEUS_3F_PICKING_USD_PATH
-                elif self._sensor_type == "d455":
-                    usd_path = ZEUS_3F_PICKING_D455_USD_PATH
-                elif self._sensor_type == "l515":
-                    usd_path = ZEUS_3F_PICKING_L515_USD_PATH
-                robot = self._world.scene.add(
-                    Zeus3F(
-                        usd_path=usd_path,
-                        prim_path=f"/World/Env_{index}/robot",
-                        name=f"robot_{index}",
-                        position=self._robot_position,
-                        orientation=self._robot_rotation_quat,
-                        attach_gripper=True,
-                        gripper_mode=self._gripper_mode
-                    )
-                )
-            prim_path=f"/World/Env_{index}/robot"
-            add_semantic_data(prim_path, "robot")
+        if robot_name is None:
+            prim_path = f"/World/Env_{index}/robot"
+            robot_name = f"robot_{index}"
         else:
-            return
+            prim_path = f"/World/Env_{index}/{robot_name}"
+            robot_name = f"{robot_name}_{index}"
+
+        robot_class_mapping = {
+            "franka": Franka if self._gripper_type == "normal" else Franka2F if self._gripper_type == "2f85" else Franka3F,
+            "ur5": UR52F if self._gripper_type == "2f85" else UR53F,
+            "ur10": UR102F if self._gripper_type == "2f85" else UR103F,
+            "zeus": Zeus2F if self._gripper_type == "2f85" else Zeus3F
+        }
+
+        robot_class = robot_class_mapping[self._robot_type]
+        usd_path = ROBO_USD_DICT[self._robot_type][self._gripper_type][self._sensor_type]
+
+        if self._robot_type == "franka" and self._gripper_type == "normal":
+            robot = self._world.scene.add(
+                robot_class(
+                    usd_path=usd_path,
+                    prim_path=prim_path,
+                    name=robot_name,
+                    position=self._robot_position,
+                    orientation=self._robot_rotation_quat,
+                )
+            )
+        else:
+            if self._gripper_mode == "custom":
+                usd_path = ROBO_USD_DICT[self._robot_type][self._gripper_mode]
+                custom_open_positions = self._robot_config["custom_open_positions"]
+                custom_closed_positions = self._robot_config["custom_closed_positions"]
+            else:
+                custom_open_positions = None
+                custom_closed_positions = None
+            robot = self._world.scene.add(
+                robot_class(
+                    usd_path=usd_path,
+                    prim_path=prim_path,
+                    name=robot_name,
+                    position=self._robot_position,
+                    orientation=self._robot_rotation_quat,
+                    attach_gripper=True,
+                    gripper_mode=self._gripper_mode,
+                    custom_open_positions=custom_open_positions,
+                    custom_closed_positions=custom_closed_positions
+                )
+            )
+        add_semantic_data(prim_path, "robot")
 
         time.sleep(1)
         self._robots.append(robot)
@@ -942,7 +722,12 @@ class MultiEnvRandomizer():
                 self.add_random_bg_objects(i, env_offset)
 
             self.add_random_interactive_objects(i)
-            self.add_robot(i, env_offset)
+
+            if self._multi_robot_config is None:
+                self.add_robot(i, env_offset)
+            else:
+                self.add_multi_robots(i, env_offset)
+
             self.add_bg_camera(i, env_offset)
         return
 
@@ -955,8 +740,23 @@ class MultiEnvRandomizer():
             logging.error(f"Error occured during Adding Task : {e}")
             logging.error(f"Please complete all parts in json!")
             return
-
         return
+
+
+    def add_multi_robot_task(self, index, env_offset):
+
+        if self._multi_robot_config is None:
+            logging.error(f"Multi Robot Config is None")
+            return
+
+        try:
+            self._task_type = self._task_config["task_type"]
+        except Exception as e:
+            logging.error(f"Error occured during Adding Task : {e}")
+            logging.error(f"Please complete all parts in json!")
+            return
+        return
+
 
     def add_pbr_material_properties(self):
         for i, prim_path in enumerate(self._pbr_material_objects):
@@ -991,19 +791,87 @@ class MultiEnvRandomizer():
             attach_material_to_prim(prim_path, material_name)
 
 
-    def setup_robots(self, index):
+    async def add_abn_material_properties(self):
+        for i, abn_obj_dict in enumerate(self._abn_objects):
+            for prim_path, object_config in abn_obj_dict.items():
+
+                target_prim = prim_path + "/" + object_config["mesh_path"]
+                print(f"[add_abn_material_properties] Target Prim : {target_prim}")
+                
+                min_rotation = tuple(object_config["min_rotation"])
+                max_rotation = tuple(object_config["max_rotation"])
+                min_scale = tuple(object_config["min_scale"])
+                max_scale = tuple(object_config["max_scale"])
+                
+                create_defects(
+                    index=i,
+                    target_prim=target_prim,
+                    texture_directory=object_config["texture_directory"],
+                    abn_type=object_config["type"],
+                    semantic=object_config["semantic"],
+                    num_abn=object_config["number"],
+                    min_rotation=min_rotation,
+                    max_rotation=max_rotation,
+                    min_scale=min_scale,
+                    max_scale=max_scale,
+                )
+
+        await self._world.reset_async()
+        return
+
+    
+    def setup_multi_robots(self, index):
+
+        if self._multi_robot_config is None:
+            logging.error(f"Multi Robot Config is None")
+            return
+        
+        multi_robo_len = len(self._multi_robot_config)
+        for i, robot_config in enumerate(self._multi_robot_config):
+            robo_index = multi_robo_len * index + i
+            self._robot_config = robot_config
+            self.setup_robots(
+                index, 
+                robo_index=robo_index,
+                robot_name=robot_config["robot_name"]
+            )
+        return
+
+
+    def setup_robots(self, env_index, robo_index=None, robot_name=None):
+
         try:
             add_gripper_friction(
-                index=index,
+                index=env_index,
                 world=self._world,
                 robot_config=self._robot_config,
+                robot_name=robot_name
             )
+
+            if robo_index is None:
+                robo_index = env_index
+            else:
+                robo_index = robo_index
+
+            if "initial_joint_positions" in self._robot_config:
+                if self._robot_config["robot_type"] == "franka":
+                    self._robots[robo_index].set_joint_positions(
+                        np.array(self._robot_config["initial_joint_positions"]),
+                        joint_indices=np.array([0, 1, 2, 3, 4, 5, 6])
+                    )
+                else:
+                    self._robots[robo_index].set_joint_positions(
+                        np.array(self._robot_config["initial_joint_positions"]),
+                        joint_indices=np.array([0, 1, 2, 3, 4, 5])
+                    )
+            self._robots[robo_index].gripper.open()
+
+            if self._verbose:
+                logging.warning(f"Robot {robo_index} is set up")
         except Exception as e:
-            logging.error(f"Error occured during Setting Up Robot for Env {index} Robot : {e}")
+            logging.error(f"Error occured during Setting Up Robot for Env {env_index} Robot : {e}")
             logging.error(f"Please complete all parts in json!")
             return
-        finally:
-            self._robots[index].gripper.open()
         return
 
 
@@ -1046,23 +914,31 @@ class MultiEnvRandomizer():
         self.add_pbr_material_properties()
         self.add_mdl_material_properties()
         self.add_omniglass_material_properties()
+        await self.add_abn_material_properties()
 
         for i, env_offset in enumerate(self._env_offsets):
-            await self.add_random_lights(env_offset)
+            # await self.add_random_lights(env_offset)
+            self.add_random_lights(env_offset)
 
-            self.setup_robots(i)
-            self.add_task(i, env_offset)
+            if self._multi_robot_config is None:
+                self.setup_robots(i)
+                self.add_task(i, env_offset)
+            else:
+                self.setup_multi_robots(i)
+                self.add_multi_robot_task(i, env_offset)
 
             if self._collect_vision_data:
                 self._rep_cams = []
                 self.add_bg_repliactor(i)
                 self.add_manipulator_replicator(i)
+                # TODO: 이거는 for logic 밖으로 빼기 
                 self.setup_replicator(i)
 
             if self._collect_robo_data:
                 self.setup_robo_dataset(i)
-
-        await self._world.reset_async()
+        
+        # This halts initial_joint_positions
+        # await self._world.reset_async()
         return
 
 

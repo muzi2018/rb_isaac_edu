@@ -36,7 +36,7 @@ class UR10CustomGripper(BaseSample):
 
         self._sim_count = 0
         self._gripper_opened = True
-        self._gripper_mode = "pinch" # "basic" or "wide" or "pinch"
+        self._gripper_mode = "wide" # "basic" or "wide" or "pinch"
         self._obj_position = np.array([0.5, -0.5, 0.07])
         return
 

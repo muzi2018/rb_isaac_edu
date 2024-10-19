@@ -1,7 +1,9 @@
 import typing
+import numpy as np
 from typing import List, Optional
 
 from omni.isaac.core.articulations import Articulation
+from omni.isaac.core.utils.types import ArticulationAction
 import omni.isaac.manipulators.controllers as manipulators_controllers
 from omni.isaac.manipulators.grippers.parallel_gripper import ParallelGripper
 from omni.isaac.franka.controllers.rmpflow_controller import RMPFlowController

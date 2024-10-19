@@ -87,12 +87,23 @@ class MultiInsertionEnv(MultiEnvRandomizer):
 
             # Empty Insertion Here
             if self._controllers[i]._event == 8:
+                object_mesh_paths = []
                 if "cable" in self._picking_object_name.lower():
-                    insert_prim_path = f"/World/Env_{i}/{self._picking_object_name}/Front_Connector"
+                    prim_path = f"/World/Env_{i}/{self._picking_object_name}"
+                    fc_prim_path = prim_path + "/Front_Connector"
+                    bc_prim_path = prim_path + "/Back_Connector"
+
+                    object_mesh_paths.append(fc_prim_path)
+                    object_mesh_paths.append(bc_prim_path)
                 else:
                     insert_prim_path = f"/World/Env_{i}/{self._picking_object_name}"
-                rigid_prim = UsdPhysics.RigidBodyAPI(self._stage.GetPrimAtPath(insert_prim_path))
-                rigid_prim.CreateKinematicEnabledAttr(True)
+                    object_mesh_paths.append(insert_prim_path)
+                
+                print(f"object_mesh_paths: {object_mesh_paths}")
+                for object_mesh_path in object_mesh_paths:
+                    UsdPhysics.RigidBodyAPI(
+                        self._stage.GetPrimAtPath(object_mesh_path)
+                    ).CreateKinematicEnabledAttr(True)
 
             if "cable" in self._picking_object_name.lower():
                 fc_prim_path = f"/World/Env_{i}/{self._picking_object_name}/Front_Connector"
@@ -100,7 +111,7 @@ class MultiInsertionEnv(MultiEnvRandomizer):
                 fc_pose = np.array(omni.usd.get_world_transform_matrix(fc_prim).ExtractTranslation())
                 fc_pose_x, fc_pose_y, fc_pose_z = fc_pose[0], fc_pose[1], fc_pose[2]
                 object_position = np.array([fc_pose_x, fc_pose_y, fc_pose_z])
-            else: 
+            else:
                 picking_object_name = f"Env_{i}_{self._picking_object_name}"
                 object_geom = self._world.scene.get_object(picking_object_name)
                 object_position, _ = object_geom.get_world_pose()

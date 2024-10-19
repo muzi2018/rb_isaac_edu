@@ -72,11 +72,10 @@ class CustomInsertionController(BaseController):
                 raise Exception("events dt length must be less than 10")
             self._events_dt = events_dt
         else:
-            self._events_dt = None
-            # [
-            #     0.003, 0.007, 0.2, 0.2, 0.01, 0.005, 0.008, 
-            #     0.01, 0.03, 0.008, 0.01
-            # ]
+            self._events_dt = [
+                0.003, 0.007, 0.2, 0.2, 0.01, 0.005, 0.008, 
+                0.01, 0.008, 0.01
+            ]
 
         if self._robot_type == "franka":
             cspace_controller = FrankaRMPFlowController(

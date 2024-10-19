@@ -89,9 +89,9 @@ class PegInHoleEnv(MultiEnvRandomizer):
 
         elif self._robot_type == "franka" and self._gripper_type == "2f85":
             kps = np.array([6000000.0, 600000.0, 6000000.0, 600000.0, 25000.0, 15000.0, 25000.0, 
-                            15000.0, 15000.0, 0.0, 0.0, 0.0, 0.0])
+                            2291.83111748, 2291.83111748, 0.0, 0.0, 0.0, 0.0])
             kds = np.array([600000.0, 60000.0, 300000.0, 30000.0, 3000.0, 3000.0, 3000.0, 
-                            1500.0, 1500.0, 0.0, 0.0, 0.0, 0.0])
+                            572.95777937, 572.95777937, 0.0, 0.0, 0.0, 0.0])
             robot.get_articulation_controller().set_gains(kps=kps, kds=kds, save_to_usd=True)
 
 

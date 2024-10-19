@@ -42,8 +42,8 @@ class ReplicatorBasic(BaseSample):
         # Create a red cube and a render product from a camera looking at the cube from the top
         red_mat = rep.create.material_omnipbr(diffuse=(1, 0, 0))
         self.red_cube = rep.create.cube(position=(0, 0, 0.71), material=red_mat)
-        self.cam = rep.create.camera(position=(0, 0, 5), look_at=(0, 0, 0))
-        self.rp = rep.create.render_product(self.cam, resolution=(1024, 1024))
+        self.cam1 = rep.create.camera(position=(0, 0, 5), look_at=(0, 0, 0))
+        self.rp1 = rep.create.render_product(self.cam1, resolution=(1024, 1024))
         return
 
     async def setup_post_load(self):

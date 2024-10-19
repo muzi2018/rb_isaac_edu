@@ -1,0 +1,366 @@
+{
+    "name": "Defect Demo Env",
+    "is_background": true,
+    "collect_robo_data": false,
+    "collect_vision_data": true,
+    "enable_gpu_dynamics": true,
+    "invert_collision_group_filter": true,
+    "env_offsets": [
+        [0.0, 0.0, 0.0]
+    ],
+    "background": {
+        "background_url": "omniverse://localhost/Projects/ETRI/Env/RobotRack/Tanır_Makina_Factory_Building.usdz",
+        "background_trans": [9.5, -7.5, -0.22],
+        "background_orient": [0.5, 0.5, 0.5, 0.5],
+        "background_scale": 0.03,
+        "collision_approximation": "meshSimplification"
+    },
+    "lights": [
+        {
+            "light_type": "sphere",
+            "min_trans": [0.0, 0.0, 7.0],
+            "max_trans": [0.0, 0.0, 7.0],
+            "min_rotation": [0, 0, 0],
+            "max_rotation": [0, 0, 0],
+            "min_scale": [0.2, 0.2, 0.2],
+            "max_scale": [0.2, 0.2, 0.2],
+            "min_color": [1, 1, 1],
+            "max_color": [1, 1, 1],
+            "min_intensity": 300000,
+            "max_intensity": 300000,
+            "min_temperature": 6500,
+            "max_temperature": 6500
+        }
+    ],
+    "background_objects": [
+        {
+            "name": "Wooden_Industrial_Shelf",
+            "semantic_name": "wooden_industrial_shelf",
+            "object_url": "omniverse://localhost/Projects/ETRI/Env/RobotRack/Wooden_Industrial_Shelf.usdz",
+            "min_trans": [7.5, 8.1, 1.0],
+            "max_trans": [7.5, 8.1, 1.0],
+            "min_rotation": [90.0, 0.0, 0.0],
+            "max_rotation": [90.0, 0.0, 0.0],
+            "min_scale": 0.01,
+            "max_scale": 0.01
+        },
+        {
+            "name": "Worn_Warehouse_Shelf",
+            "semantic_name": "worn_warehouse_shelf",
+            "object_url": "omniverse://localhost/Projects/ETRI/Env/RobotRack/Worn_Warehouse_Shelf.usdz",
+            "min_trans": [7.0, -6.6, 0.0],
+            "max_trans": [7.0, -6.6, 0.0],
+            "min_rotation": [90.0, 0.0, -180.0],
+            "max_rotation": [90.0, 0.0, -180.0],
+            "min_scale": 0.008,
+            "max_scale": 0.008
+        },
+        {
+            "name": "Industrial_Locker",
+            "semantic_name": "industrial_locker",
+            "object_url": "omniverse://localhost/Projects/ETRI/Env/RobotRack/Industrial_-_Locker.usdz",
+            "min_trans": [-4.5, 8.0, 1.55],
+            "max_trans": [-4.5, 8.0, 1.55],
+            "min_rotation": [90.0, 0.0, 0.0],
+            "max_rotation": [90.0, 0.0, 0.0],
+            "min_scale": 0.01,
+            "max_scale": 0.01
+        },
+        {
+            "name": "RampLong_A1",
+            "semantic_name": "ramp_long",
+            "object_url": "omniverse://localhost/NVIDIA/Assets/ArchVis/Industrial/Railing/RampLong_A1.usd",
+            "min_trans": [0.0, -2.0, 0.0],
+            "max_trans": [0.0, -2.0, 0.0],
+            "min_rotation": [0.0, 0.0, 0.0],
+            "max_rotation": [0.0, 0.0, 0.0],
+            "min_scale": [0.03, 0.01, 0.01],
+            "max_scale": [0.03, 0.01, 0.01]
+        },
+        {
+            "name": "RampShort_A2_01",
+            "semantic_name": "rampshort",
+            "object_url": "omniverse://localhost/NVIDIA/Assets/ArchVis/Industrial/Railing/MetalFencing_A2.usd",
+            "min_trans": [-3.3, -1.5, 0.0],
+            "max_trans": [-3.3, -1.5, 0.0],
+            "min_rotation": [0.0, 0.0, 90.0],
+            "max_rotation": [0.0, 0.0, 90.0],
+            "min_scale": [0.014, 0.01, 0.01],
+            "max_scale": [0.014, 0.01, 0.01]
+        },
+        {
+            "name": "RampShort_A2_02",
+            "semantic_name": "rampshort",
+            "object_url": "omniverse://localhost/NVIDIA/Assets/ArchVis/Industrial/Railing/MetalFencing_A2.usd",
+            "min_trans": [-3.3, 0.0, 0.0],
+            "max_trans": [-3.3, 0.0, 0.0],
+            "min_rotation": [0.0, 0.0, 90.0],
+            "max_rotation": [0.0, 0.0, 90.0],
+            "min_scale": [0.014, 0.01, 0.01],
+            "max_scale": [0.014, 0.01, 0.01]
+        },
+        {
+            "name": "RampShort_A2_03",
+            "semantic_name": "rampshort",
+            "object_url": "omniverse://localhost/NVIDIA/Assets/ArchVis/Industrial/Railing/MetalFencing_A2.usd",
+            "min_trans": [-3.3, 1.5, 0.0],
+            "max_trans": [-3.3, 1.5, 0.0],
+            "min_rotation": [0.0, 0.0, 90.0],
+            "max_rotation": [0.0, 0.0, 90.0],
+            "min_scale": [0.014, 0.01, 0.01],
+            "max_scale": [0.014, 0.01, 0.01]
+        },
+        {
+            "name": "RampShort_A2_04",
+            "semantic_name": "rampshort",
+            "object_url": "omniverse://localhost/NVIDIA/Assets/ArchVis/Industrial/Railing/MetalFencing_A2.usd",
+            "min_trans": [-2.2, 3.5, 0.0],
+            "max_trans": [-2.2, 3.5, 0.0],
+            "min_rotation": [0.0, 0.0, 0.0],
+            "max_rotation": [0.0, 0.0, 0.0],
+            "min_scale": [0.014, 0.01, 0.01],
+            "max_scale": [0.014, 0.01, 0.01]
+        },
+        {
+            "name": "RampShort_A2_05",
+            "semantic_name": "rampshort",
+            "object_url": "omniverse://localhost/NVIDIA/Assets/ArchVis/Industrial/Railing/MetalFencing_A2.usd",
+            "min_trans": [-0.6, 3.5, 0.0],
+            "max_trans": [-0.6, 3.5, 0.0],
+            "min_rotation": [0.0, 0.0, 0.0],
+            "max_rotation": [0.0, 0.0, 0.0],
+            "min_scale": [0.014, 0.01, 0.01],
+            "max_scale": [0.014, 0.01, 0.01]
+        },
+        {
+            "name": "RampShort_A2_06",
+            "semantic_name": "rampshort",
+            "object_url": "omniverse://localhost/NVIDIA/Assets/ArchVis/Industrial/Railing/MetalFencing_A2.usd",
+            "min_trans": [1.0, 3.5, 0.0],
+            "max_trans": [1.0, 3.5, 0.0],
+            "min_rotation": [0.0, 0.0, 0.0],
+            "max_rotation": [0.0, 0.0, 0.0],
+            "min_scale": [0.014, 0.01, 0.01],
+            "max_scale": [0.014, 0.01, 0.01]
+        },
+        {
+            "name": "MetalFencing_A3_01",
+            "semantic_name": "metal_fencing_a3",
+            "object_url": "omniverse://localhost/NVIDIA/Assets/ArchVis/Industrial/Railing/MetalFencing_A3.usd",
+            "min_trans": [-3.3, 3.0, 0.0],
+            "max_trans": [-3.3, 3.0, 0.0],
+            "min_rotation": [0.0, 0.0, 0.0],
+            "max_rotation": [0.0, 0.0, 0.0],
+            "min_scale": 0.01,
+            "max_scale": 0.01
+        },
+        {
+            "name": "MetalFencing_A3_02",
+            "semantic_name": "metal_fencing_a3",
+            "object_url": "omniverse://localhost/NVIDIA/Assets/ArchVis/Industrial/Railing/MetalFencing_A3.usd",
+            "min_trans": [2.6, 3.5, 0],
+            "max_trans": [2.6, 3.5, 0],
+            "min_rotation": [0.0, 0.0, -90.0],
+            "max_rotation": [0.0, 0.0, -90.0],
+            "min_scale": 0.01,
+            "max_scale": 0.01
+        },
+        {
+            "name": "RackLong_A1",
+            "semantic_name": "racklong",
+            "object_url": "omniverse://localhost/NVIDIA/Assets/ArchVis/Industrial/Racks/RackLong_A1.usd",
+            "min_trans": [2.0, 0.0, 0.0],
+            "max_trans": [2.0, 0.0, 0.0],
+            "min_rotation": [0.0, 0.0, 0.0],
+            "max_rotation": [0.0, 0.0, 0.0],
+            "min_scale": 0.005,
+            "max_scale": 0.005
+        },
+        {
+            "name": "RackLongEmpty_A2",
+            "semantic_name": "racklong_empty",
+            "object_url": "omniverse://localhost/NVIDIA/Assets/ArchVis/Industrial/Shelves/RackLongEmpty_A2.usd",
+            "min_trans": [-1.0, 2.0, 0.0],
+            "max_trans": [-1.0, 2.0, 0.0],
+            "min_rotation": [0.0, 0.0, 90.0],
+            "max_rotation": [0.0, 0.0, 90.0],
+            "min_scale": 0.005,
+            "max_scale": 0.005
+        },
+        {
+            "name": "WarehousePile_A3",
+            "semantic_name": "warehouse_pile",
+            "object_url": "omniverse://localhost/NVIDIA/Assets/ArchVis/Industrial/Piles/WarehousePile_A3.usd",
+            "min_trans": [-1.8, 0.0, 0.0],
+            "max_trans": [-1.8, 0.0, 0.0],
+            "min_rotation": [0.0, 0.0, -150.0],
+            "max_rotation": [0.0, 0.0, -150.0],
+            "min_scale": 0.01,
+            "max_scale": 0.01
+        },
+        {
+            "name": "CornerRail_A1",
+            "semantic_name": "corner_rail_a1",
+            "object_url": "omniverse://localhost/NVIDIA/Assets/ArchVis/Industrial/Railing/CornerRail_A1.usd",
+            "min_trans": [2.4, 1.0, 0.0],
+            "max_trans": [2.4, 1.0, 0.0],
+            "min_rotation": [0.0, 0.0, 90.0],
+            "max_rotation": [0.0, 0.0, 90.0],
+            "min_scale": 0.01,
+            "max_scale": 0.01
+        },
+        {
+            "name": "Cardbox_C2",
+            "semantic_name": "cardbox_c2",
+            "object_url": "omniverse://localhost/NVIDIA/Assets/ArchVis/Industrial/Containers/Cardboard/Cardbox_C1.usd",
+            "min_trans": [-0.56, 2.0, 0.26],
+            "max_trans": [-0.56, 2.0, 0.26],
+            "min_rotation": [0.0, 0.0, 0.0],
+            "max_rotation": [0.0, 0.0, 0.0],
+            "min_scale": 0.01,
+            "max_scale": 0.01
+        },
+        {
+            "name": "Cardbox_A2",
+            "semantic_name": "cardbox_a2",
+            "object_url": "omniverse://localhost/NVIDIA/Assets/ArchVis/Industrial/Containers/Cardboard/Cardbox_A3.usd",
+            "min_trans": [-1.4, 2.0, 1.15],
+            "max_trans": [-1.4, 2.0, 1.15],
+            "min_rotation": [0.0, 0.0, 0.0],
+            "max_rotation": [0.0, 0.0, 0.0],
+            "min_scale": 0.01,
+            "max_scale": 0.01
+        },
+        {
+            "name": "Cardbox_A3",
+            "semantic_name": "cardbox_a3",
+            "object_url": "omniverse://localhost/NVIDIA/Assets/ArchVis/Industrial/Containers/Cardboard/Cardbox_A2.usd",
+            "min_trans": [-0.5, 2.0, 1.15],
+            "max_trans": [-0.5, 2.0, 1.15],
+            "min_rotation": [0.0, 0.0, 0.0],
+            "max_rotation": [0.0, 0.0, 0.0],
+            "min_scale": 0.01,
+            "max_scale": 0.01
+        }
+    ],
+    "interactive_objects": [
+        {
+            "name": "table",
+            "semantic_name": "shop_table",
+            "object_url": "omniverse://localhost/NVIDIA/Assets/Isaac/2023.1.1/Isaac/Samples/Examples/FrankaNutBolt/SubUSDs/Shop_Table/Shop_Table.usd",
+            "min_trans": [0.5, 0.0, 0.0],
+            "max_trans": [0.5, 0.0, 0.0],
+            "min_rotation": [0.0, 0.0, 0.0],
+            "max_rotation": [0.0, 0.0, 0.0],
+            "min_scale": [0.02, 0.02, 0.01],
+            "max_scale": [0.02, 0.02, 0.01],
+            "physics": {
+                "is_rigid_body": true,
+                "is_collision": true,
+                "is_kinematic": true,
+                "collision_type": "none",
+                "mass_modify": false,
+                "friction_modify": false
+            }
+        },
+        {
+            "name": "tooling_plate",
+            "semantic_name": "tooling_plate",
+            "object_url": "omniverse://localhost/NVIDIA/Assets/Isaac/2023.1.1/Isaac/Samples/Examples/FrankaNutBolt/SubUSDs/Tooling_Plate/Tooling_Plate.usd",
+            "min_trans": [0.5, 0.0, 0.82667],
+            "max_trans": [0.5, 0.0, 0.82667],
+            "min_rotation": [0.0, 0.0, 0.0],
+            "max_rotation": [0.0, 0.0, 0.0],
+            "min_scale": [0.02, 0.02, 0.01],
+            "max_scale": [0.02, 0.02, 0.01],
+            "physics": {
+                "is_rigid_body": false,
+                "is_collision": true,
+                "is_kinematic": true,
+                "collision_type": "boundingCube",
+                "mass_modify": false,
+                "friction_modify": false
+            }
+        },
+        {
+            "name": "Car_Panel",
+            "semantic_name": "car_panel",
+            "object_url": "omniverse://localhost/Projects/ETRI/Env/Defection/NosePanel.usdc",
+            "min_trans": [0.7, 0.0, 1.1],
+            "max_trans": [0.7, 0.0, 1.1],
+            "min_rotation": [0.0, 0.0, 90.0],
+            "max_rotation": [0.0, 0.0, 90.0],
+            "min_scale": 0.001,
+            "max_scale": 0.001,
+            "object_abnormal": {
+                "mesh_path": "Xform/Mesh_703/Mesh_703",
+                "_comment": "stains, scratches, holes",
+                "type": "scratches",
+                "semantic": "scratch_mesh",
+                "number": 20,
+                "texture_directory": "/home/kimsooyoung/Downloads/ETRI_DATA",
+                "min_rotation": [-180.0, -180.0, -180.0],
+                "max_rotation": [180.0, 180.0, 180.0],
+                "min_scale": [0.1, 0.1, 0.1],
+                "max_scale": [0.1, 0.1, 0.1]
+            },
+            "physics": {
+                "is_rigid_body": true,
+                "is_collision": true,
+                "is_kinematic": false,
+                "collision_type": "none",
+                "mass_modify": false,
+                "friction_modify": false
+            }
+        }
+    ],
+    "robot": {
+        "robot_type": "franka",
+        "_comment": ["normal", "2f85", "3f_grasping", "3f_picking"],
+        "gripper_type": "normal",
+        "_comment2": ["none", "d455", "l515"],
+        "sensor_type": "l515",
+        "min_trans": [-0.1, 0.0, 0.84],
+        "max_trans": [-0.1, 0.0, 0.84],
+        "min_rotation": [0.0, 0.0, 0.0],
+        "max_rotation": [0.0, 0.0, 0.0],
+        "finger_names": [
+            "panda_leftfinger/geometry/panda_leftfinger", 
+            "panda_rightfinger/geometry/panda_rightfinger"
+        ],
+        "min_finger_static_friction": 0.7,
+        "max_finger_static_friction": 0.7,
+        "min_finger_dynamic_friction": 0.7,
+        "max_finger_dynamic_friction": 0.7
+    },
+    "task": {
+        "task_type": "nothing"
+    },
+    "vision_data": {
+        "out_dir": "/home/kimsooyoung/Documents/Demo_DATA",
+        "capture_hz": 10.0,
+        "data_type": {
+            "rgb": true,
+            "bounding_box_2d_tight": false,
+            "bounding_box_2d_loose": false,
+            "semantic_segmentation": true,
+            "instance_id_segmentation": false,
+            "instance_segmentation": false,
+            "bounding_box_3d": true,
+            "distance_to_camera": true,
+            "pointcloud": false,
+            "colorize_semantic_segmentation": false,
+            "colorize_instance_id_segmentation": false,
+            "colorize_instance_segmentation": false
+        },
+		"robot_camera": {
+			"prim_path": "panda_hand/realsense_l515/camera_color_frame/l515_color",
+			"resolution" : [640, 480],
+			"name": "ee_camera"
+		}
+    },
+    "robo_data": {
+        "out_dir": "/home/kimsooyoung/Documents/Demo_DATA",
+        "capture_hz": 30.0
+    }
+}

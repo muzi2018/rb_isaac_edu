@@ -139,8 +139,8 @@ class CustomPegInHoleController(manipulators_controllers.PickPlaceController):
                 if self._event == 0:
                     position_target = np.array(
                         [
-                            interpolated_xy[0] + end_effector_offset[0] + picking_offset[0],
-                            interpolated_xy[1] + end_effector_offset[1] + picking_offset[1],
+                            self._current_target_x,
+                            self._current_target_y,
                             target_height + end_effector_offset[2],
                         ]
                     )
@@ -177,14 +177,24 @@ class CustomPegInHoleController(manipulators_controllers.PickPlaceController):
                 pegging_positions[self._peg_iterations][2],
                 height_offset=pegging_offset[2]
             )
+            if self._event == 0:
+                position_target = np.array(
+                    [
+                        interpolated_xy[0] + end_effector_offset[0],
+                        interpolated_xy[1] + end_effector_offset[1],
+                        target_height + end_effector_offset[2],
+                    ]
+                )
+            else:
+                position_target = np.array(
+                    [
+                        interpolated_xy[0] + end_effector_offset[0],
+                        interpolated_xy[1] + end_effector_offset[1],
+                        target_height + end_effector_offset[2],
+                    ]
+                )
+
             print(f"target_height: {target_height}")
-            position_target = np.array(
-                [
-                    interpolated_xy[0] + end_effector_offset[0],
-                    interpolated_xy[1] + end_effector_offset[1],
-                    target_height + end_effector_offset[2],
-                ]
-            )
 
             if end_effector_orientation is None:
                 end_effector_orientation = euler_angles_to_quat(np.array([0, np.pi, 0]))

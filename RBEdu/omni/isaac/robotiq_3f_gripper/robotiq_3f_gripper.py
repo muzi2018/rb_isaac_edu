@@ -239,12 +239,12 @@ class Robotiq3F(ParallelGripper):
         else:
             raise Exception("action {} is not defined for ParallelGripper".format(action))
         
-        if self._gripper_mode == "pinch":
-            target_joint_positions[self._joint_dof_indicies[0]] = -10.0 # palm_finger_1_joint
-            target_joint_positions[self._joint_dof_indicies[1]] = +10.0 # palm_finger_2_joint
-        elif self._gripper_mode == "wide":
-            target_joint_positions[self._joint_dof_indicies[0]] = +10.0 # palm_finger_1_joint
-            target_joint_positions[self._joint_dof_indicies[1]] = -10.0 # palm_finger_2_joint
+        # if self._gripper_mode == "pinch":
+        #     target_joint_positions[self._joint_dof_indicies[0]] = -10.0 # palm_finger_1_joint
+        #     target_joint_positions[self._joint_dof_indicies[1]] = +10.0 # palm_finger_2_joint
+        # elif self._gripper_mode == "wide":
+        #     target_joint_positions[self._joint_dof_indicies[0]] = +10.0 # palm_finger_1_joint
+        #     target_joint_positions[self._joint_dof_indicies[1]] = -10.0 # palm_finger_2_joint
 
         return ArticulationAction(joint_positions=target_joint_positions)
 

@@ -67,3 +67,35 @@ class PickPlaceController(manipulators_controllers.PickPlaceController):
             events_dt=events_dt,
         )
         return
+
+    # Useless Code
+    # 
+    # def forward(
+    #     self,
+    #     picking_position: np.ndarray,
+    #     placing_position: np.ndarray,
+    #     current_joint_positions: np.ndarray,
+    #     end_effector_offset: Optional[np.ndarray] = None,
+    #     end_effector_orientation: Optional[np.ndarray] = None,
+    # ) -> ArticulationAction:
+    #     """[summary]
+
+    #     Args:
+    #         picking_position (np.ndarray): [description]
+    #         placing_position (np.ndarray): [description]
+    #         current_joint_positions (np.ndarray): [description]
+    #         end_effector_offset (Optional[np.ndarray], optional): [description]. Defaults to None.
+    #         end_effector_orientation (Optional[np.ndarray], optional): [description]. Defaults to None.
+
+    #     Returns:
+    #         ArticulationAction: [description]
+    #     """
+    #     if end_effector_orientation is None:
+    #         end_effector_orientation = euler_angles_to_quat(np.array([0, 0, 0]))
+    #     return super().forward(
+    #         picking_position,
+    #         placing_position,
+    #         current_joint_positions,
+    #         end_effector_offset=end_effector_offset,
+    #         end_effector_orientation=end_effector_orientation,
+    #     )

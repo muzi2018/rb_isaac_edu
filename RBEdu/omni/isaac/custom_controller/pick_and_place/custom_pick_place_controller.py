@@ -170,6 +170,8 @@ class CustomPickPlaceController(BaseController):
                 placing_position[0], placing_position[1], self._current_target_x, self._current_target_y
             )
             target_height = self._get_target_hs(placing_position[2])
+            print(f"target_height: {target_height}")
+            
             if self._event == 0:
                 position_target = np.array(
                     [

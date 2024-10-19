@@ -33,6 +33,10 @@ class MultiPickandPlaceEnv(MultiEnvRandomizer):
     def add_task(self, index, env_offset):
         super().add_task(index, env_offset)
 
+        if self._task_type.lower() == "nothing":
+            print("Task Type is Nothing")
+            return
+
         cur_robot = self._robots[index]
         end_effector_initial_height = self._task_config["end_effector_initial_height"]
         
@@ -72,7 +76,6 @@ class MultiPickandPlaceEnv(MultiEnvRandomizer):
         self._placing_offset = np.array(self._task_config["placing_offset"])
         self._placing_orientation = np.array(self._task_config["placing_orientation"])
 
-         
         self._controllers.append(controller)
 
 
@@ -85,6 +88,10 @@ class MultiPickandPlaceEnv(MultiEnvRandomizer):
         super().forward()
 
         for i, robot in enumerate(self._robots):
+
+            if self._task_type.lower() == "nothing":
+                print("Task Type is Nothing")
+                return
 
             # exception : franka normal에서 벌어지지 않는 경우 발생
             if self._save_count < 10:
@@ -108,6 +115,15 @@ class MultiPickandPlaceEnv(MultiEnvRandomizer):
                 obj_pose_x, obj_pose_y, obj_pose_z = obj_pose[0], obj_pose[1], obj_pose[2]
                 object_position = np.array([obj_pose_x, obj_pose_y, obj_pose_z])
                 # print(f"object_position: {object_position}")
+            elif "pre_dynamics" in self._picking_object_name.lower():
+                obj_prim_path = f"/World/Env_{i}/{self._picking_object_name}"
+                
+                stage = omni.usd.get_context().get_stage()
+                obj_prim = stage.GetPrimAtPath(obj_prim_path)
+
+                obj_pose = np.array(omni.usd.get_world_transform_matrix(obj_prim).ExtractTranslation())
+                obj_pose_x, obj_pose_y, obj_pose_z = obj_pose[0], obj_pose[1], obj_pose[2]
+                object_position = np.array([obj_pose_x, obj_pose_y, obj_pose_z])
             else:
                 picking_object_name = f"Env_{i}_{self._picking_object_name}"
                 object_geom = self._world.scene.get_object(picking_object_name)
@@ -128,7 +144,7 @@ class MultiPickandPlaceEnv(MultiEnvRandomizer):
             placing_orientation_world = rot_matrix_to_quat(
                 quat_to_rot_matrix(self._robot_rotation_quat) @ quat_to_rot_matrix(self._placing_orientation)
             )
-
+            
             actions = self._controllers[i].forward(
                 picking_position=picking_position,
                 placing_position=placing_position,

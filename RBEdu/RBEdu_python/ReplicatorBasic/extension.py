@@ -16,8 +16,8 @@
 import os
 
 from omni.isaac.examples.base_sample import BaseSampleExtension
-from .replicator_basic_1 import ReplicatorBasic
-# from .replicator_basic_1_1 import ReplicatorBasic
+# from .replicator_basic_1 import ReplicatorBasic
+from .replicator_basic_1_1 import ReplicatorBasic
 # from .replicator_basic_2 import ReplicatorBasic
 # from .replicator_basic_3 import ReplicatorBasic
 

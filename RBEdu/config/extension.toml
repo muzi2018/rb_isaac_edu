@@ -91,6 +91,12 @@ name = "RBEdu_python.HelloCloth"
 [[python.module]]
 name = "RBEdu_python.PickandPlaceCloth"
 
+[[python.module]]
+name = "RBEdu_python.HelloDefectObj"
+
+[[python.module]]
+name = "RBEdu_python.HelloDefectCarPanel"
 
 [[python.module]]
 name = "RBEdu_python.DataCollectionGlassPP"
+

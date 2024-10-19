@@ -56,6 +56,7 @@ class ReplicatorBasic(BaseSample):
                 rep.modify.pose(position=rep.distribution.uniform((-0.5, -0.5, 1.0), (0.5, 0.5, 1.0)))
                 rep.modify.semantics([('class', 'cube')])
 
+
         # Create a writer and apply the augmentations to its corresponding annotators
         writer = rep.WriterRegistry.get("BasicWriter")
         print(f"Writing data to: {self._out_dir}")

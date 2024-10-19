@@ -6,6 +6,7 @@ from .pick_and_place.pick_and_place_env_json import MultiPickandPlaceEnv
 from .peg_in_hole.peg_in_hole_env_json import PegInHoleEnv
 from .screw.screw_env_json import MultiScrewEnvJSON
 
+from .pick_and_place.multi_robot_pick_and_place_env import MultiRobotPickandPlaceEnv
 from .pick_and_place.pick_and_place_env import MultiRoboticRack
 from .pick_and_place.pick_and_place_franka import MultiRoboticRackFranka
 from .pick_and_place.pick_and_place_zeus import MultiRoboticRackZeus
@@ -20,3 +21,4 @@ from .screw.screw_env_zeus import MultiScrewEnvZeus
 from .screw.screw_env_franka import MultiScrewEnvFranka
 
 from .insertion.insertion_env import MultiInsertionEnv
+from .insertion.insertion_env_obj import MultiInsertionObjEnv

@@ -13,6 +13,7 @@ import omni.replicator.core as rep
 import numpy as np
 import random
 import omni
+import os
 
 
 #### Light functions ####
@@ -403,11 +404,16 @@ def add_friction_properties(
 def add_gripper_friction(
         index: int, 
         world, 
-        robot_config
+        robot_config,
+        robot_name = None,
     ):
 
-    robot_prim_path=f"Env_{index}/robot"
-    modified_prim_path = robot_prim_path.replace("/", "_").lower()
+    if robot_name is None:
+        robot_prim_path=f"Env_{index}/robot"
+        modified_prim_path = robot_prim_path.replace("/", "_").lower()
+    else:
+        robot_prim_path=f"Env_{index}/{robot_name}"
+        modified_prim_path = robot_prim_path.replace("/", "_").lower()
 
     min_finger_static_friction = robot_config["min_finger_static_friction"]
     max_finger_static_friction = robot_config["max_finger_static_friction"]
@@ -438,6 +444,87 @@ def add_gripper_friction(
 
 
 #### Material Functions ####
+
+def get_textures(dir_path, png_type=".png"):
+    textures = []
+    dir_path += "/"
+    for file in os.listdir(dir_path):
+        if file.endswith(png_type):
+            textures.append(dir_path + file)
+    return textures
+
+
+def create_defects(
+        index: int,
+        target_prim: str,
+        texture_directory: str,
+        abn_type: str = "scratches",
+        semantic: str = "scratch_mesh",
+        num_abn: int = 3,
+        min_rotation: tuple = (-180, -180, -180),
+        max_rotation: tuple = (180, 180, 180),
+        min_scale: tuple = (0.1, 0.1, 0.1),
+        max_scale: tuple = (0.1, 0.1, 0.1),
+    ):
+
+    texture_folder_directory = texture_directory + "/" + abn_type
+
+    diffuse_textures = get_textures(texture_folder_directory, "_D.png")
+    normal_textures = get_textures(texture_folder_directory, "_N.png")
+    roughness_textures = get_textures(texture_folder_directory, "_R.png")
+    num_scratch_textures = len(diffuse_textures)
+
+    target_prim_rep = rep.get.prims(
+        path_pattern=target_prim
+    )
+
+    cube_sem = [('class', f'{semantic}_{index}')]
+    proj_sem = [('class', f'{semantic}_projectmat')]
+
+    for i in range(num_abn):
+        cube = rep.create.cube(
+            visible=False,
+            semantics=cube_sem, 
+            position=0, 
+            scale=0.0001,
+            rotation=(0, 0, 90)
+        )
+        with target_prim_rep:
+            rep.create.projection_material(
+                cube,
+                proj_sem,
+                offset_scale=0.0001
+            )
+
+    defects = rep.get.prims(semantics=cube_sem)
+    plane = rep.get.prim_at_path(target_prim)
+    
+    with defects:
+        rep.randomizer.scatter_2d(plane)
+        rep.modify.pose(
+            rotation=rep.distribution.uniform(
+                min_rotation, 
+                max_rotation
+            ),
+            scale=rep.distribution.uniform(
+                min_scale,
+                max_scale
+            )
+        )
+
+    projections = rep.get.prims(semantics=[('class', f'{semantic}_projectmat')])
+    random_number = random.choice(
+        list(range(num_scratch_textures))
+    )
+
+    with projections:
+        rep.modify.projection_material(
+            diffuse=diffuse_textures[random_number],
+            normal=normal_textures[random_number],
+            roughness=roughness_textures[random_number]
+        )
+    return
+
 
 def create_random_omnipbr_material(
         prim_path=None,

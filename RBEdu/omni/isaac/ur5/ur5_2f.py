@@ -22,6 +22,9 @@ class UR52F(Robot):
         orientation: Optional[np.ndarray] = None,
         end_effector_prim_name: Optional[str] = None,
         attach_gripper: bool = False,
+        gripper_mode: str = "basic",
+        custom_open_positions: Optional[np.ndarray] = None,
+        custom_closed_positions: Optional[np.ndarray] = None,
     ) -> None:
         prim = get_prim_at_path(prim_path)
         self._end_effector = None

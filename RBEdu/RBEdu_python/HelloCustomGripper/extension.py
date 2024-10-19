@@ -15,11 +15,11 @@
 import os
 
 from omni.isaac.examples.base_sample import BaseSampleExtension
-from .ur10_2f_pp_op import UR10CustomGripper
+# from .ur10_2f_pp_op import UR10CustomGripper
 # from .ur10_2f_pp import UR10CustomGripper
 # from .ur10_3f_pp_op import UR10CustomGripper
 # from .ur10_3f_pp_pinch import UR10CustomGripper
-# from .ur10_3f_pp_basic import UR10CustomGripper
+from .ur10_3f_pp_basic import UR10CustomGripper
 
 class Extension(BaseSampleExtension):
     def on_startup(self, ext_id: str):

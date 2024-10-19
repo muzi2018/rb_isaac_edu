@@ -24,6 +24,8 @@ class UR53F(Robot):
         end_effector_prim_name: Optional[str] = None,
         attach_gripper: bool = False,
         gripper_mode: str = "basic",
+        custom_open_positions: Optional[np.ndarray] = None,
+        custom_closed_positions: Optional[np.ndarray] = None,
     ) -> None:
         prim = get_prim_at_path(prim_path)
         self._end_effector = None
@@ -129,6 +131,11 @@ class UR53F(Robot):
                     50.0, 0.0, -50.0,
                     50.0, 0.0, -50.0,
                 ])
+            
+            elif self._gripper_mode == "custom":
+                deltas = None
+                gripper_open_position = np.array(custom_open_positions)
+                gripper_closed_position = np.array(custom_closed_positions)
 
             self._gripper = Robotiq3F(
                 end_effector_prim_path=self._end_effector_prim_path,

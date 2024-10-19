@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from omni.isaac.core.utils.stage import add_reference_to_stage, get_current_stage
 from omni.isaac.core.materials.physics_material import PhysicsMaterial
 from omni.isaac.core.utils.stage import add_reference_to_stage
 from omni.isaac.core.utils.nucleus import get_assets_root_path
@@ -19,7 +20,7 @@ from omni.isaac.core.prims.geometry_prim import GeometryPrim
 from omni.physx.scripts import physicsUtils  
 
 from omni.isaac.examples.base_sample import BaseSample
-from pxr import UsdGeom, Gf
+from pxr import UsdGeom, Gf, UsdPhysics
 
 from omni.isaac.franka.controllers import PickPlaceController
 from omni.isaac.franka import Franka
@@ -57,9 +58,9 @@ class HelloManip(BaseSample):
         cube_mesh = UsdGeom.Mesh.Get(self._stage, "/World/NVIDIA_Cube")
         physicsUtils.set_or_add_translate_op(cube_mesh, translate=Gf.Vec3f(0.3, -0.3, 0.1))
 
-        # # modify cube mass
-        # cube_mass = UsdPhysics.MassAPI.Apply(get_current_stage().GetPrimAtPath("/World/NVIDIA_Cube"))
-        # cube_mass.CreateMassAttr().Set(0.1)
+        # modify cube mass
+        cube_mass = UsdPhysics.MassAPI.Apply(get_current_stage().GetPrimAtPath("/World/NVIDIA_Cube"))
+        cube_mass.CreateMassAttr().Set(0.1)
         return
 
     def setup_scene(self):
@@ -88,7 +89,7 @@ class HelloManip(BaseSample):
     async def setup_post_load(self):
         self._world = self.get_world()
 
-        # await self.modify_cube_friction()
+        await self.modify_cube_friction()
 
         self._controller = PickPlaceController(
             name="pick_place_controller",

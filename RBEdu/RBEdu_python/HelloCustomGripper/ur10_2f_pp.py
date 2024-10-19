@@ -101,11 +101,13 @@ class UR10CustomGripper(BaseSample):
             picking_position=self._cube_position,
             placing_position=np.array([0.5, 0.5, 0.03]),
             current_joint_positions=joints_state.positions,
-            end_effector_offset=np.array([0.0, 0.0, 0.15]),
-            end_effector_orientation=np.array([
+            end_effector_offset=np.array([-0.15, 0.0, 0.01]),
+            end_effector_orientation=np.array([ 
                 # 0.7071068, 0, 0.7071068, 0, 
                 # 0.7071068, 0.7071068, 0, 0, 
-                1, 0, 0, 0,
+                # 1, 0, 0, 0, 
+                # 0.7071068, 0, 0.7071068, 0, 
+                0.9238795, 0, 0, 0.3826834, 
             ]),
         )
         if self._pap_controller.is_done():
