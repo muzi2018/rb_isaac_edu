@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from omni.isaac.core.utils.stage import add_reference_to_stage, get_current_stage
-from omni.isaac.core.utils.nucleus import get_assets_root_path, get_url_root
+from omni.isaac.nucleus import get_assets_root_path, get_url_root
 from omni.isaac.core.prims.geometry_prim import GeometryPrim
 from omni.physx.scripts import physicsUtils  
 
@@ -29,11 +29,7 @@ class HelloWorld(BaseSample):
 
         self._isaac_assets_path = get_assets_root_path()
         self.CUBE_URL = self._isaac_assets_path + "/Isaac/Props/Blocks/nvidia_cube.usd"
-
-        default_asset_root = carb.settings.get_settings().get("/persistent/isaac/asset_root/default")
-        self._server_root = get_url_root(default_asset_root)
-        self.HYDRANT_PATH = self._server_root + "/Projects/RoadBalanceEdu/Hydrant.usdz"
-
+        self.HYDRANT_PATH = "omniverse://localhost/Projects/RoadBalanceEdu/Hydrant.usdz"
         return
 
     def setup_scene(self):
@@ -55,8 +51,12 @@ class HelloWorld(BaseSample):
         physicsUtils.set_or_add_scale_op(hydrant_mesh, scale=Gf.Vec3f(0.001, 0.001, 0.001))
         
         hydrant_rigid = UsdPhysics.RigidBodyAPI.Apply(get_current_stage().GetPrimAtPath("/World/Hydrant"))
-        hydrant_geom = GeometryPrim(prim_path="/World/Hydrant", name="hydrant_ref_geom", collision=True)
-        hydrant_geom.set_collision_approximation("meshSimplication")
+        hydrant_geom = GeometryPrim(
+            prim_path="/World/Hydrant", 
+            name="hydrant", 
+            collision=True
+        )
+        hydrant_geom.set_collision_approximation("convexDecomposition")
         return
 
     async def setup_post_load(self):

@@ -36,7 +36,6 @@ class HelloWorld(BaseSample):
                 scale=np.array([0.5015, 0.5015, 0.5015]), # most arguments accept mainly numpy arrays.
                 color=np.array([0, 0, 1.0]), # RGB channels, going from 0-1
             ))
-        
         return
 
     async def setup_post_load(self):
@@ -48,6 +47,7 @@ class HelloWorld(BaseSample):
     def print_cube_info(self, step_size):
         position, orientation = self._cube.get_world_pose()
         linear_velocity = self._cube.get_linear_velocity()
+        
         # will be shown on terminal
         print("Cube position is : " + str(position))
         print("Cube's orientation is : " + str(orientation))

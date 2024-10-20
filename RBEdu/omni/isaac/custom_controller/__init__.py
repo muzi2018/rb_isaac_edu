@@ -1,5 +1,0 @@
-from .pick_and_place.custom_pick_place_controller import CustomPickPlaceController
-from .insertion.custom_insertion_controller import CustomInsertionController
-from .peg_in_hole.custom_peg_in_hole_controller import CustomPegInHoleController
-
-from .screw.nut_bolt_controller import NutBoltController

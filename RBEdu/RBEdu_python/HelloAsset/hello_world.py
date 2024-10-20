@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from omni.isaac.core.utils.stage import add_reference_to_stage, get_stage_units
-from omni.isaac.core.utils.nucleus import get_assets_root_path, get_url_root
+from omni.isaac.nucleus import get_assets_root_path, get_url_root
 from omni.physx.scripts import deformableUtils, physicsUtils  
 
 from omni.isaac.examples.base_sample import BaseSample
@@ -29,10 +29,7 @@ class HelloWorld(BaseSample):
 
         self._isaac_assets_path = get_assets_root_path()
         self.CUBE_URL = self._isaac_assets_path + "/Isaac/Props/Blocks/nvidia_cube.usd"
-
-        default_asset_root = carb.settings.get_settings().get("/persistent/isaac/asset_root/default")
-        self._server_root = get_url_root(default_asset_root)
-        self.HYDRANT_PATH = self._server_root + "/Projects/RoadBalanceEdu/Hydrant.usdz"
+        self.HYDRANT_PATH = "omniverse://localhost/Projects/RoadBalanceEdu/Hydrant.usdz"
         return
 
     def setup_scene(self):

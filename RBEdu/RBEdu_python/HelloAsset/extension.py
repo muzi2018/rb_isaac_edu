@@ -25,8 +25,8 @@ class Extension(BaseSampleExtension):
         super().start_extension(
             menu_name="RoadBalanceEdu",
             submenu_name="",
-            name="HelloAsset",
-            title="HelloAsset",
+            name="Example2 - HelloAsset",
+            title="Example2 - HelloAsset",
             doc_link="",
             overview="This Example introduces the user on how to do cool stuff with Isaac Sim through scripting in asynchronous mode.",
             file_path=os.path.abspath(__file__),

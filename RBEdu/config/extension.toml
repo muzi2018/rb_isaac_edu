@@ -21,14 +21,14 @@ icon = "data/icon.png"
 "omni.isaac.ui" = {}
 "omni.isaac.core" = {}
 
-[[python.module]]
-name = "omni.isaac.etri_env"
+# [[python.module]]
+# name = "omni.isaac.etri_env"
+
+# [[python.module]]
+# name = "omni.isaac.etri_bridge"
 
 [[python.module]]
 name = "RBEdu_python"
-
-[[python.module]]
-name = "omni.isaac.etri_bridge"
 
 [[python.module]]
 name = "RBEdu_python.HelloWorld"
