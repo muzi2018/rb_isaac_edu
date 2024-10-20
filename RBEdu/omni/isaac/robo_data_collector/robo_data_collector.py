@@ -1,4 +1,4 @@
-import h5py
+# import h5py
 import os
 
 
@@ -24,7 +24,9 @@ class RoboDataCollector():
         else:
             print(f"Folder already exists at: {folder_path}")
 
-        self._f = h5py.File(file_path, 'w')
+        # self._f = h5py.File(file_path, 'w')
+        self._f = None
+
         # self._group_f = self._f.create_group(f"{file_name}")
 
 

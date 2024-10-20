@@ -39,64 +39,64 @@ name = "RBEdu_python.HelloAsset"
 [[python.module]]
 name = "RBEdu_python.HelloProperty"
 
-[[python.module]]
-name = "RBEdu_python.HelloDeformable"
+# [[python.module]]
+# name = "RBEdu_python.HelloDeformable"
 
-[[python.module]]
-name = "RBEdu_python.HelloRandomBox"
+# [[python.module]]
+# name = "RBEdu_python.HelloRandomBox"
 
-[[python.module]]
-name = "RBEdu_python.HelloLight"
+# [[python.module]]
+# name = "RBEdu_python.HelloLight"
 
-[[python.module]]
-name = "RBEdu_python.HelloCamera"
+# [[python.module]]
+# name = "RBEdu_python.HelloCamera"
 
-[[python.module]]
-name = "RBEdu_python.HelloLilLibrary" 
+# [[python.module]]
+# name = "RBEdu_python.HelloLilLibrary" 
 
-[[python.module]]
-name = "RBEdu_python.HelloEnvRandomizer"
+# [[python.module]]
+# name = "RBEdu_python.HelloEnvRandomizer"
 
-[[python.module]]
-name = "RBEdu_python.HelloMDLMaterial"
+# [[python.module]]
+# name = "RBEdu_python.HelloMDLMaterial"
 
-[[python.module]]
-name = "RBEdu_python.HelloOmniGlass"
+# [[python.module]]
+# name = "RBEdu_python.HelloOmniGlass"
 
-[[python.module]]
-name = "RBEdu_python.HelloManipulator"
+# [[python.module]]
+# name = "RBEdu_python.HelloManipulator"
 
-[[python.module]]
-name = "RBEdu_python.ReplicatorBasic"
+# [[python.module]]
+# name = "RBEdu_python.ReplicatorBasic"
 
-[[python.module]]
-name = "RBEdu_python.HelloCustomManip"
+# [[python.module]]
+# name = "RBEdu_python.HelloCustomManip"
 
-[[python.module]]
-name = "RBEdu_python.HelloCustomGripper"
+# [[python.module]]
+# name = "RBEdu_python.HelloCustomGripper"
 
-[[python.module]]
-name = "RBEdu_python.HelloRoboData"
+# [[python.module]]
+# name = "RBEdu_python.HelloRoboData"
 
 
-[[python.module]]
-name = "RBEdu_python.HelloDeformableTire"
+# [[python.module]]
+# name = "RBEdu_python.HelloDeformableTire"
 
-[[python.module]]
-name = "RBEdu_python.PickandPlaceTire"
+# [[python.module]]
+# name = "RBEdu_python.PickandPlaceTire"
 
-[[python.module]]
-name = "RBEdu_python.HelloCloth"
+# [[python.module]]
+# name = "RBEdu_python.HelloCloth"
 
-[[python.module]]
-name = "RBEdu_python.PickandPlaceCloth"
+# [[python.module]]
+# name = "RBEdu_python.PickandPlaceCloth"
 
-[[python.module]]
-name = "RBEdu_python.HelloDefectObj"
+# [[python.module]]
+# name = "RBEdu_python.HelloDefectObj"
 
-[[python.module]]
-name = "RBEdu_python.HelloDefectCarPanel"
+# [[python.module]]
+# name = "RBEdu_python.HelloDefectCarPanel"
 
-[[python.module]]
-name = "RBEdu_python.DataCollectionGlassPP"
+# [[python.module]]
+# name = "RBEdu_python.DataCollectionGlassPP"
 
