@@ -7,25 +7,18 @@ version = "1.0.0"
 category = "Simulation"
 title = "RBEdu"
 description = ""
-authors = ["NVIDIA"]
+authors = ["RoadBalance"]
 repository = ""
 keywords = []
 changelog = "docs/CHANGELOG.md"
 readme = "docs/README.md"
-preview_image = "data/preview.png"
+preview_image = "data/setup2.png"
 icon = "data/icon.png"
-
 
 [dependencies]
 "omni.kit.uiapp" = {}
 "omni.isaac.ui" = {}
 "omni.isaac.core" = {}
-
-# [[python.module]]
-# name = "omni.isaac.etri_env"
-
-# [[python.module]]
-# name = "omni.isaac.etri_bridge"
 
 [[python.module]]
 name = "RBEdu_python"
@@ -39,17 +32,17 @@ name = "RBEdu_python.HelloAsset"
 [[python.module]]
 name = "RBEdu_python.HelloProperty"
 
-# [[python.module]]
-# name = "RBEdu_python.HelloDeformable"
+[[python.module]]
+name = "RBEdu_python.HelloDeformable"
 
-# [[python.module]]
-# name = "RBEdu_python.HelloRandomBox"
+[[python.module]]
+name = "RBEdu_python.HelloRandomBox"
 
-# [[python.module]]
-# name = "RBEdu_python.HelloLight"
+[[python.module]]
+name = "RBEdu_python.HelloLight"
 
-# [[python.module]]
-# name = "RBEdu_python.HelloCamera"
+[[python.module]]
+name = "RBEdu_python.HelloCamera"
 
 # [[python.module]]
 # name = "RBEdu_python.HelloLilLibrary" 

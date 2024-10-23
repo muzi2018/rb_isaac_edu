@@ -17,7 +17,7 @@ import os
 from omni.isaac.examples.base_sample import BaseSampleExtension
 # from .hello_camera_1 import HelloCamera
 # from .hello_camera_2 import HelloCamera
-from .hello_camera_pil import HelloCamera
+from .hello_camera_3 import HelloCamera
 
 """
 This file serves as a basic template for the standard boilerplate operations
@@ -43,8 +43,8 @@ class Extension(BaseSampleExtension):
         super().start_extension(
             menu_name="RoadBalanceEdu",
             submenu_name="",
-            name="HelloCamera",
-            title="HelloCamera",
+            name="Example7 - HelloCamera",
+            title="Example7 - HelloCamera",
             doc_link="https://docs.omniverse.nvidia.com/isaacsim/latest/core_api_tutorials/tutorial_core_hello_world.html",
             overview="This Example introduces the user on how to do cool stuff with Isaac Sim through scripting in asynchronous mode.",
             file_path=os.path.abspath(__file__),

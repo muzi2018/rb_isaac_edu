@@ -71,7 +71,8 @@ class HelloCamera(BaseSample):
             image = Image.fromarray(rgb_img)
 
             # Save the image as a PNG file
-            image.save(f"{current_dir}/img_{self._save_count}.png")
-            print("Data Collected")
+            save_path = f"{current_dir}/img_{self._save_count}.png"
+            image.save(save_path)
+            print(f"[Data Collected] {save_path}")
 
         self._save_count += 1

@@ -22,6 +22,7 @@ import omni.physx
 import omni.usd
 import omni
 
+
 class HelloDeformable(BaseSample):  
     def __init__(self) -> None: 
         super().__init__()
@@ -95,9 +96,11 @@ class HelloDeformable(BaseSample):
 
     def setup_scene(self):
         world = self.get_world()
-        # self._setup_simulation()
-        self._stage = omni.usd.get_context().get_stage()
 
+        # Deformable Body feature is only supported on GPU.
+        self._setup_simulation()
+        
+        self._stage = omni.usd.get_context().get_stage()
         world.scene.add_default_ground_plane()
         
         self.add_red_cube()

@@ -73,13 +73,4 @@ class HelloLight(BaseSample):
     async def setup_post_load(self):
         self._world = self.get_world()
         self._cube = self._world.scene.get_object("fancy_cube")
-        self._world.add_physics_callback("sim_step", callback_fn=self.print_cube_info) #callback names have to be unique
         return
-
-    def print_cube_info(self, step_size):
-        position, orientation = self._cube.get_world_pose()
-        linear_velocity = self._cube.get_linear_velocity()
-        # will be shown on terminal
-        print("Cube position is : " + str(position))
-        print("Cube's orientation is : " + str(orientation))
-        print("Cube's linear velocity is : " + str(linear_velocity))
