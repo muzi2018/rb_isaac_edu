@@ -50,6 +50,7 @@ class HelloWorld(BaseSample):
         physicsUtils.set_or_add_orient_op(hydrant_mesh, orient=Gf.Quatf(0.9238795, 0, 0.3826834, 0))
         physicsUtils.set_or_add_scale_op(hydrant_mesh, scale=Gf.Vec3f(0.001, 0.001, 0.001))
         
+        ####### Focus here! #######
         hydrant_rigid = UsdPhysics.RigidBodyAPI.Apply(get_current_stage().GetPrimAtPath("/World/Hydrant"))
         hydrant_geom = GeometryPrim(
             prim_path="/World/Hydrant", 
@@ -57,6 +58,8 @@ class HelloWorld(BaseSample):
             collision=True
         )
         hydrant_geom.set_collision_approximation("convexDecomposition")
+        ####### Focus here! #######
+
         return
 
     async def setup_post_load(self):
