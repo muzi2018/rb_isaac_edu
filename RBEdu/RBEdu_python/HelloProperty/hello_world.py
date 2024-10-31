@@ -57,7 +57,8 @@ class HelloWorld(BaseSample):
             name="hydrant", 
             collision=True
         )
-        hydrant_geom.set_collision_approximation("convexDecomposition")
+        # https://docs.omniverse.nvidia.com/extensions/latest/ext_physics/rigid-bodies.html
+        hydrant_geom.set_collision_approximation("convexDecomposition") 
         ####### Focus here! #######
 
         return
