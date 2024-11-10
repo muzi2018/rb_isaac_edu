@@ -31,7 +31,6 @@ class HelloWorld(BaseSample):
 
         self.CUBE_URL = self._isaac_assets_path + "/Isaac/Props/Blocks/nvidia_cube.usd"
         self.HYDRANT_PATH = "omniverse://localhost/Projects/RoadBalanceEdu/Hydrant.usdz"
-        omniverse://localhost/Projects/RoadBalanceEdu/Hydrant.usdz
         return
 
     def setup_scene(self):
