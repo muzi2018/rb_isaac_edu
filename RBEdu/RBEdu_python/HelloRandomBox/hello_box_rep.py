@@ -12,19 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from omni.isaac.examples.base_sample import BaseSample
-from omni.physx.scripts import physicsUtils
-from pxr import UsdGeom,Gf, UsdLux
 
+from omni.isaac.examples.base_sample import BaseSample
+import omni.replicator.core as rep
 import omni.usd
-import random
+
+from pxr import UsdGeom,Gf, UsdLux
 
 
 class HelloBox(BaseSample):
+
     def __init__(self) -> None:
         super().__init__()
         return
-    
+
     def add_light(self):
         # Turn off the default light
         prim = self._stage.GetPrimAtPath("/World/defaultGroundPlane/SphereLight")
@@ -44,27 +45,10 @@ class HelloBox(BaseSample):
         shaping.CreateShapingFocusTintAttr()
         shaping.CreateShapingIesFileAttr()
 
-    def add_random_size_boxes(self):
-        # Create a grid of boxes
-        all_boxes = self._stage.DefinePrim("/World/boxes", "Xform")
-        for i in range(5):
-            for j in range(5):
-                path = f"/World/boxes/box_{i}_{j}"
-                # Add box of random size
-                size = (
-                    random.uniform(0.2, 1.0),
-                    random.uniform(0.2, 1.0),
-                    random.uniform(0.2, 1.0),
-                )
-                translate = (5*i, 5*j, 0)
-                cube_prim = self._stage.DefinePrim(path, "Cube")
-                cube_mesh = UsdGeom.Mesh.Get(self._stage, path)
-                
-                # Please be careful for the order
-                # Translate and then Scaling vs Scaling and then Translation has different result
-                physicsUtils.set_or_add_translate_op(cube_mesh, Gf.Vec3f(translate))
-                physicsUtils.set_or_add_scale_op(cube_mesh, Gf.Vec3f(size))
-                print(f"Adding box at {path} with size {size} and translate {translate}")
+    def color_randomize(self):
+        with self.red_cube:
+            rep.randomizer.materials(self.cube_mat)
+        return self.red_cube.node
 
     def setup_scene(self):
         self._world = self.get_world()
@@ -72,7 +56,12 @@ class HelloBox(BaseSample):
         self._stage = omni.usd.get_context().get_stage()
 
         self.add_light()
-        self.add_random_size_boxes()
+        self._cube = rep.create.cube(
+            semantics=[('class', 'cube')],  
+            position=rep.distribution.uniform((0, 0, 0), (25, 25, 0)),
+            scale=rep.distribution.uniform((0.2, 0.2, 0.2), (1.0, 1.0, 1.0)),
+            count=25
+        )
         return
 
     async def setup_post_load(self):

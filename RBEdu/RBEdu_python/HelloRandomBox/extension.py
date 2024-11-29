@@ -15,8 +15,8 @@
 import os
 
 from omni.isaac.examples.base_sample import BaseSampleExtension
-from .hello_box import HelloBox
-# from .hello_box_2 import HelloBox
+# from .hello_box import HelloBox
+from .hello_box_rep import HelloBox
 
 """
 This file serves as a basic template for the standard boilerplate operations
