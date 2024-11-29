@@ -17,6 +17,7 @@ import os
 
 from omni.isaac.examples.base_sample import BaseSampleExtension
 from .hello_light import HelloLight
+# from .cone_light import HelloLight
 
 class Extension(BaseSampleExtension):
     def on_startup(self, ext_id: str):
