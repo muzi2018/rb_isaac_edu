@@ -15,9 +15,9 @@
 import os
 
 from omni.isaac.examples.base_sample import BaseSampleExtension
-# from .hello_camera_1 import HelloCamera
+from .hello_camera_1 import HelloCamera
 # from .hello_camera_2 import HelloCamera
-from .hello_camera_3 import HelloCamera
+# from .hello_camera_3 import HelloCamera
 
 """
 This file serves as a basic template for the standard boilerplate operations
