@@ -56,12 +56,15 @@ class HelloBox(BaseSample):
         self._stage = omni.usd.get_context().get_stage()
 
         self.add_light()
-        self._cube = rep.create.cube(
-            semantics=[('class', 'cube')],  
-            position=rep.distribution.uniform((0, 0, 0), (25, 25, 0)),
-            scale=rep.distribution.uniform((0.2, 0.2, 0.2), (1.0, 1.0, 1.0)),
-            count=25
-        )
+
+        for i in range(5):
+            for j in range(5):
+                self._cube = rep.create.cube(
+                    semantics=[('class', 'cube')],  
+                    position=(5*i, 5*j, 0),
+                    scale=rep.distribution.uniform((0.2, 0.2, 0.2), (1.0, 1.0, 1.0)),
+                    count=1
+                )
         return
 
     async def setup_post_load(self):
