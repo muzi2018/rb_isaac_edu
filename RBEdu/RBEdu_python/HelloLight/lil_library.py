@@ -85,6 +85,10 @@ class HelloLight(BaseSample):
         # TODO
         return
 
+    def add_my_objects(self):
+        # TODO
+        return
+
     def setup_scene(self):
         self._world = self.get_world()
         self._stage = omni.usd.get_context().get_stage()
@@ -95,6 +99,8 @@ class HelloLight(BaseSample):
         self.add_computer_desks()
         self.add_office_tables()
         self.add_office_chairs()
+        # and finally
+        self.add_my_objects()
         return
 
     async def setup_post_load(self):
