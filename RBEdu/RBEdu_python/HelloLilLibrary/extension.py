@@ -16,7 +16,8 @@
 import os
 
 from omni.isaac.examples.base_sample import BaseSampleExtension
-from .hello_world import HelloLilLibrary
+# from .lil_library import HelloLilLibrary
+from .lil_library_answer import HelloLilLibrary
 
 
 class Extension(BaseSampleExtension):
@@ -25,8 +26,8 @@ class Extension(BaseSampleExtension):
         super().start_extension(
             menu_name="RoadBalanceEdu",
             submenu_name="",
-            name="HelloLilLibrary ",
-            title="HelloLilLibrary ",
+            name="Project - HelloLilLibrary",
+            title="Project - HelloLilLibrary",
             doc_link="",
             overview="This Example introduces the user on how to do cool stuff with Isaac Sim through scripting in asynchronous mode.",
             file_path=os.path.abspath(__file__),

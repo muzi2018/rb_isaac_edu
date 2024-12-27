@@ -24,7 +24,8 @@ import numpy as np
 import omni.usd
 import random
 
-class HelloLight(BaseSample):
+
+class HelloLilLibrary(BaseSample):
     def __init__(self) -> None:
         super().__init__()
 
@@ -97,12 +98,3 @@ class HelloLight(BaseSample):
         self.add_lights()
         self.add_bookshelves()
         self.add_computer_desks()
-        self.add_office_tables()
-        self.add_office_chairs()
-        # and finally
-        self.add_my_objects()
-        return
-
-    async def setup_post_load(self):
-        self._world = self.get_world()
-        return

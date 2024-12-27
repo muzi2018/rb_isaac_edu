@@ -44,8 +44,8 @@ name = "RBEdu_python.HelloLight"
 [[python.module]]
 name = "RBEdu_python.HelloCamera"
 
-# [[python.module]]
-# name = "RBEdu_python.HelloLilLibrary" 
+[[python.module]]
+name = "RBEdu_python.HelloLilLibrary" 
 
 # [[python.module]]
 # name = "RBEdu_python.HelloEnvRandomizer"
