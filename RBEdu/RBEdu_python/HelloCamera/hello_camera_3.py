@@ -1,3 +1,17 @@
+# Copyright 2024 Road Balance Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import omni.isaac.core.utils.numpy.rotations as rot_utils
 from omni.isaac.examples.base_sample import BaseSample
 from omni.isaac.core.objects import DynamicCuboid
@@ -12,13 +26,14 @@ import os
 
 # Get the current working directory
 current_file_path = os.path.realpath(__file__)
-current_dir = os.path.dirname(current_file_path)
+save_dir = os.path.dirname(current_file_path) + "/images"
 
 
 class HelloCamera(BaseSample):
 
     def __init__(self) -> None:
         super().__init__()
+
         self._save_count = 0
         self._cube_position = np.array([0.0, 0.5, 0.03])
         return
@@ -46,14 +61,14 @@ class HelloCamera(BaseSample):
         )
         return
 
-    def add_cube(self):
-        self.fancy_cube = self._world.scene.add(
+    def add_cube(self, prim_path, name, position, scale, color):
+        self._fancy_cube = self._world.scene.add(
             DynamicCuboid(
-                prim_path="/World/Fancy_cube", 
-                name="fancy_cube", 
-                position=self._cube_position,
-                scale=np.array([0.05, 0.05, 0.05]), 
-                color=np.array([0, 0, 1.0]), 
+                prim_path=prim_path,
+                name=name,
+                position=position,
+                scale=scale,
+                color=color,
             ))
         return
 
@@ -63,9 +78,23 @@ class HelloCamera(BaseSample):
         
         self.add_camera()
         self.add_robot()
-        self.add_cube()
+        self.add_cube(
+            prim_path="/World/random_cube",
+            name="fancy_cube",
+            position=np.array([0.0, 0.5, 0.03]),
+            scale=np.array([0.05, 0.05, 0.05]),
+            color=np.array([0.0, 0.0, 1.0]),
+        )
 
     async def setup_post_load(self):
+        # Check if the folder exists
+        if not os.path.exists(save_dir):
+            # Create the folder if it doesn't exist
+            os.makedirs(save_dir)
+            print(f"Folder '{save_dir}' created.")
+        else:
+            print(f"Folder '{save_dir}' already exists.")
+
         self._world = self.get_world()
         self._controller = PickPlaceController(
             name="pick_place_controller",
@@ -99,7 +128,7 @@ class HelloCamera(BaseSample):
             image = Image.fromarray(rgb_img)
 
             # Save the image as a PNG file
-            file_name = f"{current_dir}/images/robo_img_{self._save_count}.png"
+            file_name = f"{save_dir}/robo_img_{self._save_count}.png"
             image.save(file_name)
             print(f"[Data Collected] {file_name}")
 
