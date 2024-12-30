@@ -50,15 +50,15 @@ name = "RBEdu_python.HelloLilLibrary"
 [[python.module]]
 name = "RBEdu_python.HelloMaterial"
 
+[[python.module]]
+name = "RBEdu_python.HelloManipulator"
+
 
 # [[python.module]]
 # name = "RBEdu_python.HelloEnvRandomizer"
 
 # [[python.module]]
 # name = "RBEdu_python.HelloOmniGlass"
-
-# [[python.module]]
-# name = "RBEdu_python.HelloManipulator"
 
 # [[python.module]]
 # name = "RBEdu_python.ReplicatorBasic"
