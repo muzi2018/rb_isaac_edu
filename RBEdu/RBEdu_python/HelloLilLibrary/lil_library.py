@@ -18,8 +18,10 @@ from omni.isaac.core.prims.geometry_prim import GeometryPrim
 from omni.isaac.examples.base_sample import BaseSample
 from pxr import UsdGeom, Gf, UsdLux, UsdPhysics
 from omni.physx.scripts import physicsUtils
+from omni.isaac.sensor import Camera
 
 import omni.replicator.core as rep
+from PIL import Image
 import numpy as np
 import omni.usd
 import random
@@ -36,6 +38,18 @@ class HelloLilLibrary(BaseSample):
         self.Wood_Bookcase_URL = "omniverse://localhost/Projects/RoadBalanceEdu/Wood_Bookcase.usdz"
         return
     
+    def add_background(self):
+        add_reference_to_stage(usd_path=self.Library_URL, prim_path=f"/World/Library")
+
+        library_mesh = UsdGeom.Mesh.Get(self._stage, "/World/Library")
+        physicsUtils.set_or_add_translate_op(library_mesh, translate=Gf.Vec3f(0.0, 14.0, 0.0))
+        physicsUtils.set_or_add_orient_op(library_mesh, orient=Gf.Quatf(0.7071068, 0.7071068, 0, 0))
+        physicsUtils.set_or_add_scale_op(library_mesh, scale=Gf.Vec3f(0.02, 0.02, 0.02))
+
+        # add collision
+        library_geom = GeometryPrim(prim_path="/World/Library", name="library_ref_geom", collision=True)
+        library_geom.set_collision_approximation("convexDecomposition")
+
     def add_lights(self):
         # Create a Sphere light
         sphereLight1 = UsdLux.SphereLight.Define(self._stage, "/World/SphereLight1")
@@ -58,17 +72,9 @@ class HelloLilLibrary(BaseSample):
         sphereLight4.CreateIntensityAttr(200000.0)
         sphereLight4.AddTranslateOp().Set(Gf.Vec3f(-0.8, -4.5, 4.5))
 
-    def add_background(self):
-        add_reference_to_stage(usd_path=self.Library_URL, prim_path=f"/World/Library")
-
-        library_mesh = UsdGeom.Mesh.Get(self._stage, "/World/Library")
-        physicsUtils.set_or_add_translate_op(library_mesh, translate=Gf.Vec3f(0.0, 14.0, 0.0))
-        physicsUtils.set_or_add_orient_op(library_mesh, orient=Gf.Quatf(0.7071068, 0.7071068, 0, 0))
-        physicsUtils.set_or_add_scale_op(library_mesh, scale=Gf.Vec3f(0.02, 0.02, 0.02))
-
-        # add collision
-        library_geom = GeometryPrim(prim_path="/World/Library", name="library_ref_geom", collision=True)
-        library_geom.set_collision_approximation("convexDecomposition")
+    def add_camera(self):
+        # TODO
+        return
 
     def add_bookshelves(self):
         # TODO
@@ -96,5 +102,9 @@ class HelloLilLibrary(BaseSample):
 
         self.add_background()
         self.add_lights()
+        self.add_camera()
         self.add_bookshelves()
         self.add_computer_desks()
+        self.add_office_tables()
+        self.add_office_chairs()
+        self.add_my_objects()

@@ -15,11 +15,15 @@
 from omni.isaac.core.utils.stage import add_reference_to_stage, get_current_stage
 from omni.isaac.core.utils.nucleus import get_assets_root_path, get_url_root
 from omni.isaac.core.prims.geometry_prim import GeometryPrim
+import omni.isaac.core.utils.numpy.rotations as rot_utils
 from omni.isaac.examples.base_sample import BaseSample
 from pxr import UsdGeom, Gf, UsdLux, UsdPhysics
 from omni.physx.scripts import physicsUtils
 
+from omni.isaac.sensor import Camera
+
 import omni.replicator.core as rep
+from PIL import Image
 import numpy as np
 import omni.usd
 import random
@@ -35,7 +39,19 @@ class HelloLilLibrary(BaseSample):
         self.Office_Chair_URL = "omniverse://localhost/Projects/RoadBalanceEdu/Office_chair.usdz"
         self.Wood_Bookcase_URL = "omniverse://localhost/Projects/RoadBalanceEdu/Wood_Bookcase.usdz"
         return
-    
+
+    def add_background(self):
+        add_reference_to_stage(usd_path=self.Library_URL, prim_path=f"/World/Library")
+
+        library_mesh = UsdGeom.Mesh.Get(self._stage, "/World/Library")
+        physicsUtils.set_or_add_translate_op(library_mesh, translate=Gf.Vec3f(0.0, 14.0, 0.0))
+        physicsUtils.set_or_add_orient_op(library_mesh, orient=Gf.Quatf(0.7071068, 0.7071068, 0, 0))
+        physicsUtils.set_or_add_scale_op(library_mesh, scale=Gf.Vec3f(0.02, 0.02, 0.02))
+
+        # add collision
+        library_geom = GeometryPrim(prim_path="/World/Library", name="library_ref_geom", collision=True)
+        library_geom.set_collision_approximation("convexDecomposition")
+
     def add_lights(self):
         # Create a Sphere light
         sphereLight1 = UsdLux.SphereLight.Define(self._stage, "/World/SphereLight1")
@@ -58,17 +74,20 @@ class HelloLilLibrary(BaseSample):
         sphereLight4.CreateIntensityAttr(200000.0)
         sphereLight4.AddTranslateOp().Set(Gf.Vec3f(-0.8, -4.5, 4.5))
 
-    def add_background(self):
-        add_reference_to_stage(usd_path=self.Library_URL, prim_path=f"/World/Library")
-
-        library_mesh = UsdGeom.Mesh.Get(self._stage, "/World/Library")
-        physicsUtils.set_or_add_translate_op(library_mesh, translate=Gf.Vec3f(0.0, 14.0, 0.0))
-        physicsUtils.set_or_add_orient_op(library_mesh, orient=Gf.Quatf(0.7071068, 0.7071068, 0, 0))
-        physicsUtils.set_or_add_scale_op(library_mesh, scale=Gf.Vec3f(0.02, 0.02, 0.02))
-
-        # add collision
-        library_geom = GeometryPrim(prim_path="/World/Library", name="library_ref_geom", collision=True)
-        library_geom.set_collision_approximation("convexDecomposition")
+    def add_camera(self):
+        self._camera = Camera(
+            prim_path="/World/camera",
+            position=np.array([0.0, 0.0, 5.0]),
+            frequency=30,
+            resolution=(800, 800),
+            orientation=rot_utils.euler_angles_to_quats(
+                np.array([0, 90, 180]
+            ), degrees=True),
+        )
+        self._camera.initialize()
+        self._camera.set_focal_length(1.0)
+        self._camera.add_motion_vectors_to_frame()
+        return
 
     def add_bookshelves(self):
         # bookcase1
@@ -310,20 +329,8 @@ class HelloLilLibrary(BaseSample):
         library_geom.set_collision_approximation("convexDecomposition")
         return
 
-    def setup_scene(self):
-        self._world = self.get_world()
-        self._stage = omni.usd.get_context().get_stage()
-
-        self.add_background()
-        self.add_lights()
-        self.add_bookshelves()
-        self.add_computer_desks()
-        self.add_office_tables()
-        self.add_office_chairs()
-        return
-
-    async def setup_post_load(self):
-        self._world = self.get_world()
+    def add_my_objects(self):
+        # TODO
         return
 
     def setup_scene(self):
@@ -332,12 +339,10 @@ class HelloLilLibrary(BaseSample):
 
         self.add_background()
         self.add_lights()
+        self.add_camera()
         self.add_bookshelves()
         self.add_computer_desks()
         self.add_office_tables()
         self.add_office_chairs()
-        return
-
-    async def setup_post_load(self):
-        self._world = self.get_world()
+        self.add_my_objects()
         return

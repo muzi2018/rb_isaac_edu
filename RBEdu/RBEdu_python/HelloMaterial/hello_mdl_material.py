@@ -12,16 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from omni.physx.scripts import physicsUtils, particleUtils, deformableUtils
 from omni.isaac.core.utils.nucleus import get_assets_root_path
 from omni.isaac.core.utils.stage import add_reference_to_stage
 from omni.isaac.examples.base_sample import BaseSample
+from omni.physx.scripts import physicsUtils
 
 from pxr import Usd, UsdGeom, UsdPhysics, UsdShade, Sdf, Gf, Tf, UsdLux
 import omni
 
 
-class HelloMDLMaterial(BaseSample):
+class HelloMaterial(BaseSample):
     
     def __init__(self) -> None:
         super().__init__()
@@ -72,7 +72,7 @@ class HelloMDLMaterial(BaseSample):
     async def setup_post_load(self):
         self._world = self.get_world()
 
-        floor_prim = self._stage.GetPrimAtPath("/World/defaultGroundPlane/Enviroment/Geometry")
+        floor_prim = self._stage.GetPrimAtPath("/World/defaultGroundPlane/Environment/Geometry")
         UsdShade.MaterialBindingAPI(floor_prim).Bind(
             self._concrete_material, 
             UsdShade.Tokens.strongerThanDescendants

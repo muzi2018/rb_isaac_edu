@@ -16,7 +16,8 @@
 import os
 
 from omni.isaac.examples.base_sample import BaseSampleExtension
-from .hello_mdl_material import HelloMDLMaterial
+# from .hello_mdl_material import HelloMaterial
+from .hello_omni_glass_wine import HelloMaterial
 
 """
 This file serves as a basic template for the standard boilerplate operations
@@ -42,11 +43,11 @@ class Extension(BaseSampleExtension):
         super().start_extension(
             menu_name="RoadBalanceEdu",
             submenu_name="",
-            name="HelloMDLMaterial",
-            title="HelloMDLMaterial",
+            name="Example8 - HelloMDLMaterial",
+            title="Example8 - HelloMDLMaterial",
             doc_link="https://docs.omniverse.nvidia.com/isaacsim/latest/core_api_tutorials/tutorial_core_hello_world.html",
             overview="This Example introduces the user on how to do cool stuff with Isaac Sim through scripting in asynchronous mode.",
             file_path=os.path.abspath(__file__),
-            sample=HelloMDLMaterial(),
+            sample=HelloMaterial(),
         )
         return

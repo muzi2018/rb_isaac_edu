@@ -47,11 +47,12 @@ name = "RBEdu_python.HelloCamera"
 [[python.module]]
 name = "RBEdu_python.HelloLilLibrary" 
 
-# [[python.module]]
-# name = "RBEdu_python.HelloEnvRandomizer"
+[[python.module]]
+name = "RBEdu_python.HelloMaterial"
+
 
 # [[python.module]]
-# name = "RBEdu_python.HelloMDLMaterial"
+# name = "RBEdu_python.HelloEnvRandomizer"
 
 # [[python.module]]
 # name = "RBEdu_python.HelloOmniGlass"
