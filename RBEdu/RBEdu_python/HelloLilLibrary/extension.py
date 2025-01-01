@@ -16,8 +16,8 @@
 import os
 
 from omni.isaac.examples.base_sample import BaseSampleExtension
-# from .lil_library import HelloLilLibrary
-from .lil_library_answer import HelloLilLibrary
+from .lil_library import HelloLilLibrary
+# from .lil_library_answer import HelloLilLibrary
 
 
 class Extension(BaseSampleExtension):
