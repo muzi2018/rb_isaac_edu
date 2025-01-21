@@ -1,4 +1,4 @@
-# Copyright 2024 Road Balance Inc.
+# Copyright 2025 Road Balance Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,20 +31,26 @@ class HelloMaterial(BaseSample):
         return
 
     def add_mdl_material(self):
-        success, result = omni.kit.commands.execute(
-            "CreateMdlMaterialPrimCommand",
-            mtl_url="omniverse://localhost/NVIDIA/Materials/Base/Masonry/Concrete_Smooth.mdl",
-            mtl_name="Concrete_Smooth",
-            mtl_path="/World/Looks/Concrete_Smooth"
-        )
-        concrete_material = UsdShade.Material(self._stage.GetPrimAtPath("/World/Looks/Concrete_Smooth"))
+        try:
+            success, result = omni.kit.commands.execute(
+                "CreateMdlMaterialPrimCommand",
+                mtl_url="omniverse://localhost/NVIDIA/Materials/Base/Masonry/Concrete_Smooth.mdl",
+                mtl_name="Concrete_Smooth",
+                mtl_path="/World/Looks/Concrete_Smooth"
+            )
+            concrete_material = UsdShade.Material(self._stage.GetPrimAtPath("/World/Looks/Concrete_Smooth"))
+        except Exception as e:
+            print(f"Error Occurred during Concrete_Smooth, {e}")
 
-        success, result = omni.kit.commands.execute(
-            "CreateMdlMaterialPrimCommand",
-            mtl_url="omniverse://localhost/NVIDIA/Materials/Base/Metals/Brass.mdl",
-            mtl_name="Brass",
-            mtl_path="/World/Looks/Brass"
-        )
+        try:
+            success, result = omni.kit.commands.execute(
+                "CreateMdlMaterialPrimCommand",
+                mtl_url="omniverse://localhost/NVIDIA/Materials/Base/Metals/Brass.mdl",
+                mtl_name="Brass",
+                mtl_path="/World/Looks/Brass"
+            )
+        except Exception as e:
+            print(f"Error Occurred during Brass, {e}")
 
         brass_material = UsdShade.Material(self._stage.GetPrimAtPath("/World/Looks/Brass"))
         return concrete_material, brass_material
@@ -75,12 +81,12 @@ class HelloMaterial(BaseSample):
         floor_prim = self._stage.GetPrimAtPath("/World/defaultGroundPlane/Environment/Geometry")
         UsdShade.MaterialBindingAPI(floor_prim).Bind(
             self._concrete_material, 
-            UsdShade.Tokens.strongerThanDescendants
+            UsdShade.Tokens.strongerThanDescendants # weakerThanDescendants
         )
 
         cube_mesh = UsdGeom.Mesh.Get(self._stage, "/World/Cube/Cube")
         UsdShade.MaterialBindingAPI(cube_mesh).Bind(
             self._brass_material, 
-            UsdShade.Tokens.strongerThanDescendants
+            UsdShade.Tokens.strongerThanDescendants # weakerThanDescendants
         )
         return

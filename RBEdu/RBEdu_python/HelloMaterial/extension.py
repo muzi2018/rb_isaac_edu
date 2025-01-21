@@ -1,4 +1,4 @@
-# Copyright 2024 Road Balance Inc.
+# Copyright 2025 Road Balance Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 import os
 
 from omni.isaac.examples.base_sample import BaseSampleExtension
-# from .hello_mdl_material import HelloMaterial
-from .hello_omni_glass_wine import HelloMaterial
+from .hello_mdl_material import HelloMaterial
+# from .hello_omni_glass_wine import HelloMaterial
 
 """
 This file serves as a basic template for the standard boilerplate operations
