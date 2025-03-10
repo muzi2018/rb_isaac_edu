@@ -2,7 +2,7 @@
 
 A collection of educational examples for learning robotics simulation using NVIDIA Isaac Sim.
 
-## Installation
+## ⚙️ Installation
 
 1. Install NVIDIA Isaac Sim following my YouTube Video: *[OMNIVERSE] NVIDIA Omniverse Isaac Sim Installation for Robotics Software Engineers*
 
@@ -28,7 +28,7 @@ cd RBEdu
     </a>
 </p>
 
-## Ongoing) Examples
+## ▶️ Youtube Video and Examples (Click the image for watching!)
 
 ### 1. Hello World
 Basic example demonstrating Isaac Sim setup and usage.
