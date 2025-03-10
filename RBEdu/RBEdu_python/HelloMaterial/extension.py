@@ -16,8 +16,8 @@
 import os
 
 from omni.isaac.examples.base_sample import BaseSampleExtension
-from .hello_mdl_material import HelloMaterial
-# from .hello_omni_glass_wine import HelloMaterial
+# from .hello_mdl_material import HelloMaterial
+from .hello_omni_glass_wine import HelloMaterial
 
 """
 This file serves as a basic template for the standard boilerplate operations

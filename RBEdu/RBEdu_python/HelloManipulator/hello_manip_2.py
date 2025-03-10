@@ -77,6 +77,8 @@ class HelloManip(BaseSample):
             placing_position=np.array([0.3, -0.3, 0.02]),
             current_joint_positions=current_joint_positions,
         )
+        print(f"actions: {actions}")
+        print(f"controller._event: {self._controller._event}")
         self._franka.apply_action(actions)
         if self._controller.is_done():
             self._world.pause()
