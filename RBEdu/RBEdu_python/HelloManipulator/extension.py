@@ -18,9 +18,9 @@ import os
 from omni.isaac.examples.base_sample import BaseSampleExtension
 # from .hello_manip_1 import HelloManip
 # from .hello_manip_2 import HelloManip
-from .hello_manip_3 import HelloManip
+# from .hello_manip_3 import HelloManip
 # from .hello_manip_4 import HelloManip
-# from .hello_manip_5 import HelloManip
+from .hello_manip_5 import HelloManip
 
 """
 This file serves as a basic template for the standard boilerplate operations

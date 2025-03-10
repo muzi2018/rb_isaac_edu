@@ -105,11 +105,6 @@ class HelloManip(BaseSample):
             # ),
         )
 
-        if self._sim_count % 100 == 0:
-            joint_efforts = self._ur10.get_measured_joint_forces()
-            for i in range(self.joint_len):
-                print(f"joint_efforts [{self._swapped_joint_indices[i]}]: {joint_efforts[i]}")
-
         if self._controller.is_done():
             self._world.pause()
         else:
