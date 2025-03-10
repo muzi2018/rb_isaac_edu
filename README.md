@@ -4,7 +4,13 @@ A collection of educational examples for learning robotics simulation using NVID
 
 ## Installation
 
-1. Install NVIDIA Isaac Sim following my [YouTube Video](https://www.youtube.com/watch?v=ZUX9SrPGrbk) 
+1. Install NVIDIA Isaac Sim following my YouTube Video: *[OMNIVERSE] NVIDIA Omniverse Isaac Sim Installation for Robotics Software Engineers*
+
+<p align="center">
+    <a href="https://www.youtube.com/watch?v=ZUX9SrPGrbk" target="_blank">
+        <img src="./IMG/installtion.jpg" height="300">
+    </a>
+</p>
 
 2. Clone this repository:
 
@@ -14,9 +20,13 @@ git clone https://github.com/kimsooyoung/rb_isaac_edu.git
 cd RBEdu
 ```
 
+3. Enable the extension in Isaac Sim by following my YouTube Video: *[Isaac Sim Tutorial - Core API] Introduction to Lecture Code Setup*
 
-3. Enable the extension in Isaac Sim:
-- Follow my [YouTube Video](https://www.youtube.com/watch?v=hP01sOYtXKM) 
+<p align="center">
+    <a href="https://www.youtube.com/watch?v=hP01sOYtXKM" target="_blank">
+        <img src="./IMG/setup.jpg" height="300">
+    </a>
+</p>
 
 ## Ongoing) Examples
 
