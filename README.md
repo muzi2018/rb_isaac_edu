@@ -97,19 +97,19 @@ Special Materials from Omniverse, including MDL, OmniGlass.
 ### 9. Hello Manipulator
 Robot arm manipulation examples.
 <p align="center">
-    <a href="https://www.youtube.com/watch?v=5VGCVoD4eOs" target="_blank">
+    <a href="https://www.youtube.com/watch?v=f58NlZnTbXE" target="_blank">
         <img src="./IMG/lec9.jpg" height="300">
     </a>
 </p>
 
-### 9. Hello Defect Object
+### 10. Hello Defect Object
 Defect detection simulation with:
 - Circuit board inspection
 - Semantic labeling
 - Robot interaction
 - Vision data collection
 
-### 10. Environment Randomization
+### 11. Environment Randomization
 Advanced environment randomization with:
 - Dynamic object placement
 - Lighting variation
