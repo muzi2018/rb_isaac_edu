@@ -86,11 +86,19 @@ Small project for practicing Core APIs.
     </a>
 </p>
 
-### 8. Hello Manipulator
-Robot arm manipulation examples.
+### 8. Hello Material
+Special Materials from Omniverse, including MDL, OmniGlass.
 <p align="center">
     <a href="https://www.youtube.com/watch?v=5VGCVoD4eOs" target="_blank">
         <img src="./IMG/lec8.jpg" height="300">
+    </a>
+</p>
+
+### 9. Hello Manipulator
+Robot arm manipulation examples.
+<p align="center">
+    <a href="https://www.youtube.com/watch?v=5VGCVoD4eOs" target="_blank">
+        <img src="./IMG/lec9.jpg" height="300">
     </a>
 </p>
 
