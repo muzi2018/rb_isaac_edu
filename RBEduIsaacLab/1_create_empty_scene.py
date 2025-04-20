@@ -1,4 +1,5 @@
 # Copyright (c) 2022-2025, The Isaac Lab Project Developers.
+# Copyright 2025 Road Balance Inc.
 # All rights reserved.
 #
 # SPDX-License-Identifier: BSD-3-Clause
