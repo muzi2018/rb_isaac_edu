@@ -9,6 +9,7 @@
 
     # Usage
     ./isaaclab.sh -p scripts/tutorials/01_assets/run_articulation.py
+    or
     isaaclab -p 5_run_articulation.py
 
 """
