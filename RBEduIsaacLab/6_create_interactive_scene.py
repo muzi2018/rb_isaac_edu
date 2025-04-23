@@ -10,7 +10,7 @@
     # Usage
     ./isaaclab.sh -p scripts/tutorials/02_scene/create_scene.py --num_envs 32
     or
-    isaaclab -p 6_create_interactive_scene.py
+    isaaclab -p 6_create_interactive_scene.py --headless
 
 """
 
