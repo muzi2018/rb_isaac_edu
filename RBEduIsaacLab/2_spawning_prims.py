@@ -97,7 +97,7 @@ def design_scene():
     # my_usd_file_path = os.path.join(os.path.dirname(current_folder_path), 'USD', 'pendulum.usd')
     print(f"{my_usd_file_path=}")
     cfg = sim_utils.UsdFileCfg(usd_path=my_usd_file_path)
-    cfg.func("/World/Objects/MyPendulum", cfg, translation=(3.0, 0.0, 0.2))
+    cfg.func("/World/Objects/MyPendulum", cfg, translation=(3.0, 0.0, 0.4))
 
 
 def main():

@@ -10,7 +10,7 @@ This script demonstrates how to run the RL environment for the cartpole balancin
 
     ./isaaclab.sh -p 8_run_cartpole_rl_env.py --num_envs 32
     or
-    isaaclab -p my_create_cartpole_rl_env.py --num_envs 32 --headless
+    isaaclab -p my_create_cartpole_rl_env.py --num_envs 128 --headless
 
 """
 
@@ -96,7 +96,7 @@ class CartpoleSceneCfg(InteractiveSceneCfg):
 class ActionsCfg:
     """Action specifications for the environment."""
 
-    joint_efforts = mdp.JointEffortActionCfg(asset_name="robot", joint_names=["continuous_joint"], scale=5.0)
+    joint_efforts = mdp.JointEffortActionCfg(asset_name="robot", joint_names=["continuous_joint"], scale=50.0)
 
 
 @configclass
