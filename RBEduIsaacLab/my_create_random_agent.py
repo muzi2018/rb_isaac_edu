@@ -8,17 +8,17 @@ Script to an environment with random action agent.
 
 .. code-block:: bash
 
-    ./isaaclab.sh -p scripts/environments/random_agent.py --task Isaac-Cartpole-v0 --num_envs 32 --headless
+    ./isaaclab.sh -p my_create_random_agent.py --task RoadBalance-Pendulum-v0 --num_envs 32
     or
-    ./isaaclab.sh -p 10_create_random_agent.py --task RoadBalance-Pendulum-v0 --num_envs 32
-    or
-    isaaclab -p 10_create_random_agent.py --task RoadBalance-Pendulum-v0 --num_envs 32 --headless
+    isaaclab -p my_create_random_agent.py --task RoadBalance-Pendulum-v0 --num_envs 32 --headless
 
 """
 
 
 """Launch Isaac Sim Simulator first."""
 
+# This one contains custom environment, for registeration, we need it.
+import robots
 import argparse
 
 from isaaclab.app import AppLauncher
