@@ -34,9 +34,10 @@ PENDULUM_CFG = ArticulationCfg(
     actuators={
         "pendulum_actuator": ImplicitActuatorCfg(
             joint_names_expr=["continuous_joint"],
-            effort_limit_sim=400.0,
+            effort_limit_sim=10.0,
             velocity_limit_sim=100.0,
-            stiffness=5.0,
+            # stiffness=5.0,
+            stiffness=30.0,
             damping=30.0,
         ),
     },
