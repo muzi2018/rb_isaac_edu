@@ -8,7 +8,15 @@
 Since Stable-Baselines3 does not support buffers living on GPU directly,
 we recommend using smaller number of environments. Otherwise,
 there will be significant overhead in GPU->CPU transfer.
+
+    ./isaaclab.sh -p scripts/environments/random_agent.py --task Isaac-Cartpole-v0 --num_envs 32 --headless
+    or
+    ./isaaclab.sh -p 10_create_random_agent.py --task RoadBalance-Pendulum-v0 --num_envs 32
+    or
+    isaaclab -p 11_train.py --task Isaac-Cartpole-v0 --num_envs 32 --headless --video
+
 """
+
 
 """Launch Isaac Sim Simulator first."""
 
