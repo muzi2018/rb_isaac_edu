@@ -13,6 +13,7 @@ Script to an environment with random action agent.
     ./isaaclab.sh -p 10_create_random_agent.py --task RoadBalance-Pendulum-v0 --num_envs 32
     or
     isaaclab -p 10_create_random_agent.py --task RoadBalance-Pendulum-v0 --num_envs 32 --headless
+    isaaclab -p 10_create_random_agent.py --task RoadBalance-Pendulum-Direct-v0 --num_envs 32 --headless
 
 """
 

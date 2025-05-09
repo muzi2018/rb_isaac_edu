@@ -29,7 +29,7 @@ class CartpoleEnvCfg(DirectRLEnvCfg):
     episode_length_s = 5.0
     action_scale = 100.0  # [N]
     action_space = 1
-    observation_space = 4
+    observation_space = 2
     state_space = 0
 
     # simulation

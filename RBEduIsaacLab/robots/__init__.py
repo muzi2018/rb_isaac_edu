@@ -26,6 +26,3 @@ gym.register(
         "sb3_cfg_entry_point": f"{__name__}:sb3_ppo_cfg.yaml",
     },
 )
-
-if __name__ == "__main__":
-    print(f"{__name__}")
