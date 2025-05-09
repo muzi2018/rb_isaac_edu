@@ -26,7 +26,7 @@ from isaaclab.utils.math import sample_uniform
 class CartpoleEnvCfg(DirectRLEnvCfg):
     # env
     decimation = 2
-    episode_length_s = 5.0
+    episode_length_s = 1.0
     action_scale = 1.0  # [N]
     action_space = 1
     observation_space = 2
@@ -46,8 +46,10 @@ class CartpoleEnvCfg(DirectRLEnvCfg):
     initial_pole_angle_range = [-0.0, 0.0]  # the range in which the pole angle is sampled from on reset [rad]
 
     # reward scales
-    rew_scale_alive = 1.0
-    rew_scale_terminated = -2.0
+    # rew_scale_alive = 1.0
+    # rew_scale_terminated = -2.0
+    rew_scale_alive = 0.0
+    rew_scale_terminated = 0.0
     rew_scale_pole_pos = -1.0
     rew_scale_cart_vel = -0.01
     rew_scale_pole_vel = -0.005
@@ -61,7 +63,7 @@ class CartpoleDirectRLEnv(DirectRLEnv):
 
         self._pole_dof_idx, _ = self._robot.find_joints(self.cfg.pole_dof_name)
         self.action_scale = self.cfg.action_scale
-        self.max_action = 10.0
+        self.max_action = 25.0
 
         self.joint_pos = self._robot.data.joint_pos
         self.joint_vel = self._robot.data.joint_vel
@@ -85,7 +87,7 @@ class CartpoleDirectRLEnv(DirectRLEnv):
     def _pre_physics_step(self, actions: torch.Tensor) -> None:
         self.actions = self.action_scale * actions.clone()
         # absoluate value of action must be lower than self.max_action 
-        self.actions = torch.clamp(scaled_actions, -self.max_action, self.max_action)
+        self.actions = torch.clamp(self.actions, -self.max_action, self.max_action)
 
     def _apply_action(self) -> None:
         self._robot.set_joint_effort_target(self.actions, joint_ids=self._pole_dof_idx)
@@ -106,6 +108,9 @@ class CartpoleDirectRLEnv(DirectRLEnv):
         self.pos_diff = self.joint_pos[:, self._pole_dof_idx[0]] - self.target_pos
         self.vel_diff = self.joint_vel[:, self._pole_dof_idx[0]] - self.target_vel
 
+        pose_term = torch.square(self.pos_diff).sum(dim=-1)
+        # print(f"{pose_term=}")
+
         total_reward = compute_rewards(
             self.cfg.rew_scale_alive,
             self.cfg.rew_scale_terminated,
@@ -118,6 +123,8 @@ class CartpoleDirectRLEnv(DirectRLEnv):
             self.actions,
             self.reset_terminated,
         )
+
+        # print(f"{total_reward=}")
         return total_reward
 
     def _get_dones(self) -> tuple[torch.Tensor, torch.Tensor]:
@@ -173,7 +180,7 @@ def compute_rewards(
     rew_alive = rew_scale_alive * (1.0 - reset_terminated.float())
     rew_termination = rew_scale_terminated * reset_terminated.float()
 
-    reward_type = "soft_binary"
+    reward_type = "open_ai_gym"
     reward = torch.zeros_like(reset_terminated)
     
     # Legacy part
@@ -193,14 +200,42 @@ def compute_rewards(
         pos_diff_repellor = torch.norm(pole_pos - 0.0, dim=-1)
         reward -= torch.sum(torch.exp(-pos_diff_repellor ** 2 / (2 * 0.25 ** 2)), dim=-1)
 
+    # elif reward_type == "soft_binary":
+    #     reward = torch.exp(-pos_diff.pow(2) / (2 * 0.25 ** 2)).sum(dim=-1)
+    # elif reward_type == "soft_binary_with_repellor":
+    #     attractor = torch.exp(-pos_diff.pow(2) / (2 * 0.25 ** 2)).sum(dim=-1)
+    #     repellor = torch.exp(-pole_pos.pow(2) / (2 * 0.25 ** 2)).sum(dim=-1)
+    #     reward = attractor - repellor
+
     elif reward_type == "open_ai_gym":
         if actions is None:
             raise ValueError("Action tensor is required for 'open_ai_gym' reward type.")
-        # reward = -pos_diff ** 2 - 0.1 * vel_diff ** 2 - 0.001 * torch.sum(actions ** 2, dim=-1)
-        # reward = -pos_diff**2.0 - 0.1 * vel_diff**2.0 - 0.001 * actions**2.0
+
+        # Clamp pos_diff to [-π, π] to avoid discontinuities
+        clamped_pos_diff = torch.clamp(pos_diff, -math.pi, math.pi)
+        pose_term = clamped_pos_diff.pow(2).sum(dim=-1)
+        normalized_pose = pose_term / (math.pi ** 2)  # ∈ [0, 1]
+
+        # Clip and normalize pole velocity (you can tune the max expected vel)
+        max_pole_vel = 10.0  # rad/s, adjust if needed
+        clamped_vel = torch.clamp(pole_vel, -max_pole_vel, max_pole_vel)
+        vel_term = torch.square(clamped_vel).sum(dim=-1)
+        normalized_vel = vel_term / (max_pole_vel ** 2)  # ∈ [0, 1]
+
+        # Normalize actions based on known max_action
+        max_action = 25.0
+        clamped_actions = torch.clamp(actions, -max_action, max_action)
+        act_term = torch.square(clamped_actions).sum(dim=-1)
+        normalized_act = act_term / (max_action ** 2)  # ∈ [0, 1]
+
+        reward = -normalized_pose - 0.1 * normalized_vel - 0.001 * normalized_act
     elif reward_type == "open_ai_gym_red_torque":
         if actions is None:
             raise ValueError("Action tensor is required for 'open_ai_gym_red_torque' reward type.")
+        pose_term = torch.square(pos_diff).sum(dim=-1)
+        vel_term = torch.square(pole_vel).sum(dim=-1)
+        act_term = torch.square(actions).sum(dim=-1)
+        reward = -pose_term - 0.1 * vel_term - 0.01 * act_term
         # reward = -pos_diff ** 2 - 0.1 * vel_diff ** 2 - 0.01 * torch.sum(actions ** 2, dim=-1)
     else:
         # TorchScript doesn't like exceptions, so return NaNs instead
