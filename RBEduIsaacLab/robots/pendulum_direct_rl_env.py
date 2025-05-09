@@ -27,7 +27,7 @@ class CartpoleEnvCfg(DirectRLEnvCfg):
     # env
     decimation = 2
     episode_length_s = 5.0
-    action_scale = 10.0  # [N]
+    action_scale = 1.0  # [N]
     action_space = 1
     observation_space = 2
     state_space = 0
@@ -61,6 +61,7 @@ class CartpoleDirectRLEnv(DirectRLEnv):
 
         self._pole_dof_idx, _ = self._robot.find_joints(self.cfg.pole_dof_name)
         self.action_scale = self.cfg.action_scale
+        self.max_action = 10.0
 
         self.joint_pos = self._robot.data.joint_pos
         self.joint_vel = self._robot.data.joint_vel
@@ -83,6 +84,8 @@ class CartpoleDirectRLEnv(DirectRLEnv):
 
     def _pre_physics_step(self, actions: torch.Tensor) -> None:
         self.actions = self.action_scale * actions.clone()
+        # absoluate value of action must be lower than self.max_action 
+        self.actions = torch.clamp(scaled_actions, -self.max_action, self.max_action)
 
     def _apply_action(self) -> None:
         self._robot.set_joint_effort_target(self.actions, joint_ids=self._pole_dof_idx)
