@@ -27,7 +27,7 @@ class CartpoleEnvCfg(DirectRLEnvCfg):
     # env
     decimation = 2
     episode_length_s = 5.0
-    action_scale = 100.0  # [N]
+    action_scale = 10.0  # [N]
     action_space = 1
     observation_space = 2
     state_space = 0
@@ -43,7 +43,7 @@ class CartpoleEnvCfg(DirectRLEnvCfg):
     scene: InteractiveSceneCfg = InteractiveSceneCfg(num_envs=4096, env_spacing=4.0, replicate_physics=True)
 
     # reset
-    initial_pole_angle_range = [-math.pi/4, math.pi/4]  # the range in which the pole angle is sampled from on reset [rad]
+    initial_pole_angle_range = [-0.0, 0.0]  # the range in which the pole angle is sampled from on reset [rad]
 
     # reward scales
     rew_scale_alive = 1.0
@@ -64,6 +64,10 @@ class CartpoleDirectRLEnv(DirectRLEnv):
 
         self.joint_pos = self._robot.data.joint_pos
         self.joint_vel = self._robot.data.joint_vel
+
+        # TODO: Setup target pos and vel 
+        self.target_pos = math.pi
+        self.target_vel = 0.0
 
     def _setup_scene(self):
         self._robot = Articulation(self.cfg.robot_cfg)
@@ -95,6 +99,10 @@ class CartpoleDirectRLEnv(DirectRLEnv):
         return observations
 
     def _get_rewards(self) -> torch.Tensor:
+
+        self.pos_diff = self.joint_pos[:, self._pole_dof_idx[0]] - self.target_pos
+        self.vel_diff = self.joint_vel[:, self._pole_dof_idx[0]] - self.target_vel
+
         total_reward = compute_rewards(
             self.cfg.rew_scale_alive,
             self.cfg.rew_scale_terminated,
@@ -102,6 +110,9 @@ class CartpoleDirectRLEnv(DirectRLEnv):
             self.cfg.rew_scale_pole_vel,
             self.joint_pos[:, self._pole_dof_idx[0]],
             self.joint_vel[:, self._pole_dof_idx[0]],
+            self.pos_diff,
+            self.vel_diff,
+            self.actions,
             self.reset_terminated,
         )
         return total_reward
@@ -150,11 +161,47 @@ def compute_rewards(
     rew_scale_pole_vel: float,
     pole_pos: torch.Tensor,
     pole_vel: torch.Tensor,
+    pos_diff: torch.Tensor,
+    vel_diff: torch.Tensor,
+    actions: torch.Tensor,
     reset_terminated: torch.Tensor,
 ):
+
     rew_alive = rew_scale_alive * (1.0 - reset_terminated.float())
     rew_termination = rew_scale_terminated * reset_terminated.float()
-    rew_pole_pos = rew_scale_pole_pos * torch.sum(torch.square(pole_pos).unsqueeze(dim=1), dim=-1)
-    rew_pole_vel = rew_scale_pole_vel * torch.sum(torch.abs(pole_vel).unsqueeze(dim=1), dim=-1)
-    total_reward = rew_alive + rew_termination + rew_pole_pos + rew_pole_vel
+
+    reward_type = "soft_binary"
+    reward = torch.zeros_like(reset_terminated)
+    
+    # Legacy part
+    # rew_pole_pos = rew_scale_pole_pos * torch.sum(torch.square(pole_pos).unsqueeze(dim=1), dim=-1)
+    # rew_pole_vel = rew_scale_pole_vel * torch.sum(torch.abs(pole_vel).unsqueeze(dim=1), dim=-1)
+    # total_reward = rew_alive + rew_termination + rew_pole_pos + rew_pole_vel
+
+    if reward_type == "continuous":
+        reward = torch.sum(-pos_diff, dim=-1)
+    elif reward_type == "discrete":
+        state_target_epsilon = 1e-2
+        reward = torch.sum((pos_diff < state_target_epsilon).float(), dim=-1)
+    elif reward_type == "soft_binary":
+        reward = torch.sum(torch.exp(-pos_diff ** 2 / (2 * 0.25 ** 2)), dim=-1)
+    elif reward_type == "soft_binary_with_repellor":
+        reward = torch.sum(torch.exp(-pos_diff ** 2 / (2 * 0.25 ** 2)), dim=-1)
+        pos_diff_repellor = torch.norm(pole_pos - 0.0, dim=-1)
+        reward -= torch.sum(torch.exp(-pos_diff_repellor ** 2 / (2 * 0.25 ** 2)), dim=-1)
+
+    elif reward_type == "open_ai_gym":
+        if actions is None:
+            raise ValueError("Action tensor is required for 'open_ai_gym' reward type.")
+        # reward = -pos_diff ** 2 - 0.1 * vel_diff ** 2 - 0.001 * torch.sum(actions ** 2, dim=-1)
+        # reward = -pos_diff**2.0 - 0.1 * vel_diff**2.0 - 0.001 * actions**2.0
+    elif reward_type == "open_ai_gym_red_torque":
+        if actions is None:
+            raise ValueError("Action tensor is required for 'open_ai_gym_red_torque' reward type.")
+        # reward = -pos_diff ** 2 - 0.1 * vel_diff ** 2 - 0.01 * torch.sum(actions ** 2, dim=-1)
+    else:
+        # TorchScript doesn't like exceptions, so return NaNs instead
+        reward = torch.full_like(reset_terminated, float('nan'))
+
+    total_reward = reward + rew_alive + rew_termination
     return total_reward

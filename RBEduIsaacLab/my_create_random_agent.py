@@ -80,11 +80,14 @@ def main():
                 print("-" * 80)
                 print("[INFO]: Resetting environment...")
             # sample random actions / actions from -1 to 1
-            joint_efforts = 2 * torch.rand(env.action_space.shape, device=env.unwrapped.device) - 1
+            # joint_efforts = 2 * torch.rand(env.action_space.shape, device=env.unwrapped.device) - 1
+            joint_efforts = torch.rand(env.action_space.shape, device=env.unwrapped.device)
             # step the environment
             obs, rew, terminated, truncated, info = env.step(joint_efforts)
             # print current orientation of pole
-            print("[Env 0]: Pole joint: ", obs["policy"][0][1].item())
+            # print("[Env 0]: Pole joint: ", obs["policy"][0][1].item())
+            print("[Env 0]: Pole joint: ", obs["policy"][0])
+            print("[Env 0]: Reward: ", rew[0].item())
             # update counter
             count += 1
 
