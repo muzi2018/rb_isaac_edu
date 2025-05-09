@@ -14,6 +14,7 @@ there will be significant overhead in GPU->CPU transfer.
     ./isaaclab.sh -p 10_create_random_agent.py --task RoadBalance-Pendulum-v0 --num_envs 32
     or
     isaaclab -p 11_train.py --task Isaac-Cartpole-v0 --num_envs 32 --headless --video
+    isaaclab -p 11_train.py --task RoadBalance-Pendulum-Direct-v0 --num_envs 32 --headless --video
 
 """
 
