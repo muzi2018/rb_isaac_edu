@@ -13,10 +13,8 @@ there will be significant overhead in GPU->CPU transfer.
     or
     ./isaaclab.sh -p 10_create_random_agent.py --task RoadBalance-Pendulum-v0 --num_envs 32
     or
-    isaaclab -p my_train.py --task Isaac-Cartpole-v0 --num_envs 32 --headless --video
+    isaaclab -p my_train.py --task RoadBalance-Pendulum-Direct-v0 --num_envs 16
     isaaclab -p my_train.py --task RoadBalance-Pendulum-Direct-v0 --num_envs 32 --headless --video
-
-    isaaclab -p my_train.py --task RoadBalance-Pendulum-Direct-v0 --num_envs 5 --headless --video
     
     Viewing Log
     isaaclab -p -m tensorboard.main --logdir logs/sb3/RoadBalance-Pendulum-Direct-v0

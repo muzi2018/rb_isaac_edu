@@ -109,7 +109,16 @@ class CartpoleDirectRLEnv(DirectRLEnv):
         self.vel_diff = self.joint_vel[:, self._pole_dof_idx[0]] - self.target_vel
 
         pose_term = torch.square(self.pos_diff).sum(dim=-1)
-        # print(f"{pose_term=}")
+        # print(f"{self.pos_diff=}")
+
+        # self.joint_vel[:, self._pole_dof_idx[0]].size() : torch.Size([num_env])
+        # self.actions.size() : torch.Size([num_env, 1])
+        # self.actions[:, self._pole_dof_idx[0]].size() : torch.Size([num_env])
+        
+        # temp_val_1 = torch.sum(torch.square(self.pos_diff).unsqueeze(dim=1), dim=-1)
+        # temp_val_2 = torch.sum(torch.square(self.pos_diff), dim=-1)
+        # print(f"{temp_val_1.size()=} {temp_val_2.size()=}")
+        # temp_val_1.size()=torch.Size([16]) temp_val_2.size()=torch.Size([])
 
         total_reward = compute_rewards(
             self.cfg.rew_scale_alive,
@@ -120,7 +129,7 @@ class CartpoleDirectRLEnv(DirectRLEnv):
             self.joint_vel[:, self._pole_dof_idx[0]],
             self.pos_diff,
             self.vel_diff,
-            self.actions,
+            self.actions[:, self._pole_dof_idx[0]],
             self.reset_terminated,
         )
 
@@ -196,39 +205,26 @@ def compute_rewards(
     elif reward_type == "soft_binary":
         reward = torch.sum(torch.exp(-pos_diff ** 2 / (2 * 0.25 ** 2)), dim=-1)
     elif reward_type == "soft_binary_with_repellor":
+        # Attraction to target
         reward = torch.sum(torch.exp(-pos_diff ** 2 / (2 * 0.25 ** 2)), dim=-1)
+
+        # Repulsion from hanging down (angle 0)
         pos_diff_repellor = torch.norm(pole_pos - 0.0, dim=-1)
         reward -= torch.sum(torch.exp(-pos_diff_repellor ** 2 / (2 * 0.25 ** 2)), dim=-1)
-
-    # elif reward_type == "soft_binary":
-    #     reward = torch.exp(-pos_diff.pow(2) / (2 * 0.25 ** 2)).sum(dim=-1)
-    # elif reward_type == "soft_binary_with_repellor":
-    #     attractor = torch.exp(-pos_diff.pow(2) / (2 * 0.25 ** 2)).sum(dim=-1)
-    #     repellor = torch.exp(-pole_pos.pow(2) / (2 * 0.25 ** 2)).sum(dim=-1)
-    #     reward = attractor - repellor
-
     elif reward_type == "open_ai_gym":
         if actions is None:
             raise ValueError("Action tensor is required for 'open_ai_gym' reward type.")
+        # Pose penalty
+        pose_scale = -1.0
+        reward = pose_scale * torch.sum(torch.square(pos_diff).unsqueeze(dim=1), dim=-1)
 
-        # Clamp pos_diff to [-π, π] to avoid discontinuities
-        clamped_pos_diff = torch.clamp(pos_diff, -math.pi, math.pi)
-        pose_term = clamped_pos_diff.pow(2).sum(dim=-1)
-        normalized_pose = pose_term / (math.pi ** 2)  # ∈ [0, 1]
+        # Velocity penalty / pole_vel size : torch.Size([num_env])
+        vel_scale = -0.1
+        reward += vel_scale * torch.sum(torch.square(pole_vel).unsqueeze(dim=1), dim=-1)
 
-        # Clip and normalize pole velocity (you can tune the max expected vel)
-        max_pole_vel = 10.0  # rad/s, adjust if needed
-        clamped_vel = torch.clamp(pole_vel, -max_pole_vel, max_pole_vel)
-        vel_term = torch.square(clamped_vel).sum(dim=-1)
-        normalized_vel = vel_term / (max_pole_vel ** 2)  # ∈ [0, 1]
-
-        # Normalize actions based on known max_action
-        max_action = 25.0
-        clamped_actions = torch.clamp(actions, -max_action, max_action)
-        act_term = torch.square(clamped_actions).sum(dim=-1)
-        normalized_act = act_term / (max_action ** 2)  # ∈ [0, 1]
-
-        reward = -normalized_pose - 0.1 * normalized_vel - 0.001 * normalized_act
+        # Action/torque penalty / actions size : torch.Size([num_env])
+        act_scale = -0.001
+        reward += act_scale * torch.sum(torch.square(actions).unsqueeze(dim=1), dim=-1)
     elif reward_type == "open_ai_gym_red_torque":
         if actions is None:
             raise ValueError("Action tensor is required for 'open_ai_gym_red_torque' reward type.")
