@@ -26,7 +26,7 @@ from isaaclab.utils.math import sample_uniform
 class CartpoleEnvCfg(DirectRLEnvCfg):
     # env
     decimation = 2
-    episode_length_s = 1.0
+    episode_length_s = 5.0
     action_scale = 1.0  # [N]
     action_space = 1
     observation_space = 2
@@ -223,7 +223,7 @@ def compute_rewards(
         reward += vel_scale * torch.sum(torch.square(pole_vel).unsqueeze(dim=1), dim=-1)
 
         # Action/torque penalty / actions size : torch.Size([num_env])
-        act_scale = -0.001
+        act_scale = -0.005
         reward += act_scale * torch.sum(torch.square(actions).unsqueeze(dim=1), dim=-1)
     elif reward_type == "open_ai_gym_red_torque":
         if actions is None:
