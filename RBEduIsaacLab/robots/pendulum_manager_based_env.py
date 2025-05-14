@@ -52,7 +52,7 @@ class ActionsCfg:
     joint_efforts = mdp.JointEffortActionCfg(
         asset_name="robot", 
         joint_names=["continuous_joint"], 
-        scale=50.0
+        scale=1.0
     )
 
 

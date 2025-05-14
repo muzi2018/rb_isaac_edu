@@ -50,3 +50,24 @@ CartPole-v1:
   ent_coef: 0.0
   learning_rate: lin_0.001
   clip_range: lin_0.2
+
+
+ActionsCfg scale 50 => 
+joint_efforts: tensor([[-2606.2766]], device='cuda:0') torch.Size([1, 1]) <class 'torch.Tensor'>
+[Env 0]: Pole joint:  -100.0
+joint_efforts: tensor([[3451.4514]], device='cuda:0') torch.Size([1, 1]) <class 'torch.Tensor'>
+[Env 0]: Pole joint:  100.0001449584961
+joint_efforts: tensor([[-2606.6353]], device='cuda:0') torch.Size([1, 1]) <class 'torch.Tensor'>
+[Env 0]: Pole joint:  -100.0
+
+ActionsCfg scale 5 => 
+joint_efforts: tensor([[-3005.1240]], device='cuda:0') torch.Size([1, 1]) <class 'torch.Tensor'>
+[Env 0]: Pole joint:  -100.00004577636719
+joint_efforts: tensor([[3005.1707]], device='cuda:0') torch.Size([1, 1]) <class 'torch.Tensor'>
+[Env 0]: Pole joint:  100.00000762939453
+joint_efforts: tensor([[-3005.1245]], device='cuda:0') torch.Size([1, 1]) <class 'torch.Tensor'>
+[Env 0]: Pole joint:  -99.99996948242188
+joint_efforts: tensor([[3005.1660]], device='cuda:0') torch.Size([1, 1]) <class 'torch.Tensor'>
+
+ActionsCfg scale 1 => 
+Good
