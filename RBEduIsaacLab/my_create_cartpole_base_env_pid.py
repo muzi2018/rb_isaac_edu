@@ -49,7 +49,8 @@ from robots.pendulum_manager_based_env import CartpoleEnvCfg
 theta_des = np.pi
 kp = 200
 kd = 2 * np.sqrt(kp)
-min_torque, max_torque = -40, 40
+# pure control 30 ok / 25 x
+min_torque, max_torque = -25, 25
 
 def controller(obs):
     theta, omega = obs[0]

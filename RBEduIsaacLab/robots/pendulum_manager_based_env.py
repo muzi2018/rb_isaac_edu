@@ -1,4 +1,5 @@
 import math
+import torch
 import isaaclab.sim as sim_utils
 
 from isaaclab.assets import ArticulationCfg, AssetBaseCfg
@@ -52,7 +53,8 @@ class ActionsCfg:
     joint_efforts = mdp.JointEffortActionCfg(
         asset_name="robot", 
         joint_names=["continuous_joint"], 
-        scale=1.0
+        # scale=1.0 # PID
+        scale=5.0 # RL
     )
 
 
@@ -105,6 +107,20 @@ class EventCfg:
         },
     )
 
+
+def joint_pos_target_l2(env, target, asset_cfg) -> torch.Tensor:
+    """Penalize joint position deviation from a target value."""
+    # extract the used quantities (to enable type-hinting)
+    asset: Articulation = env.scene[asset_cfg.name]
+    # wrap the joint positions to (-pi, pi)
+    joint_pos = asset.data.joint_pos[:, asset_cfg.joint_ids]
+    # wrap to [0, 2*pi)
+    wrapped_joint_pos = (joint_pos + torch.pi) % (2 * torch.pi)
+
+    # joint_pos = wrap_to_pi(asset.data.joint_pos[:, asset_cfg.joint_ids])
+    # compute the reward
+    return torch.sum(torch.square(joint_pos - target), dim=1)
+
 # TODO: Reward Design
 @configclass
 class RewardsCfg:
@@ -116,7 +132,7 @@ class RewardsCfg:
     terminating = RewTerm(func=mdp.is_terminated, weight=-2.0)
     # (3) Primary task: keep pole upright
     pole_pos = RewTerm(
-        func=mdp.joint_pos_target_l2,
+        func=joint_pos_target_l2,
         weight=-1.0,
         params={
             "asset_cfg": SceneEntityCfg(
@@ -129,8 +145,8 @@ class RewardsCfg:
     )
     # (4) Shaping tasks: lower cart velocity
     cart_vel = RewTerm(
-        func=mdp.joint_vel_l1,
-        weight=-0.01,
+        func=mdp.joint_vel_l2,
+        weight=-0.1,
         params={
             "asset_cfg": SceneEntityCfg(
                 "robot", 
@@ -140,8 +156,8 @@ class RewardsCfg:
     )
     # (5) Shaping tasks: lower pole angular velocity
     pole_vel = RewTerm(
-        func=mdp.joint_vel_l1,
-        weight=-0.005,
+        func=mdp.joint_acc_l2,
+        weight=-0.001,
         params={
             "asset_cfg": SceneEntityCfg(
                 "robot", 
