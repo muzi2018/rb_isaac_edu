@@ -26,8 +26,8 @@ from isaaclab.utils.math import sample_uniform
 class CartpoleEnvCfg(DirectRLEnvCfg):
     # env
     decimation = 2
-    episode_length_s = 5.0
-    action_scale = 1.0  # [N]
+    episode_length_s = 15.0
+    action_scale = 100.0  # [N]
     action_space = 1
     observation_space = 2
     state_space = 0
@@ -87,8 +87,8 @@ class CartpoleDirectRLEnv(DirectRLEnv):
     def _pre_physics_step(self, actions: torch.Tensor) -> None:
         self.actions = self.action_scale * actions.clone()
         # absoluate value of action must be lower than self.max_action 
-        # self.actions = torch.clamp(self.actions, -self.max_action, self.max_action)
-        print(f"{actions=}")
+        self.actions = torch.clamp(self.actions, -self.max_action, self.max_action)
+        # print(f"{actions=}")
 
     def _apply_action(self) -> None:
         self._robot.set_joint_effort_target(self.actions, joint_ids=self._pole_dof_idx)
@@ -193,7 +193,7 @@ def compute_rewards(
     rew_alive = rew_scale_alive * (1.0 - reset_terminated.float())
     rew_termination = rew_scale_terminated * reset_terminated.float()
 
-    reward_type = "open_ai_gym"
+    reward_type = "soft_binary_with_repellor"
     reward = torch.zeros_like(reset_terminated)
 
     # Legacy part
@@ -227,7 +227,7 @@ def compute_rewards(
         reward += vel_scale * torch.sum(torch.square(pole_vel).unsqueeze(dim=1), dim=-1)
 
         # Action/torque penalty / actions size : torch.Size([num_env])
-        act_scale = -0.0
+        act_scale = -0.003
         reward += act_scale * torch.sum(torch.square(actions).unsqueeze(dim=1), dim=-1)
     elif reward_type == "open_ai_gym_red_torque":
         if actions is None:

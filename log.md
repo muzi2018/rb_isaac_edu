@@ -179,4 +179,33 @@ actions=tensor([[-1.0580],
         [-0.4336],
         [-0.5499]],
 
+action_scale 10 / max_action 25.0 / no clamp 
+actions=tensor([[-1.2552e-07],
+        [-1.7988e-09],
+
+action_scale 5 / max_action 25.0 / no clamp 
+actions=tensor([[ 0.0836],
+        [-0.0697],
+
+action_scale 0.1 / max_action 25.0 / no clamp 
+actions=tensor([[-7.3627e-08],
+        [-1.9113e-08],
+        [-6.5889e-08],
+        [-5.9135e-08],
+        [-7.5920e-08],
+
+action_scale 100.0 / max_action 25.0 / no clamp 
+actions=tensor([[ 13.0988],
+        [ -2.3299],
+        [  6.8315],
+
+
+action_scale 100.0 / max_action 25.0 / yes clamp 
+actions=tensor([[-0.0515],
+        [-2.4486],
+        [-1.0555],
+
+action_scale 100.0 / max_action 25.0 / yes clamp / act_scale = -0.001
+
+
 _pre_physics_step digging => 
