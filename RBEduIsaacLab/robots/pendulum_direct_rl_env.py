@@ -26,7 +26,7 @@ from isaaclab.utils.math import sample_uniform
 class CartpoleEnvCfg(DirectRLEnvCfg):
     # env
     decimation = 2
-    episode_length_s = 15.0
+    episode_length_s = 12.0
     action_scale = 100.0  # [N]
     action_space = 1
     observation_space = 2
@@ -63,7 +63,7 @@ class CartpoleDirectRLEnv(DirectRLEnv):
 
         self._pole_dof_idx, _ = self._robot.find_joints(self.cfg.pole_dof_name)
         self.action_scale = self.cfg.action_scale
-        self.max_action = 25.0
+        self.max_action = 20.0
 
         self.joint_pos = self._robot.data.joint_pos
         self.joint_vel = self._robot.data.joint_vel
@@ -129,6 +129,7 @@ class CartpoleDirectRLEnv(DirectRLEnv):
             self.cfg.rew_scale_terminated,
             self.cfg.rew_scale_pole_pos,
             self.cfg.rew_scale_pole_vel,
+            self.cfg.episode_length_s,
             self.joint_pos[:, self._pole_dof_idx[0]],
             self.joint_vel[:, self._pole_dof_idx[0]],
             self.pos_diff,
@@ -182,6 +183,7 @@ def compute_rewards(
     rew_scale_terminated: float,
     rew_scale_pole_pos: float,
     rew_scale_pole_vel: float,
+    episode_length_s: float,
     pole_pos: torch.Tensor,
     pole_vel: torch.Tensor,
     pos_diff: torch.Tensor,
@@ -215,19 +217,27 @@ def compute_rewards(
         # Repulsion from hanging down (angle 0)
         pos_diff_repellor = torch.norm(pole_pos - 0, dim=-1)
         reward -= torch.sum(torch.exp(-pos_diff_repellor ** 2 / (2 * 0.25 ** 2)), dim=-1)
+
+        # Action/torque penalty / actions size : torch.Size([num_env])
+        act_scale = -0.00007
+        # reward += act_scale * torch.sum(torch.square(actions).unsqueeze(dim=1), dim=-1)
+        reward += act_scale * torch.sum(torch.square(actions), dim=-1)
+
+        # devide by episode length
+        # reward /= episode_length_s
     elif reward_type == "open_ai_gym":
         if actions is None:
             raise ValueError("Action tensor is required for 'open_ai_gym' reward type.")
         # Pose penalty
-        pose_scale = -1.0
+        pose_scale = -0.1
         reward = pose_scale * torch.sum(torch.square(pos_diff).unsqueeze(dim=1), dim=-1)
 
         # Velocity penalty / pole_vel size : torch.Size([num_env])
-        vel_scale = -0.1
+        vel_scale = -0.05
         reward += vel_scale * torch.sum(torch.square(pole_vel).unsqueeze(dim=1), dim=-1)
 
         # Action/torque penalty / actions size : torch.Size([num_env])
-        act_scale = -0.003
+        act_scale = -0.0003
         reward += act_scale * torch.sum(torch.square(actions).unsqueeze(dim=1), dim=-1)
     elif reward_type == "open_ai_gym_red_torque":
         if actions is None:

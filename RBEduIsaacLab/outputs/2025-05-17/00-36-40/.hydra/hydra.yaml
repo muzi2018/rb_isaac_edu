@@ -140,7 +140,7 @@ hydra:
     - path: ''
       schema: structured
       provider: schema
-    output_dir: /home/kimsooyoung/Documents/Study/rb_isaac_edu/RBEduIsaacLab/outputs/2025-05-14/16-38-53
+    output_dir: /home/kimsooyoung/Documents/Study/rb_isaac_edu/RBEduIsaacLab/outputs/2025-05-17/00-36-40
     choices:
       hydra/env: default
       hydra/callbacks: null

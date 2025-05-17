@@ -14,6 +14,7 @@ gym.register(
     kwargs={
         "env_cfg_entry_point": f"{__name__}.pendulum_manager_based_env:CartpoleRLEnvCfg",
         "sb3_cfg_entry_point": f"{__name__}:sb3_ppo_cfg.yaml",
+        "sb3_sac_cfg_entry_point": f"{__name__}:sb3_sac_cfg.yaml",
     },
 )
 
@@ -24,5 +25,6 @@ gym.register(
     kwargs={
         "env_cfg_entry_point": f"{__name__}.pendulum_direct_rl_env:CartpoleEnvCfg",
         "sb3_cfg_entry_point": f"{__name__}:sb3_ppo_cfg.yaml",
+        "sb3_sac_cfg_entry_point": f"{__name__}:sb3_sac_cfg.yaml",
     },
 )
