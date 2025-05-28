@@ -58,10 +58,13 @@ class Parameters():
         
         # Control parameters
         self.theta_des = np.pi
+        self.Q = np.diag([10, 1])
+        self.R = np.array([[1.0]])
 
         # Torque limits
-        self.min_torque = -25  # Fixed variable name
-        self.max_torque = 25  # Fixed variable name
+        # 5 X / 10 OK / 7.5 O / 6.0 X
+        self.min_torque = -6.0  # Fixed variable name
+        self.max_torque = 6.0  # Fixed variable name
 
 
 def linearize(goal, params):
@@ -112,12 +115,9 @@ def main():
 
     ### LQR
     # Linearize for linear control
-    Q = np.diag([10, 1])
-    R = np.array([[1]])
     goal = np.array([np.pi, 0])
     A_lin, B_lin = linearize(goal, params)
-    # K, S, eigVals = lqr_scipy(A_lin, B_lin, Q, R)
-    K, S, eigVals = control.lqr(A_lin, B_lin, Q, R)
+    K, S, eigVals = control.lqr(A_lin, B_lin, params.Q, params.R)
     print(f"{K=} {eigVals=}")
 
     # simulate physics
@@ -126,7 +126,7 @@ def main():
     while simulation_app.is_running():
         with torch.inference_mode():
             # reset
-            if count % 300 == 0:
+            if count % 150 == 0:
                 count = 0
                 env.reset()
                 print("-" * 80)
