@@ -64,7 +64,7 @@ class PIDController:
         pass
 
     def get_control_output(
-            self, counter 
+            self, counter,
             meas_pos=None, meas_vel=None, 
             meas_tau=None, meas_time=None
         ):

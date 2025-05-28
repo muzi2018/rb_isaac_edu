@@ -24,7 +24,7 @@ from isaaclab.app import AppLauncher
 
 # add argparse arguments
 parser = argparse.ArgumentParser(description="Tutorial on creating a cartpole base environment.")
-parser.add_argument("--num_envs", type=int, default=16, help="Number of environments to spawn.")
+parser.add_argument("--num_envs", type=int, default=1, help="Number of environments to spawn.")
 
 # append AppLauncher cli args
 AppLauncher.add_app_launcher_args(parser)
@@ -126,7 +126,7 @@ def main():
     while simulation_app.is_running():
         with torch.inference_mode():
             # reset
-            if count % 150 == 0:
+            if count % 300 == 0:
                 count = 0
                 env.reset()
                 print("-" * 80)

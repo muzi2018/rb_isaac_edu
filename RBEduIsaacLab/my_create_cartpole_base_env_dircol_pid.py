@@ -24,7 +24,7 @@ from isaaclab.app import AppLauncher
 
 # add argparse arguments
 parser = argparse.ArgumentParser(description="Tutorial on creating a cartpole base environment.")
-parser.add_argument("--num_envs", type=int, default=16, help="Number of environments to spawn.")
+parser.add_argument("--num_envs", type=int, default=1, help="Number of environments to spawn.")
 
 # append AppLauncher cli args
 AppLauncher.add_app_launcher_args(parser)
@@ -64,9 +64,12 @@ class Parameters():
         self.b = 0.1  # damping coefficient
         
         # Trajectory parameters
+        self.total_timestamp = 250
         self.N = 21
         self.control_cost = 0.1
+        self.x0 = [0.0, 0.0]
         self.goal = [np.pi, 0.0]
+        self.max_dt = 0.5
 
         # Control parameters
         self.Kp = 20.0
@@ -85,7 +88,7 @@ def controller(obs, pid_controller, torque_limit, counter):
     theta_np = theta.detach().cpu().numpy()
     omega_np = omega.detach().cpu().numpy()
 
-    torque = pid_controller.get_control_output(counter, theta_np, omega_np)
+    _, _, torque = pid_controller.get_control_output(counter, theta_np, omega_np)
 
     torque = np.clip(torque, -torque_limit, torque_limit)
 
@@ -122,11 +125,11 @@ def main():
         goal_state=params.goal,
         control_cost=params.control_cost,
     )
-    T, X, U = dircal.extract_trajectory(x_trajectory, dircol, result, N=300)
+    T, X, U = dircal.extract_trajectory(x_trajectory, dircol, result, N=params.total_timestamp)
 
-    # plot results
-    plot_trajectory(T, X, U, None, True)
-    dircal.plot_phase_space_trajectory(x_trajectory)
+    # # plot results
+    # plot_trajectory(T, X, U, None, True)
+    # dircal.plot_phase_space_trajectory(x_trajectory)
 
     # save results
     log_dir = "direct_collocation"
@@ -153,36 +156,36 @@ def main():
     )
     pid_controller.set_goal(params.goal)
 
-    # # simulate physics
-    # count = 0
-    # obs = None
-    # while simulation_app.is_running():
-    #     with torch.inference_mode():
-    #         # reset
-    #         if count % 300 == 0:
-    #             count = 0
-    #             env.reset()
-    #             print("-" * 80)
-    #             print("[INFO]: Resetting environment...")
-    #         # sample random actions
-    #         if obs is not None:
-    #             joint_efforts = controller(obs["policy"], pid_controller, params.torque_limit, count)
-    #             print(f"joint_efforts: {joint_efforts} {joint_efforts.size()} {type(joint_efforts)}")
+    # simulate physics
+    count = 0
+    obs = None
+    while simulation_app.is_running():
+        with torch.inference_mode():
+            # reset
+            if count % params.total_timestamp == 0:
+                count = 0
+                env.reset()
+                print("-" * 80)
+                print("[INFO]: Resetting environment...")
+            # sample random actions
+            if obs is not None:
+                joint_efforts = controller(obs["policy"], pid_controller, params.torque_limit, count)
+                print(f"joint_efforts: {joint_efforts} {joint_efforts.size()} {type(joint_efforts)}")
 
-    #             # step the environment
-    #             obs, extra = env.step(joint_efforts)
-    #         else:
-    #             random_efforts = torch.randn_like(env.action_manager.action)
-    #             print(f"random_efforts: {random_efforts} {random_efforts.size()} {type(random_efforts)}")
+                # step the environment
+                obs, extra = env.step(joint_efforts)
+            else:
+                random_efforts = torch.randn_like(env.action_manager.action)
+                print(f"random_efforts: {random_efforts} {random_efforts.size()} {type(random_efforts)}")
 
-    #             # step the environment
-    #             obs, extra = env.step(random_efforts)
+                # step the environment
+                obs, extra = env.step(random_efforts)
                         
-    #         # print current orientation of pole
-    #         print("[Env 0]: Pole joint: ", obs["policy"][0][0].item())
-    #         print("[Env 0]: Pole vel: ", obs["policy"][0][1].item())
-    #         # update counter
-    #         count += 1
+            # print current orientation of pole
+            print("[Env 0]: Pole joint: ", obs["policy"][0][0].item())
+            print("[Env 0]: Pole vel: ", obs["policy"][0][1].item())
+            # update counter
+            count += 1
 
     # close the environment
     env.close()
