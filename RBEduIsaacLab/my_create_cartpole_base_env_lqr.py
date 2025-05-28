@@ -11,7 +11,7 @@ scene, action, observation and event managers to create an environment.
 
     ./isaaclab.sh -p scripts/tutorials/03_envs/create_cartpole_base_env.py --num_envs 32
     or
-    isaaclab -p my_create_cartpole_base_env_pid.py --num_envs 1
+    isaaclab -p my_create_cartpole_base_env_lqr.py --num_envs 1
 
 """
 
@@ -38,6 +38,7 @@ simulation_app = app_launcher.app
 """Rest everything follows."""
 
 import torch
+import control
 import numpy as np
 
 from isaaclab.envs import ManagerBasedEnv
@@ -48,27 +49,52 @@ from robots.pendulum_manager_based_env import CartpoleEnvCfg
 class Parameters():
 
     def __init__(self):
-        self.theta_des = np.pi
-        self.kp = 300
-        self.kd = 2 * np.sqrt(self.kp) # = 20
-        # self.kd = 50
+        # System parameters
+        self.m = 13.5  # mass of pendulum
+        self.l = 0.19  # length of pendulum
+        self.g = 9.81  # gravity
+        self.I = self.m * self.l**2  # moment of inertia
+        self.b = 0.1  # damping coefficient
         
-        # pure control 30 ok / 25 x
-        self.min_torque, self.max_torque = -30, 30
+        # Control parameters
+        self.theta_des = np.pi
 
-def controller(obs, params):
-    
+        # Torque limits
+        self.min_torque = -25  # Fixed variable name
+        self.max_torque = 25  # Fixed variable name
+
+
+def linearize(goal, params):
+
+    m, l, g, I, b = params.m, params.l, params.g, params.I, params.b
+
+    A = np.array([
+        [0, 1],
+        [-m*g*l/I * np.cos(goal[0]), -b/I]
+    ])
+    B = np.array([[0, 1./I]]).T
+
+    return A, B
+
+def controller(obs, K, params):  # Added K and params as arguments
     theta, omega = obs[0]
-    kp, kd, theta_des, min_torque, max_torque = params.kp, params.kd, params.theta_des, params.min_torque, params.max_torque
+    
+    # Convert torch tensors to numpy arrays using detach() to avoid circular imports
+    theta_np = theta.detach().cpu().numpy()
+    omega_np = omega.detach().cpu().numpy()
 
-    # Ensure tensors are on CPU before converting to numpy
-    torque_value = -kp * (theta.cpu().numpy() - theta_des) - kd * omega.cpu().numpy()
+    goal = [params.theta_des, 0.0]
 
-    # Clip torque value to specified limits
-    torque_value = np.clip(torque_value, min_torque, max_torque)
+    delta_pos = theta_np - goal[0]
+    delta_pos_wrapped = (delta_pos + np.pi) % (2*np.pi) - np.pi
+    delta_y = np.array([delta_pos_wrapped, omega_np - goal[1]])
+
+    torque = float(-K.dot(delta_y)[0])
+
+    torque = np.clip(torque, -params.max_torque, params.max_torque)  # Use params limits
 
     # Wrap in 2D NumPy array to get shape [1, 1]
-    torque = torch.from_numpy(np.array([[torque_value]], dtype=np.float32)).to(theta.device)
+    torque = torch.tensor([[torque]], dtype=torch.float32, device=theta.device)
 
     return torque
 
@@ -81,7 +107,18 @@ def main():
     # setup base environment
     env = ManagerBasedEnv(cfg=env_cfg)
 
+    # Initialize parameters
     params = Parameters()
+
+    ### LQR
+    # Linearize for linear control
+    Q = np.diag([10, 1])
+    R = np.array([[1]])
+    goal = np.array([np.pi, 0])
+    A_lin, B_lin = linearize(goal, params)
+    # K, S, eigVals = lqr_scipy(A_lin, B_lin, Q, R)
+    K, S, eigVals = control.lqr(A_lin, B_lin, Q, R)
+    print(f"{K=} {eigVals=}")
 
     # simulate physics
     count = 0
@@ -96,7 +133,7 @@ def main():
                 print("[INFO]: Resetting environment...")
             # sample random actions
             if obs is not None:
-                joint_efforts = controller(obs["policy"], params)
+                joint_efforts = controller(obs["policy"], K, params)
                 print(f"joint_efforts: {joint_efforts} {joint_efforts.size()} {type(joint_efforts)}")
 
                 # step the environment
