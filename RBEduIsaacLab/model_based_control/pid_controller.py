@@ -63,8 +63,11 @@ class PIDController:
     def set_goal(self, x):
         pass
 
-    def get_control_output(self, meas_pos=None, meas_vel=None, meas_tau=None,
-                           meas_time=None):
+    def get_control_output(
+            self, counter 
+            meas_pos=None, meas_vel=None, 
+            meas_tau=None, meas_time=None
+        ):
         """
         The function to read and send the entries of the loaded trajectory
         as control input to the simulator/real pendulum.
@@ -94,14 +97,15 @@ class PIDController:
         des_vel = self.last_vel
         des_tau = 0.0
 
-        if self.counter < len(self.traj_time):
-            des_pos = self.traj_pos[self.counter]
-            des_vel = self.traj_vel[self.counter]
-            if self.use_feed_forward:
-                des_tau = self.traj_tau[self.counter]
+        # if self.counter < len(self.traj_time):
+        self.counter = counter
+        des_pos = self.traj_pos[self.counter]
+        des_vel = self.traj_vel[self.counter]
+        if self.use_feed_forward:
+            des_tau = self.traj_tau[self.counter]
 
-            self.last_pos = des_pos
-            self.last_vel = des_vel
+        self.last_pos = des_pos
+        self.last_vel = des_vel
 
         e = des_pos - meas_pos
         e = (e + np.pi) % (2*np.pi) - np.pi

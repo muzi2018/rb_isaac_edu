@@ -63,44 +63,31 @@ class Parameters():
         self.I = self.m * self.l**2  # moment of inertia
         self.b = 0.1  # damping coefficient
         
-        # Control parameters
+        # Trajectory parameters
         self.N = 21
         self.control_cost = 0.1
         self.goal = [np.pi, 0.0]
+
+        # Control parameters
+        self.Kp = 20.0
+        self.Ki = 1.0
+        self.Kd = 1.0
 
         # Torque limits
         # 5 X / 10 OK / 7.5 O / 6.0 X
         self.torque_limit = 6.0
 
 
-def linearize(goal, params):
-
-    m, l, g, I, b = params.m, params.l, params.g, params.I, params.b
-
-    A = np.array([
-        [0, 1],
-        [-m*g*l/I * np.cos(goal[0]), -b/I]
-    ])
-    B = np.array([[0, 1./I]]).T
-
-    return A, B
-
-def controller(obs, K, params):  # Added K and params as arguments
+def controller(obs, pid_controller, torque_limit, counter):
     theta, omega = obs[0]
     
     # Convert torch tensors to numpy arrays using detach() to avoid circular imports
     theta_np = theta.detach().cpu().numpy()
     omega_np = omega.detach().cpu().numpy()
 
-    goal = [params.theta_des, 0.0]
+    torque = pid_controller.get_control_output(counter, theta_np, omega_np)
 
-    delta_pos = theta_np - goal[0]
-    delta_pos_wrapped = (delta_pos + np.pi) % (2*np.pi) - np.pi
-    delta_y = np.array([delta_pos_wrapped, omega_np - goal[1]])
-
-    torque = float(-K.dot(delta_y)[0])
-
-    torque = np.clip(torque, -params.max_torque, params.max_torque)  # Use params limits
+    torque = np.clip(torque, -torque_limit, torque_limit)
 
     # Wrap in 2D NumPy array to get shape [1, 1]
     torque = torch.tensor([[torque]], dtype=torch.float32, device=theta.device)
@@ -157,13 +144,14 @@ def main():
 
     save_trajectory(csv_path, data_dict)
 
-    controller = PIDController(
+    pid_controller = PIDController(
         data_dict=data_dict, 
-        Kp=20.0, 
-        Ki=1.0,
-        Kd=1.0
-    )    
-    controller.set_goal(params.goal)
+        Kp=params.Kp, 
+        Ki=params.Ki,
+        Kd=params.Kd,
+        use_feed_forward=True
+    )
+    pid_controller.set_goal(params.goal)
 
     # # simulate physics
     # count = 0
@@ -178,7 +166,7 @@ def main():
     #             print("[INFO]: Resetting environment...")
     #         # sample random actions
     #         if obs is not None:
-    #             joint_efforts = controller(obs["policy"], K, params)
+    #             joint_efforts = controller(obs["policy"], pid_controller, params.torque_limit, count)
     #             print(f"joint_efforts: {joint_efforts} {joint_efforts.size()} {type(joint_efforts)}")
 
     #             # step the environment
