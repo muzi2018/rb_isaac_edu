@@ -162,7 +162,7 @@ def main():
     while simulation_app.is_running():
         with torch.inference_mode():
             # reset
-            if count % params.total_timestamp == 0:
+            if count % (params.total_timestamp + 20) == 0:
                 count = 0
                 env.reset()
                 print("-" * 80)
@@ -170,7 +170,7 @@ def main():
             # sample random actions
             if obs is not None:
                 joint_efforts = controller(obs["policy"], pid_controller, params.torque_limit, count)
-                print(f"joint_efforts: {joint_efforts} {joint_efforts.size()} {type(joint_efforts)}")
+                print(f"count: {count} / joint_efforts: {joint_efforts} {joint_efforts.size()} {type(joint_efforts)}")
 
                 # step the environment
                 obs, extra = env.step(joint_efforts)

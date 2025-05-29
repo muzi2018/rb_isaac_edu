@@ -10,7 +10,7 @@ class PIDController:
     """
     Controller acts on a predefined trajectory and adds PID control gains.
     """
-    def __init__(self, data_dict, Kp, Ki, Kd, use_feed_forward=True):
+    def __init__(self, Kp, Ki, Kd, data_dict=None, use_feed_forward=True):
         """
         Controller acts on a predefined trajectory and adds PID control gains.
 
@@ -36,11 +36,22 @@ class PIDController:
         use_feed_forward : bool
             whether to use the torque that is provided in the csv file
         """
-        self.traj_time = data_dict["des_time"]
-        self.traj_pos = data_dict["des_pos"]
-        self.traj_vel = data_dict["des_vel"]
-        if use_feed_forward:
-            self.traj_tau = data_dict["des_tau"]
+
+        if data_dict is not None:
+            self.traj_len = len(data_dict["des_time"])
+            self.traj_time = data_dict["des_time"]
+            self.traj_pos = data_dict["des_pos"]
+            self.traj_vel = data_dict["des_vel"]
+            self.dt = self.traj_time[1] - self.traj_time[0]
+            if use_feed_forward:
+                self.traj_tau = data_dict["des_tau"]
+        else:
+            self.traj_len = 0
+            self.traj_time = None
+            self.traj_pos = None
+            self.traj_vel = None
+            self.traj_tau = None
+            self.dt = 0.0
 
         self.Kp = Kp
         self.Ki = Ki
@@ -50,7 +61,6 @@ class PIDController:
 
         self.counter = 0
         self.errors = []
-        self.dt = self.traj_time[1] - self.traj_time[0]
         self.last_pos = 0.0
         self.last_vel = 0.0
 
@@ -61,7 +71,7 @@ class PIDController:
         self.last_vel = 0.0
 
     def set_goal(self, x):
-        pass
+        self.goal = x
 
     def get_control_output(
             self, counter,
@@ -98,7 +108,11 @@ class PIDController:
         des_tau = 0.0
 
         # if self.counter < len(self.traj_time):
-        self.counter = counter
+        if self.counter < self.traj_len:
+            self.counter = counter
+        else:
+            self.counter = self.traj_len - 1
+
         des_pos = self.traj_pos[self.counter]
         des_vel = self.traj_vel[self.counter]
         if self.use_feed_forward:
