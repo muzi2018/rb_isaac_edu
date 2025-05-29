@@ -70,6 +70,12 @@ class PIDController:
         self.last_pos = 0.0
         self.last_vel = 0.0
 
+    def reset(self):
+        self.counter = 0
+        self.errors = []
+        self.last_pos = 0.0
+        self.last_vel = 0.0
+
     def set_goal(self, x):
         self.goal = x
 
@@ -112,6 +118,7 @@ class PIDController:
             self.counter = counter
         else:
             self.counter = self.traj_len - 1
+        print(f"self.counter: {self.counter} / self.traj_len: {self.traj_len}")
 
         if self.traj_pos is not None:
             des_pos = self.traj_pos[self.counter]
@@ -144,6 +151,8 @@ class PIDController:
             D = 0.0
 
         des_tau = des_tau + P + I + D
+
+        self.counter += 1
 
         return des_pos, des_vel, des_tau
 

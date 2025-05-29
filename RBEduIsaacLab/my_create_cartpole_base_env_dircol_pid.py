@@ -64,7 +64,7 @@ class Parameters():
         self.b = 0.1  # damping coefficient
         
         # Trajectory parameters
-        self.total_timestamp = 250
+        self.total_timestamp = 300
         self.N = 21
         self.control_cost = 0.1
         self.x0 = [0.0, 0.0]
@@ -72,9 +72,10 @@ class Parameters():
         self.max_dt = 0.5
 
         # Control parameters
-        self.Kp = 20.0
-        self.Ki = 1.0
+        # TODO: FInal Error minimization
+        self.Kp = 25.0
         self.Kd = 1.0
+        self.Ki = 0.0
 
         # Torque limits
         # 5 X / 10 OK / 7.5 O / 6.0 X
@@ -165,6 +166,7 @@ def main():
             if count % (params.total_timestamp + 20) == 0:
                 count = 0
                 env.reset()
+                pid_controller.reset()
                 print("-" * 80)
                 print("[INFO]: Resetting environment...")
             # sample random actions
