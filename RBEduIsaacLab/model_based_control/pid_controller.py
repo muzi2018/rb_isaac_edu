@@ -51,7 +51,7 @@ class PIDController:
             self.traj_pos = None
             self.traj_vel = None
             self.traj_tau = None
-            self.dt = 0.0
+            self.dt = 0.005
 
         self.Kp = Kp
         self.Ki = Ki
@@ -113,16 +113,27 @@ class PIDController:
         else:
             self.counter = self.traj_len - 1
 
-        des_pos = self.traj_pos[self.counter]
-        des_vel = self.traj_vel[self.counter]
-        if self.use_feed_forward:
-            des_tau = self.traj_tau[self.counter]
+        if self.traj_pos is not None:
+            des_pos = self.traj_pos[self.counter]
+            des_vel = self.traj_vel[self.counter]
+            if self.use_feed_forward:
+                des_tau = self.traj_tau[self.counter]
+        else:
+            des_pos = self.goal[0]
+            des_vel = self.goal[1]
+            des_tau = 0.0
 
         self.last_pos = des_pos
         self.last_vel = des_vel
 
         e = des_pos - meas_pos
-        e = (e + np.pi) % (2*np.pi) - np.pi
+
+        if self.traj_pos is not None:
+            e = (e + np.pi) % (2*np.pi) - np.pi
+        else:
+            e = e
+
+        print(f"e: {e} / des_pos: {des_pos} / des_vel: {des_vel} / des_tau: {des_tau}")
         self.errors.append(e)
 
         P = self.Kp*e
@@ -134,6 +145,21 @@ class PIDController:
 
         des_tau = des_tau + P + I + D
 
-        self.counter += 1
-
         return des_pos, des_vel, des_tau
+
+
+# def controller(obs, params):
+    
+#     theta, omega = obs[0]
+#     kp, kd, theta_des, min_torque, max_torque = params.kp, params.kd, params.theta_des, params.min_torque, params.max_torque
+
+#     # Ensure tensors are on CPU before converting to numpy
+#     torque_value = -kp * (theta.cpu().numpy() - theta_des) - kd * omega.cpu().numpy()
+
+#     # Clip torque value to specified limits
+#     torque_value = np.clip(torque_value, min_torque, max_torque)
+
+#     # Wrap in 2D NumPy array to get shape [1, 1]
+#     torque = torch.from_numpy(np.array([[torque_value]], dtype=np.float32)).to(theta.device)
+
+#     return torque

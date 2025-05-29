@@ -44,31 +44,39 @@ from isaaclab.envs import ManagerBasedEnv
 
 # Environment configuration can be found from below code.
 from robots.pendulum_manager_based_env import CartpoleEnvCfg
+from model_based_control import PIDController
+
 
 class Parameters():
 
     def __init__(self):
-        self.theta_des = np.pi
-        self.kp = 300
-        self.kd = 2 * np.sqrt(self.kp) # = 20
-        # self.kd = 50
-        
+        self.goal = [np.pi, 0.0]
+
+        # Control parameters
+        self.Kp = 20.0
+        self.Kd = 1.0
+        self.Ki = 3.0
+
+        # Torque limits
+        # 5 X / 10 OK / 7.5 O / 6.0 X
+        self.torque_limit = 10.0
+
         # pure control 30 ok / 25 x
-        self.min_torque, self.max_torque = -30, 30
+        # self.min_torque, self.max_torque = -30, 30
 
-def controller(obs, params):
-    
+def controller(obs, pid_controller, torque_limit, counter):
     theta, omega = obs[0]
-    kp, kd, theta_des, min_torque, max_torque = params.kp, params.kd, params.theta_des, params.min_torque, params.max_torque
+    
+    # Convert torch tensors to numpy arrays using detach() to avoid circular imports
+    theta_np = theta.detach().cpu().numpy()
+    omega_np = omega.detach().cpu().numpy()
 
-    # Ensure tensors are on CPU before converting to numpy
-    torque_value = -kp * (theta.cpu().numpy() - theta_des) - kd * omega.cpu().numpy()
+    _, _, torque = pid_controller.get_control_output(counter, theta_np, omega_np)
 
-    # Clip torque value to specified limits
-    torque_value = np.clip(torque_value, min_torque, max_torque)
+    torque = np.clip(torque, -torque_limit, torque_limit)
 
     # Wrap in 2D NumPy array to get shape [1, 1]
-    torque = torch.from_numpy(np.array([[torque_value]], dtype=np.float32)).to(theta.device)
+    torque = torch.tensor([[torque]], dtype=torch.float32, device=theta.device)
 
     return torque
 
@@ -83,21 +91,29 @@ def main():
 
     params = Parameters()
 
+    pid_controller = PIDController(
+        Kp=params.Kp,
+        Ki=params.Ki,
+        Kd=params.Kd,
+        use_feed_forward=True
+    )
+    pid_controller.set_goal(params.goal)
+
     # simulate physics
     count = 0
     obs = None
     while simulation_app.is_running():
         with torch.inference_mode():
             # reset
-            if count % 300 == 0:
+            if count % 100 == 0:
                 count = 0
                 env.reset()
                 print("-" * 80)
                 print("[INFO]: Resetting environment...")
             # sample random actions
             if obs is not None:
-                joint_efforts = controller(obs["policy"], params)
-                print(f"joint_efforts: {joint_efforts} {joint_efforts.size()} {type(joint_efforts)}")
+                joint_efforts = controller(obs["policy"], pid_controller, params.torque_limit, count)
+                print(f"count: {count} / joint_efforts: {joint_efforts} {joint_efforts.size()} {type(joint_efforts)}")
 
                 # step the environment
                 obs, extra = env.step(joint_efforts)
