@@ -1,4 +1,5 @@
 from .pid_controller import PIDController
+from .tvlqr_controller import TVLQRController
 from .direct_collocation import DirectCollocationCalculator
 from .ilqr import iLQR_Calculator
 from .utils import (

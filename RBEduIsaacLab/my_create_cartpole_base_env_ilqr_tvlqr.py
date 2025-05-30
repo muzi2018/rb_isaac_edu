@@ -49,6 +49,7 @@ from isaaclab.envs import ManagerBasedEnv
 from robots.pendulum_manager_based_env import CartpoleEnvCfg
 from model_based_control import (
     PIDController,
+    TVLQRController,
     iLQR_Calculator,
     prepare_empty_data_dict,
     plot_trajectory,
@@ -99,15 +100,21 @@ class Parameters():
         self.Kd = 1.0
         self.Ki = 0.0
 
+        # TVLQR parameters
+        self.Q = np.diag([10.0, 10.1])
+        self.R = np.eye(1) * 0.1
+        self.Q_tilqr = np.diag((10.0, 1.0))
+        self.R_tilqr = np.eye(1) * 0.1
 
-def controller(obs, pid_controller, torque_limit, counter):
+
+def controller(obs, opt_controller, torque_limit, counter):
     theta, omega = obs[0]
     
     # Convert torch tensors to numpy arrays using detach() to avoid circular imports
     theta_np = theta.detach().cpu().numpy()
     omega_np = omega.detach().cpu().numpy()
 
-    _, _, torque = pid_controller.get_control_output(counter, theta_np, omega_np)
+    _, _, torque = opt_controller.get_control_output(counter, theta_np, omega_np)
 
     torque = np.clip(torque, -torque_limit, torque_limit)
 
@@ -212,14 +219,28 @@ def main():
     # plot_trajectory(time, x_trj, data_dict["des_tau"], None, True)
     # plot_ilqr_trace(cost_trace, redu_ratio_trace, regu_trace)
 
-    pid_controller = PIDController(
-        data_dict=data_dict, 
-        Kp=params.Kp, 
-        Ki=params.Ki,
-        Kd=params.Kd,
-        use_feed_forward=True
+    tvlqr_controller = TVLQRController(
+        data_dict=data_dict,
+        mass=params.m,
+        length=params.l,
+        damping=params.b,
+        gravity=params.g,
+        torque_limit=params.torque_limit,
+        Q=params.Q,
+        R=params.R,
+        Q_tilqr=params.Q_tilqr,
+        R_tilqr=params.R_tilqr
     )
-    pid_controller.set_goal(params.goal)
+    tvlqr_controller.set_goal(params.goal)
+
+    # pid_controller = PIDController(
+    #     data_dict=data_dict, 
+    #     Kp=params.Kp, 
+    #     Ki=params.Ki,
+    #     Kd=params.Kd,
+    #     use_feed_forward=True
+    # )
+    # pid_controller.set_goal(params.goal)
 
     # simulate physics
     count = 0
@@ -230,12 +251,13 @@ def main():
             if count % (params.total_timestamp + 20) == 0:
                 count = 0
                 env.reset()
-                pid_controller.reset()
+                # pid_controller.reset()
+                tvlqr_controller.reset()
                 print("-" * 80)
                 print("[INFO]: Resetting environment...")
             # sample random actions
             if obs is not None:
-                joint_efforts = controller(obs["policy"], pid_controller, params.torque_limit, count)
+                joint_efforts = controller(obs["policy"], tvlqr_controller, params.torque_limit, count)
                 print(f"count: {count} / joint_efforts: {joint_efforts} {joint_efforts.size()} {type(joint_efforts)}")
 
                 # step the environment

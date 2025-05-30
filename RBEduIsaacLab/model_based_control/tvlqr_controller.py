@@ -23,7 +23,15 @@ class TVLQRController:
     Controller acts on a predefined trajectory.
     """
 
-    def __init__(self, data_dict=None, mass=1.0, length=0.5, damping=0.1, gravity=9.81, torque_limit=np.inf):
+    def __init__(self, 
+                 data_dict=None, 
+                 mass=1.0, 
+                 length=0.5, 
+                 damping=0.1, 
+                 gravity=9.81, 
+                 torque_limit=np.inf,
+                 Q=None, R=None,
+                 Q_tilqr=None, R_tilqr=None):
         """
         Controller acts on a predefined trajectory.
 
@@ -83,13 +91,14 @@ class TVLQRController:
         self.tilqr_context = self.plant.CreateDefaultContext()
         self.plant.get_input_port(0).FixValue(self.tilqr_context, [0])
         # self.Q_tilqr = np.diag((50., 1.))
-        self.Q_tilqr = np.diag((10.0, 1.0))
-        self.R_tilqr = [1]
+        self.Q_tilqr = Q_tilqr
+        self.R_tilqr = R_tilqr
 
         # Setup Options and Create TVLQR
         self.options = FiniteHorizonLinearQuadraticRegulatorOptions()
         # self.Q = np.diag([200., 0.1])
-        self.Q = np.diag([10.0, 1.0])
+        self.Q = Q
+        self.R = R
         self.options.x0 = x0
         self.options.u0 = u0
 
@@ -125,12 +134,12 @@ class TVLQRController:
             t0=self.options.u0.start_time(),
             tf=self.options.u0.end_time(),
             Q=self.Q,
-            R=np.eye(1) * 2,
+            R=self.R,
             options=self.options,
         )
 
     def get_control_output(
-        self, counter, meas_pos=None, meas_vel=None, meas_tau=None, meas_time=None
+        self, counter, meas_pos=None, meas_vel=None, meas_tau=None
     ):
         """
         The function to read and send the entries of the loaded trajectory
@@ -144,8 +153,6 @@ class TVLQRController:
             the velocity of the pendulum [rad/s]
         meas_tau : float, deault=None
             the meastured torque of the pendulum [Nm]
-        meas_time : float, deault=None
-            the collapsed time [s]
 
         Returns
         -------
@@ -175,6 +182,9 @@ class TVLQRController:
         # des_tau = self.traj_tau[self.counter]
         self.last_pos = des_pos
         self.last_vel = des_vel
+
+        meas_time = self.traj_time[self.counter]
+        print(f"meas_time: {meas_time} / self.max_time: {self.max_time}")
 
         time = min(meas_time, self.max_time)
         if meas_time <= self.max_time:
