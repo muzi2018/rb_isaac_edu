@@ -102,7 +102,8 @@ class EventCfg:
                 "robot", 
                 joint_names=["continuous_joint"]
             ),
-            "position_range": (-0.5 * math.pi, 0.5 * math.pi),
+            # "position_range": (-0.5 * math.pi, 0.5 * math.pi),
+            "position_range": (-0.0 * math.pi, 0.0 * math.pi),
             "velocity_range": (-0.1, 0.1),
         },
     )
@@ -205,8 +206,8 @@ class CartpoleEnvCfg(ManagerBasedEnvCfg):
     def __post_init__(self):
         """Post initialization."""
         # viewer settings
-        self.viewer.eye = [4.5, 0.0, 6.0]
-        self.viewer.lookat = [0.0, 0.0, 2.0]
+        self.viewer.eye = [0.0, -2.0, 1.0]
+        self.viewer.lookat = [0.0, 0.0, 0.0]
         # step settings
         self.decimation = 4  # env step every 4 sim steps: 200Hz / 4 = 50Hz
         # simulation settings
