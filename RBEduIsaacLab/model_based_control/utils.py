@@ -47,6 +47,34 @@ def prepare_empty_data_dict(dt, tf, n=None):
     }
     return data_dict
 
+def plot_ilqr_trace(cost_trace, redu_ratio_trace, regu_trace):
+    fig, ax = plt.subplots(2, 2, figsize=(10, 6))
+
+    ax[0, 0].plot(cost_trace)
+    ax[0, 0].set_xlabel('# Iteration')
+    ax[0, 0].set_ylabel('Total cost')
+    ax[0, 0].set_title('Cost trace')
+
+    delta_opt = (np.array(cost_trace) - cost_trace[-1])
+    ax[0, 1].plot(delta_opt)
+    ax[0, 1].set_yscale('log')
+    ax[0, 1].set_xlabel('# Iteration')
+    ax[0, 1].set_ylabel('Optimality gap')
+    ax[0, 1].set_title('Convergence plot')
+
+    ax[1, 0].plot(redu_ratio_trace)
+    ax[1, 0].set_title('Ratio of actual reduction and expected reduction')
+    ax[1, 0].set_ylabel('Reduction ratio')
+    ax[1, 0].set_xlabel('# Iteration')
+
+    ax[1, 1].plot(regu_trace)
+    ax[1, 1].set_title('Regularization trace')
+    ax[1, 1].set_ylabel('Regularization')
+    ax[1, 1].set_xlabel('# Iteration')
+    plt.tight_layout()
+
+    plt.show()
+
 def plot_trajectory(T, X, U, save_to=None, show=False):
     fig, ax = plt.subplots(3, 1, figsize=(18, 6), sharex="all")
 
