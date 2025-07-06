@@ -12,6 +12,7 @@
     ./isaaclab.sh -p scripts/tutorials/00_sim/create_empty.py
     or
     isaaclab -p 1_create_empty_scene.py
+    isaaclab -p 1_create_empty_scene.py --headless
 
 """
 

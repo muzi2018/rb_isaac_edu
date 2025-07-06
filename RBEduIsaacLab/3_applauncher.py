@@ -10,6 +10,8 @@ This script demonstrates how to run IsaacSim via the AppLauncher
 
     # Usage
     ./isaaclab.sh -p scripts/tutorials/00_sim/launch_app.py
+    or 
+    LIVESTREAM=2 isaaclab -p 3_applauncher.py --size 0.5 --width 1920 --height 1080
 
 """
 
