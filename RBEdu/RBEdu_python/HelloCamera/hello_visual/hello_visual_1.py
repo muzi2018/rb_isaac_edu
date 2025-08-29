@@ -24,7 +24,7 @@ from isaaclab.app import AppLauncher
 
 # add argparse arguments
 parser = argparse.ArgumentParser(description="Example on using the different camera sensor implementations.")
-parser.add_argument("--num_envs", type=int, default=4, help="Number of environments to spawn.")
+parser.add_argument("--num_envs", type=int, default=1, help="Number of environments to spawn.")
 parser.add_argument("--disable_fabric", action="store_true", help="Disable Fabric API and use USD instead.")
 # append AppLauncher cli args
 AppLauncher.add_app_launcher_args(parser)
@@ -228,49 +228,49 @@ def run_simulator(sim: sim_utils.SimulationContext, scene: InteractiveScene):
         print("Received shape of depth: ", scene["raycast_camera"].data.output["distance_to_image_plane"].shape)
         print("Received shape of normals: ", scene["raycast_camera"].data.output["normals"].shape)
 
-        # save every 10th image (for visualization purposes only)
-        # note: saving images will slow down the simulation
-        if count % 10 == 0:
-            # compare generated RGB images across different cameras
-            rgb_images = [scene["camera"].data.output["rgb"][0, ..., :3], scene["tiled_camera"].data.output["rgb"][0]]
-            save_images_grid(
-                rgb_images,
-                subtitles=["Camera", "TiledCamera"],
-                title="RGB Image: Cam0",
-                filename=os.path.join(output_dir, "rgb", f"{count:04d}.jpg"),
-            )
+        # # save every 10th image (for visualization purposes only)
+        # # note: saving images will slow down the simulation
+        # if count % 10 == 0:
+        #     # compare generated RGB images across different cameras
+        #     rgb_images = [scene["camera"].data.output["rgb"][0, ..., :3], scene["tiled_camera"].data.output["rgb"][0]]
+        #     save_images_grid(
+        #         rgb_images,
+        #         subtitles=["Camera", "TiledCamera"],
+        #         title="RGB Image: Cam0",
+        #         filename=os.path.join(output_dir, "rgb", f"{count:04d}.jpg"),
+        #     )
 
-            # compare generated Depth images across different cameras
-            depth_images = [
-                scene["camera"].data.output["distance_to_image_plane"][0],
-                scene["tiled_camera"].data.output["distance_to_image_plane"][0, ..., 0],
-                scene["raycast_camera"].data.output["distance_to_image_plane"][0],
-            ]
-            save_images_grid(
-                depth_images,
-                cmap="turbo",
-                subtitles=["Camera", "TiledCamera", "RaycasterCamera"],
-                title="Depth Image: Cam0",
-                filename=os.path.join(output_dir, "distance_to_camera", f"{count:04d}.jpg"),
-            )
+        #     # compare generated Depth images across different cameras
+        #     depth_images = [
+        #         scene["camera"].data.output["distance_to_image_plane"][0],
+        #         scene["tiled_camera"].data.output["distance_to_image_plane"][0, ..., 0],
+        #         scene["raycast_camera"].data.output["distance_to_image_plane"][0],
+        #     ]
+        #     save_images_grid(
+        #         depth_images,
+        #         cmap="turbo",
+        #         subtitles=["Camera", "TiledCamera", "RaycasterCamera"],
+        #         title="Depth Image: Cam0",
+        #         filename=os.path.join(output_dir, "distance_to_camera", f"{count:04d}.jpg"),
+        #     )
 
-            # save all tiled RGB images
-            tiled_images = scene["tiled_camera"].data.output["rgb"]
-            save_images_grid(
-                tiled_images,
-                subtitles=[f"Cam{i}" for i in range(tiled_images.shape[0])],
-                title="Tiled RGB Image",
-                filename=os.path.join(output_dir, "tiled_rgb", f"{count:04d}.jpg"),
-            )
+        #     # save all tiled RGB images
+        #     tiled_images = scene["tiled_camera"].data.output["rgb"]
+        #     save_images_grid(
+        #         tiled_images,
+        #         subtitles=[f"Cam{i}" for i in range(tiled_images.shape[0])],
+        #         title="Tiled RGB Image",
+        #         filename=os.path.join(output_dir, "tiled_rgb", f"{count:04d}.jpg"),
+        #     )
 
-            # save all camera RGB images
-            cam_images = scene["camera"].data.output["rgb"][..., :3]
-            save_images_grid(
-                cam_images,
-                subtitles=[f"Cam{i}" for i in range(cam_images.shape[0])],
-                title="Camera RGB Image",
-                filename=os.path.join(output_dir, "cam_rgb", f"{count:04d}.jpg"),
-            )
+        #     # save all camera RGB images
+        #     cam_images = scene["camera"].data.output["rgb"][..., :3]
+        #     save_images_grid(
+        #         cam_images,
+        #         subtitles=[f"Cam{i}" for i in range(cam_images.shape[0])],
+        #         title="Camera RGB Image",
+        #         filename=os.path.join(output_dir, "cam_rgb", f"{count:04d}.jpg"),
+        #     )
 
 
 def main():
