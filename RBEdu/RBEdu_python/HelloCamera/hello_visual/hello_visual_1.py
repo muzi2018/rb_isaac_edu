@@ -56,7 +56,6 @@ from isaaclab.utils import configclass
 from isaaclab.terrains.config.rough import ROUGH_TERRAINS_CFG  # isort:skip
 from isaaclab_assets.robots.anymal import ANYMAL_C_CFG  # isort: skip
 
-
 @configclass
 class SensorsSceneCfg(InteractiveSceneCfg):
     """Design the scene with sensors on the robot."""
@@ -64,9 +63,9 @@ class SensorsSceneCfg(InteractiveSceneCfg):
     # ground plane
     ground = TerrainImporterCfg(
         prim_path="/World/ground",
-        max_init_terrain_level=None,
-        terrain_type="generator",
-        terrain_generator=ROUGH_TERRAINS_CFG.replace(color_scheme="random"),
+        # max_init_terrain_level=None,
+        terrain_type="plane",
+        # terrain_generator=ROUGH_TERRAINS_CFG.replace(color_scheme="random"),
         visual_material=None,
         debug_vis=False,
     )
@@ -185,8 +184,9 @@ def run_simulator(sim: sim_utils.SimulationContext, scene: InteractiveScene):
             # root state
             # we offset the root state by the origin since the states are written in simulation world frame
             # if this is not done, then the robots will be spawned at the (0, 0, 0) of the simulation world
-            root_state = scene["robot"].data.default_root_state.clone()
-            root_state[:, :3] += scene.env_origins
+            root_state = scene["robot"].data.default_root_state.clone() # Default root state [pos, quat, lin_vel, ang_vel] in the local environment frame. Shape is (num_instances, 13).
+            root_state[:, :3] += scene.env_origins # The origins of the environments in the scene. Shape is (num_envs, 3).
+            print("root_state = ", root_state) 
             scene["robot"].write_root_pose_to_sim(root_state[:, :7])
             scene["robot"].write_root_velocity_to_sim(root_state[:, 7:])
             # set joint positions with some noise
