@@ -19,9 +19,10 @@ This script demonstrates the different camera sensors that can be attached to a 
 """Launch Isaac Sim Simulator first."""
 
 import argparse
+import threading, queue
 
 from isaaclab.app import AppLauncher
-
+import cv2  
 # add argparse arguments
 parser = argparse.ArgumentParser(description="Example on using the different camera sensor implementations.")
 parser.add_argument("--num_envs", type=int, default=1, help="Number of environments to spawn.")
@@ -162,6 +163,7 @@ def save_images_grid(
     # close the figure
     plt.close()
 
+frame_queue = queue.Queue()
 
 def run_simulator(sim: sim_utils.SimulationContext, scene: InteractiveScene):
     """Run the simulator."""
